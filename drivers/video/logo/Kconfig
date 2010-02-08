@@ -82,4 +82,10 @@ config LOGO_M32R_CLUT224
 	depends on M32R
 	default y
 
+config LOGO_ARMADILLO_CLUT224
+	bool "224-color Armadillo Linux logo"
+	depends on MACH_ARMADILLO410 || MACH_ARMADILLO440
+
+	default y
+
 endif # LOGO
