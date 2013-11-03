@@ -648,7 +648,7 @@ static int __i915_drm_thaw(struct drm_device *dev, bool restore_gtt_mappings)
 		mutex_unlock(&dev->struct_mutex);
 
 		/* We need working interrupts for modeset enabling ... */
-		drm_irq_install(dev);
+		drm_irq_install(dev, dev->pdev->irq);
 
 		intel_modeset_init_hw(dev);
 
@@ -831,7 +831,7 @@ int i915_reset(struct drm_device *dev)
 		 * being false when they shouldn't be able to.
 		 */
 		drm_irq_uninstall(dev);
-		drm_irq_install(dev);
+		drm_irq_install(dev, dev->pdev->irq);
 		intel_hpd_init(dev);
 	} else {
 		mutex_unlock(&dev->struct_mutex);
