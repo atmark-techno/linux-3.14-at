@@ -757,7 +757,6 @@ struct drm_master {
 
 struct drm_bus {
 	int bus_type;
-	int (*get_irq)(struct drm_device *dev);
 	const char *(*get_name)(struct drm_device *dev);
 	int (*set_busid)(struct drm_device *dev, struct drm_master *master);
 	int (*set_unique)(struct drm_device *dev, struct drm_master *master,

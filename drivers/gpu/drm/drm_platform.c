@@ -68,11 +68,6 @@ err_free:
 	return ret;
 }
 
-static int drm_platform_get_irq(struct drm_device *dev)
-{
-	return platform_get_irq(dev->platformdev, 0);
-}
-
 static const char *drm_platform_get_name(struct drm_device *dev)
 {
 	return dev->platformdev->name;
@@ -113,7 +108,6 @@ err:
 
 static struct drm_bus drm_platform_bus = {
 	.bus_type = DRIVER_BUS_PLATFORM,
-	.get_irq = drm_platform_get_irq,
 	.get_name = drm_platform_get_name,
 	.set_busid = drm_platform_set_busid,
 };
