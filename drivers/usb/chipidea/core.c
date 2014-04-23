@@ -739,6 +739,7 @@ static struct platform_driver ci_hdrc_driver = {
 	.remove	= ci_hdrc_remove,
 	.driver	= {
 		.name	= "ci_hdrc",
+		.owner	= THIS_MODULE,
 	},
 };
 
