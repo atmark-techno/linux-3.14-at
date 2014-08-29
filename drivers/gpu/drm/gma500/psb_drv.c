@@ -660,6 +660,7 @@ static struct drm_driver driver = {
 			   DRIVER_MODESET | DRIVER_GEM ,
 	.load = psb_driver_load,
 	.unload = psb_driver_unload,
+	.set_busid = drm_pci_set_busid,
 
 	.ioctls = psb_ioctls,
 	.num_ioctls = DRM_ARRAY_SIZE(psb_ioctls),

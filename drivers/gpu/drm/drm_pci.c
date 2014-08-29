@@ -137,7 +137,7 @@ static int drm_get_pci_domain(struct drm_device *dev)
 	return pci_domain_nr(dev->pdev->bus);
 }
 
-static int drm_pci_set_busid(struct drm_device *dev, struct drm_master *master)
+int drm_pci_set_busid(struct drm_device *dev, struct drm_master *master)
 {
 	int len, ret;
 	master->unique_len = 40;
@@ -165,6 +165,7 @@ static int drm_pci_set_busid(struct drm_device *dev, struct drm_master *master)
 err:
 	return ret;
 }
+EXPORT_SYMBOL(drm_pci_set_busid);
 
 static int drm_pci_set_unique(struct drm_device *dev,
 			      struct drm_master *master,

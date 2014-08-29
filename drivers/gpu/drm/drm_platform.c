@@ -68,7 +68,7 @@ err_free:
 	return ret;
 }
 
-static int drm_platform_set_busid(struct drm_device *dev, struct drm_master *master)
+int drm_platform_set_busid(struct drm_device *dev, struct drm_master *master)
 {
 	int len, ret, id;
 
@@ -100,6 +100,7 @@ static int drm_platform_set_busid(struct drm_device *dev, struct drm_master *mas
 err:
 	return ret;
 }
+EXPORT_SYMBOL(drm_platform_set_busid);
 
 static struct drm_bus drm_platform_bus = {
 	.bus_type = DRIVER_BUS_PLATFORM,
