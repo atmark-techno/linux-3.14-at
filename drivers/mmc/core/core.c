@@ -2244,9 +2244,10 @@ int mmc_can_reset(struct mmc_card *card)
 }
 EXPORT_SYMBOL(mmc_can_reset);
 
-static int mmc_do_hw_reset(struct mmc_host *host, int check)
+int mmc_hw_reset(struct mmc_host *host)
 {
 	struct mmc_card *card = host->card;
+	u32 status;
 
 	if (!host->bus_ops->power_restore)
 		return -EOPNOTSUPP;
@@ -2266,13 +2267,9 @@ static int mmc_do_hw_reset(struct mmc_host *host, int check)
 	host->ops->hw_reset(host);
 
 	/* If the reset has happened, then a status command will fail */
-	if (check) {
-		u32 status;
-
-		if (!mmc_send_status(card, &status)) {
-			mmc_host_clk_release(host);
-			return -ENOSYS;
-		}
+	if (!mmc_send_status(card, &status)) {
+		mmc_host_clk_release(host);
+		return -ENOSYS;
 	}
 
 	host->card->state &= ~(MMC_STATE_HIGHSPEED | MMC_STATE_HIGHSPEED_DDR);
@@ -2291,18 +2288,7 @@ static int mmc_do_hw_reset(struct mmc_host *host, int check)
 
 	return host->bus_ops->power_restore(host);
 }
-
-int mmc_hw_reset(struct mmc_host *host)
-{
-	return mmc_do_hw_reset(host, 0);
-}
 EXPORT_SYMBOL(mmc_hw_reset);
-
-int mmc_hw_reset_check(struct mmc_host *host)
-{
-	return mmc_do_hw_reset(host, 1);
-}
-EXPORT_SYMBOL(mmc_hw_reset_check);
 
 static int mmc_rescan_try_freq(struct mmc_host *host, unsigned freq)
 {
