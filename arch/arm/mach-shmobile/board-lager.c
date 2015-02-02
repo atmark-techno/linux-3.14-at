@@ -13,10 +13,6 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
 #include <linux/gpio.h>
@@ -633,7 +629,6 @@ static void __init lager_add_rsnd_device(void)
 static struct sh_mobile_sdhi_info sdhi0_info __initdata = {
 	.tmio_caps	= MMC_CAP_SD_HIGHSPEED | MMC_CAP_SDIO_IRQ |
 			  MMC_CAP_POWER_OFF_CARD,
-	.tmio_caps2	= MMC_CAP2_NO_MULTI_READ,
 	.tmio_flags	= TMIO_MMC_HAS_IDLE_WAIT |
 			  TMIO_MMC_WRPROTECT_DISABLE,
 };
@@ -647,7 +642,6 @@ static struct resource sdhi0_resources[] __initdata = {
 static struct sh_mobile_sdhi_info sdhi2_info __initdata = {
 	.tmio_caps	= MMC_CAP_SD_HIGHSPEED | MMC_CAP_SDIO_IRQ |
 			  MMC_CAP_POWER_OFF_CARD,
-	.tmio_caps2	= MMC_CAP2_NO_MULTI_READ,
 	.tmio_flags	= TMIO_MMC_HAS_IDLE_WAIT |
 			  TMIO_MMC_WRPROTECT_DISABLE,
 };
