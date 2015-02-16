@@ -342,3 +342,10 @@ struct platform_device *imx_add_imx_dma(char *name, resource_size_t iobase,
 					int irq, int irq_err);
 struct platform_device *imx_add_imx_sdma(char *name,
 	resource_size_t iobase, int irq, struct sdma_platform_data *pdata);
+
+struct imx_imx_pinctrl_data {
+	resource_size_t iobase;
+	resource_size_t iosize;
+};
+struct platform_device *imx_add_imx_pinctrl(char *name,
+		const struct imx_imx_pinctrl_data *data);

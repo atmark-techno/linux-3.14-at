@@ -87,3 +87,7 @@ extern const struct imx_spi_imx_data imx25_cspi_data[];
 extern struct imx_mxc_pwm_data imx25_mxc_pwm_data[];
 #define imx25_add_mxc_pwm(id)	\
 	imx_add_mxc_pwm(&imx25_mxc_pwm_data[id])
+
+extern const struct imx_imx_pinctrl_data imx25_imx_pinctrl_data;
+#define imx25_add_imx_pinctrl(name)	\
+	imx_add_imx_pinctrl(name, &imx25_imx_pinctrl_data)
