@@ -24,6 +24,7 @@
 #include <linux/pinctrl/pinctrl.h>
 
 #include "pinctrl-imx.h"
+#include "../../arch/arm/mach-imx/iomux-mx25.h"
 
 enum imx25_pads {
 	MX25_PAD_RESERVE0 = 1,
@@ -308,9 +309,292 @@ static const struct pinctrl_pin_desc imx25_pinctrl_pads[] = {
 	IMX_PINCTRL_PIN(MX25_PAD_BOOT_MODE1),
 };
 
+#define PAD_TO_MUX_CTRL_OFS(pad) ((pad & MUX_CTRL_OFS_MASK) >> MUX_CTRL_OFS_SHIFT)
+#define PAD_TO_PAD_CTRL_OFS(pad) ((pad & MUX_PAD_CTRL_OFS_MASK) >> MUX_PAD_CTRL_OFS_SHIFT)
+
+#define IMX25_PINCTRL_PIN_REG(pin) { \
+	.mux_reg = PAD_TO_MUX_CTRL_OFS(MX25_PAD_##pin##__##pin), \
+	.conf_reg = PAD_TO_PAD_CTRL_OFS(MX25_PAD_##pin##__##pin), \
+}
+
+static struct imx_pin_reg imx25_pinctrl_regs[] = {
+	{0x000, 0x000}, /* PADDING */
+	{0x000, 0x000}, /* RESERVE0 */
+	IMX25_PINCTRL_PIN_REG(A10),
+	IMX25_PINCTRL_PIN_REG(A13),
+	IMX25_PINCTRL_PIN_REG(A14),
+	IMX25_PINCTRL_PIN_REG(A15),
+	IMX25_PINCTRL_PIN_REG(A16),
+	IMX25_PINCTRL_PIN_REG(A17),
+	IMX25_PINCTRL_PIN_REG(A18),
+	IMX25_PINCTRL_PIN_REG(A19),
+	IMX25_PINCTRL_PIN_REG(A20),
+	IMX25_PINCTRL_PIN_REG(A21),
+	IMX25_PINCTRL_PIN_REG(A22),
+	IMX25_PINCTRL_PIN_REG(A23),
+	IMX25_PINCTRL_PIN_REG(A24),
+	IMX25_PINCTRL_PIN_REG(A25),
+	IMX25_PINCTRL_PIN_REG(EB0),
+	IMX25_PINCTRL_PIN_REG(EB1),
+	IMX25_PINCTRL_PIN_REG(OE),
+	IMX25_PINCTRL_PIN_REG(CS0),
+	IMX25_PINCTRL_PIN_REG(CS1),
+	IMX25_PINCTRL_PIN_REG(CS4),
+	IMX25_PINCTRL_PIN_REG(CS5),
+	IMX25_PINCTRL_PIN_REG(NF_CE0),
+	IMX25_PINCTRL_PIN_REG(ECB),
+	IMX25_PINCTRL_PIN_REG(LBA),
+	IMX25_PINCTRL_PIN_REG(BCLK),
+	IMX25_PINCTRL_PIN_REG(RW),
+	IMX25_PINCTRL_PIN_REG(NFWE_B),
+	IMX25_PINCTRL_PIN_REG(NFRE_B),
+	IMX25_PINCTRL_PIN_REG(NFALE),
+	IMX25_PINCTRL_PIN_REG(NFCLE),
+	IMX25_PINCTRL_PIN_REG(NFWP_B),
+	IMX25_PINCTRL_PIN_REG(NFRB),
+	IMX25_PINCTRL_PIN_REG(D15),
+	IMX25_PINCTRL_PIN_REG(D14),
+	IMX25_PINCTRL_PIN_REG(D13),
+	IMX25_PINCTRL_PIN_REG(D12),
+	IMX25_PINCTRL_PIN_REG(D11),
+	IMX25_PINCTRL_PIN_REG(D10),
+	IMX25_PINCTRL_PIN_REG(D9),
+	IMX25_PINCTRL_PIN_REG(D8),
+	IMX25_PINCTRL_PIN_REG(D7),
+	IMX25_PINCTRL_PIN_REG(D6),
+	IMX25_PINCTRL_PIN_REG(D5),
+	IMX25_PINCTRL_PIN_REG(D4),
+	IMX25_PINCTRL_PIN_REG(D3),
+	IMX25_PINCTRL_PIN_REG(D2),
+	IMX25_PINCTRL_PIN_REG(D1),
+	IMX25_PINCTRL_PIN_REG(D0),
+	IMX25_PINCTRL_PIN_REG(LD0),
+	IMX25_PINCTRL_PIN_REG(LD1),
+	IMX25_PINCTRL_PIN_REG(LD2),
+	IMX25_PINCTRL_PIN_REG(LD3),
+	IMX25_PINCTRL_PIN_REG(LD4),
+	IMX25_PINCTRL_PIN_REG(LD5),
+	IMX25_PINCTRL_PIN_REG(LD6),
+	IMX25_PINCTRL_PIN_REG(LD7),
+	IMX25_PINCTRL_PIN_REG(LD8),
+	IMX25_PINCTRL_PIN_REG(LD9),
+	IMX25_PINCTRL_PIN_REG(LD10),
+	IMX25_PINCTRL_PIN_REG(LD11),
+	IMX25_PINCTRL_PIN_REG(LD12),
+	IMX25_PINCTRL_PIN_REG(LD13),
+	IMX25_PINCTRL_PIN_REG(LD14),
+	IMX25_PINCTRL_PIN_REG(LD15),
+	IMX25_PINCTRL_PIN_REG(HSYNC),
+	IMX25_PINCTRL_PIN_REG(VSYNC),
+	IMX25_PINCTRL_PIN_REG(LSCLK),
+	IMX25_PINCTRL_PIN_REG(OE_ACD),
+	IMX25_PINCTRL_PIN_REG(CONTRAST),
+	IMX25_PINCTRL_PIN_REG(PWM),
+	IMX25_PINCTRL_PIN_REG(CSI_D2),
+	IMX25_PINCTRL_PIN_REG(CSI_D3),
+	IMX25_PINCTRL_PIN_REG(CSI_D4),
+	IMX25_PINCTRL_PIN_REG(CSI_D5),
+	IMX25_PINCTRL_PIN_REG(CSI_D6),
+	IMX25_PINCTRL_PIN_REG(CSI_D7),
+	IMX25_PINCTRL_PIN_REG(CSI_D8),
+	IMX25_PINCTRL_PIN_REG(CSI_D9),
+	IMX25_PINCTRL_PIN_REG(CSI_MCLK),
+	IMX25_PINCTRL_PIN_REG(CSI_VSYNC),
+	IMX25_PINCTRL_PIN_REG(CSI_HSYNC),
+	IMX25_PINCTRL_PIN_REG(CSI_PIXCLK),
+	IMX25_PINCTRL_PIN_REG(I2C1_CLK),
+	IMX25_PINCTRL_PIN_REG(I2C1_DAT),
+	IMX25_PINCTRL_PIN_REG(CSPI1_MOSI),
+	IMX25_PINCTRL_PIN_REG(CSPI1_MISO),
+	IMX25_PINCTRL_PIN_REG(CSPI1_SS0),
+	IMX25_PINCTRL_PIN_REG(CSPI1_SS1),
+	IMX25_PINCTRL_PIN_REG(CSPI1_SCLK),
+	IMX25_PINCTRL_PIN_REG(CSPI1_RDY),
+	IMX25_PINCTRL_PIN_REG(UART1_RXD),
+	IMX25_PINCTRL_PIN_REG(UART1_TXD),
+	IMX25_PINCTRL_PIN_REG(UART1_RTS),
+	IMX25_PINCTRL_PIN_REG(UART1_CTS),
+	IMX25_PINCTRL_PIN_REG(UART2_RXD),
+	IMX25_PINCTRL_PIN_REG(UART2_TXD),
+	IMX25_PINCTRL_PIN_REG(UART2_RTS),
+	IMX25_PINCTRL_PIN_REG(UART2_CTS),
+	IMX25_PINCTRL_PIN_REG(SD1_CMD),
+	IMX25_PINCTRL_PIN_REG(SD1_CLK),
+	IMX25_PINCTRL_PIN_REG(SD1_DATA0),
+	IMX25_PINCTRL_PIN_REG(SD1_DATA1),
+	IMX25_PINCTRL_PIN_REG(SD1_DATA2),
+	IMX25_PINCTRL_PIN_REG(SD1_DATA3),
+	IMX25_PINCTRL_PIN_REG(KPP_ROW0),
+	IMX25_PINCTRL_PIN_REG(KPP_ROW1),
+	IMX25_PINCTRL_PIN_REG(KPP_ROW2),
+	IMX25_PINCTRL_PIN_REG(KPP_ROW3),
+	IMX25_PINCTRL_PIN_REG(KPP_COL0),
+	IMX25_PINCTRL_PIN_REG(KPP_COL1),
+	IMX25_PINCTRL_PIN_REG(KPP_COL2),
+	IMX25_PINCTRL_PIN_REG(KPP_COL3),
+	IMX25_PINCTRL_PIN_REG(FEC_MDC),
+	IMX25_PINCTRL_PIN_REG(FEC_MDIO),
+	IMX25_PINCTRL_PIN_REG(FEC_TDATA0),
+	IMX25_PINCTRL_PIN_REG(FEC_TDATA1),
+	IMX25_PINCTRL_PIN_REG(FEC_TX_EN),
+	IMX25_PINCTRL_PIN_REG(FEC_RDATA0),
+	IMX25_PINCTRL_PIN_REG(FEC_RDATA1),
+	IMX25_PINCTRL_PIN_REG(FEC_RX_DV),
+	IMX25_PINCTRL_PIN_REG(FEC_TX_CLK),
+	IMX25_PINCTRL_PIN_REG(RTCK),
+	IMX25_PINCTRL_PIN_REG(DE_B),
+	IMX25_PINCTRL_PIN_REG(GPIO_A),
+	IMX25_PINCTRL_PIN_REG(GPIO_B),
+	IMX25_PINCTRL_PIN_REG(GPIO_C),
+	IMX25_PINCTRL_PIN_REG(GPIO_D),
+	IMX25_PINCTRL_PIN_REG(GPIO_E),
+	IMX25_PINCTRL_PIN_REG(GPIO_F),
+	IMX25_PINCTRL_PIN_REG(EXT_ARMCLK),
+	IMX25_PINCTRL_PIN_REG(UPLL_BYPCLK),
+	IMX25_PINCTRL_PIN_REG(VSTBY_REQ),
+	IMX25_PINCTRL_PIN_REG(VSTBY_ACK),
+	IMX25_PINCTRL_PIN_REG(POWER_FAIL),
+	IMX25_PINCTRL_PIN_REG(CLKO),
+	IMX25_PINCTRL_PIN_REG(BOOT_MODE0),
+	IMX25_PINCTRL_PIN_REG(BOOT_MODE1),
+};
+
+#define PAD_TO_MUX_MODE(pad) ((pad & MUX_MODE_MASK) >> MUX_MODE_SHIFT)
+#define PAD_TO_SEL_INPUT_OFS(pad) ((pad & MUX_SEL_INPUT_OFS_MASK) >> MUX_SEL_INPUT_OFS_SHIFT)
+#define PAD_TO_SEL_INPUT(pad) ((pad & MUX_SEL_INPUT_MASK) >> MUX_SEL_INPUT_SHIFT)
+#define PAD_TO_PAD_CTRL(pad) ((pad & MUX_PAD_CTRL_MASK) >> MUX_PAD_CTRL_SHIFT)
+
+#define IMX25_PINCTRL_PIN(_pin, _func) {				\
+	.pin = MX25_PAD_##_pin,						\
+	.mux_mode = PAD_TO_MUX_MODE(MX25_PAD_##_pin##__##_func),	\
+	.input_reg = PAD_TO_SEL_INPUT_OFS(MX25_PAD_##_pin##__##_func),	\
+	.input_val = PAD_TO_SEL_INPUT(MX25_PAD_##_pin##__##_func),	\
+	.config = PAD_TO_PAD_CTRL(MX25_PAD_##_pin##__##_func),		\
+}
+
+/* UART1_RXD */
+unsigned int pin_ids_uart1_rxd[] = {
+	MX25_PAD_UART1_RXD,
+};
+
+struct imx_pin pins_uart1_rxd__uart1_rxd[] = {
+	IMX25_PINCTRL_PIN(UART1_RXD, UART1_RXD),
+};
+
+/* UART1_TXD */
+unsigned int pin_ids_uart1_txd[] = {
+	MX25_PAD_UART1_TXD,
+};
+
+struct imx_pin pins_uart1_txd__uart1_txd[] = {
+	IMX25_PINCTRL_PIN(UART1_TXD, UART1_TXD),
+};
+
+/* UART1_RTS */
+unsigned int pin_ids_uart1_rts[] = {
+	MX25_PAD_UART1_RTS,
+};
+
+struct imx_pin pins_uart1_rts__uart1_rts[] = {
+	IMX25_PINCTRL_PIN(UART1_RTS, UART1_RTS),
+};
+
+/* UART1_CTS */
+unsigned int pin_ids_uart1_cts[] = {
+	MX25_PAD_UART1_CTS,
+};
+
+struct imx_pin pins_uart1_cts__uart1_cts[] = {
+	IMX25_PINCTRL_PIN(UART1_CTS, UART1_CTS),
+};
+
+/* UART2_RXD */
+unsigned int pin_ids_uart2_rxd[] = {
+	MX25_PAD_UART2_RXD,
+};
+
+struct imx_pin pins_uart2_rxd__uart2_rxd[] = {
+	IMX25_PINCTRL_PIN(UART2_RXD, UART2_RXD),
+};
+
+/* UART2_TXD */
+unsigned int pin_ids_uart2_txd[] = {
+	MX25_PAD_UART2_TXD,
+};
+
+struct imx_pin pins_uart2_txd__uart2_txd[] = {
+	IMX25_PINCTRL_PIN(UART2_TXD, UART2_TXD),
+};
+
+/* UART2_RTS */
+unsigned int pin_ids_uart2_rts[] = {
+	MX25_PAD_UART2_RTS,
+};
+
+struct imx_pin pins_uart2_rts__uart2_rts[] = {
+	IMX25_PINCTRL_PIN(UART2_RTS, UART2_RTS),
+};
+
+/* UART2_CTS */
+unsigned int pin_ids_uart2_cts[] = {
+	MX25_PAD_UART2_CTS,
+};
+
+struct imx_pin pins_uart2_cts__uart2_cts[] = {
+	IMX25_PINCTRL_PIN(UART2_CTS, UART2_CTS),
+};
+
+#define IMX25_PINCTRL_PIN_GROUP(pin, func) {		\
+	.name = __stringify(pin##__##func),		\
+	.npins = ARRAY_SIZE(pins_##pin##__##func),	\
+	.pin_ids = pin_ids_##pin,			\
+	.pins = pins_##pin##__##func,			\
+}
+
+static struct imx_pin_group imx25_pinctrl_groups[] = {
+	IMX25_PINCTRL_PIN_GROUP(uart1_rxd, uart1_rxd),
+	IMX25_PINCTRL_PIN_GROUP(uart1_txd, uart1_txd),
+	IMX25_PINCTRL_PIN_GROUP(uart1_rts, uart1_rts),
+	IMX25_PINCTRL_PIN_GROUP(uart1_cts, uart1_cts),
+	IMX25_PINCTRL_PIN_GROUP(uart2_rxd, uart2_rxd),
+	IMX25_PINCTRL_PIN_GROUP(uart2_txd, uart2_txd),
+	IMX25_PINCTRL_PIN_GROUP(uart2_rts, uart2_rts),
+	IMX25_PINCTRL_PIN_GROUP(uart2_cts, uart2_cts),
+};
+
+static const char *uart1_groups[] = {
+	"uart1_rxd__uart1_rxd",
+	"uart1_txd__uart1_txd",
+	"uart1_rts__uart1_rts",
+	"uart1_cts__uart1_cts",
+};
+
+static const char *uart2_groups[] = {
+	"uart2_rxd__uart2_rxd",
+	"uart2_txd__uart2_txd",
+	"uart2_rts__uart2_rts",
+	"uart2_cts__uart2_cts",
+};
+
+#define IMX25_PINCTRL_PMX_FUNC(func) {			\
+	.name = __stringify(func),			\
+	.groups = func##_groups,			\
+	.num_groups = ARRAY_SIZE(func##_groups),	\
+}
+
+static struct imx_pmx_func imx25_pinctrl_functions[] = {
+	IMX25_PINCTRL_PMX_FUNC(uart1),
+	IMX25_PINCTRL_PMX_FUNC(uart2),
+};
+
 static struct imx_pinctrl_soc_info imx25_pinctrl_info = {
 	.pins = imx25_pinctrl_pads,
 	.npins = ARRAY_SIZE(imx25_pinctrl_pads),
+	.pin_regs = imx25_pinctrl_regs,
+	.groups = imx25_pinctrl_groups,
+	.ngroups = ARRAY_SIZE(imx25_pinctrl_groups),
+	.functions = imx25_pinctrl_functions,
+	.nfunctions = ARRAY_SIZE(imx25_pinctrl_functions),
 };
 
 static struct of_device_id imx25_pinctrl_of_match[] = {
