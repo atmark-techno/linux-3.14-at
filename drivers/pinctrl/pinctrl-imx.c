@@ -573,6 +573,8 @@ int imx_pinctrl_probe(struct platform_device *pdev,
 {
 	struct imx_pinctrl *ipctl;
 	struct resource *res;
+	struct device *dev = &pdev->dev;
+	struct device_node *of_node = dev->of_node;
 	int ret;
 
 	if (!info || !info->pins || !info->npins) {
@@ -586,11 +588,6 @@ int imx_pinctrl_probe(struct platform_device *pdev,
 	if (!ipctl)
 		return -ENOMEM;
 
-	info->pin_regs = devm_kzalloc(&pdev->dev, sizeof(*info->pin_regs) *
-				      info->npins, GFP_KERNEL);
-	if (!info->pin_regs)
-		return -ENOMEM;
-
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 	ipctl->base = devm_ioremap_resource(&pdev->dev, res);
 	if (IS_ERR(ipctl->base))
@@ -600,10 +597,17 @@ int imx_pinctrl_probe(struct platform_device *pdev,
 	imx_pinctrl_desc.pins = info->pins;
 	imx_pinctrl_desc.npins = info->npins;
 
-	ret = imx_pinctrl_probe_dt(pdev, info);
-	if (ret) {
-		dev_err(&pdev->dev, "fail to probe dt properties\n");
-		return ret;
+	if (of_node) {
+		info->pin_regs = devm_kzalloc(&pdev->dev, sizeof(*info->pin_regs) *
+					      info->npins, GFP_KERNEL);
+		if (!info->pin_regs)
+			return -ENOMEM;
+
+		ret = imx_pinctrl_probe_dt(pdev, info);
+		if (ret) {
+			dev_err(&pdev->dev, "fail to probe dt properties\n");
+			return ret;
+		}
 	}
 
 	ipctl->info = info;
