@@ -598,6 +598,15 @@ struct imx_pin pins_kpp_col0__gpio_3_1[] = {
 	IMX25_PINCTRL_PIN(KPP_COL0, GPIO_3_1),
 };
 
+/* NFWP_B */
+unsigned int pin_ids_nfwp_b[] = {
+	MX25_PAD_NFWP_B,
+};
+
+struct imx_pin pins_nfwp_b__gpio_3_30[] = {
+	IMX25_PINCTRL_PIN(NFWP_B, GPIO_3_30),
+};
+
 #define IMX25_PINCTRL_PIN_GROUP(pin, func) {		\
 	.name = __stringify(pin##__##func),		\
 	.npins = ARRAY_SIZE(pins_##pin##__##func),	\
@@ -651,6 +660,10 @@ static const char *i2c_gpio4_groups[] = {
 	"kpp_col0__gpio_3_1",
 };
 
+static const char *gpio_key_groups[] = {
+	"nfwp_b__gpio_3_30",
+};
+
 #define IMX25_PINCTRL_PMX_FUNC(func) {			\
 	.name = __stringify(func),			\
 	.groups = func##_groups,			\
@@ -663,6 +676,7 @@ static struct imx_pmx_func imx25_pinctrl_functions[] = {
 	IMX25_PINCTRL_PMX_FUNC(i2c1),
 	IMX25_PINCTRL_PMX_FUNC(i2c_gpio3),
 	IMX25_PINCTRL_PMX_FUNC(i2c_gpio4),
+	IMX25_PINCTRL_PMX_FUNC(gpio_key),
 };
 
 static struct imx_pinctrl_soc_info imx25_pinctrl_info = {
