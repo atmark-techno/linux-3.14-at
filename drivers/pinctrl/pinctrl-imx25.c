@@ -544,6 +544,25 @@ struct imx_pin pins_uart2_cts__uart2_cts[] = {
 	IMX25_PINCTRL_PIN(UART2_CTS, UART2_CTS),
 };
 
+/* I2C1_CLK */
+unsigned int pin_ids_i2c1_clk[] = {
+	MX25_PAD_I2C1_CLK,
+};
+
+struct imx_pin pins_i2c1_clk__i2c1_clk[] = {
+	IMX25_PINCTRL_PIN(I2C1_CLK, I2C1_CLK),
+};
+
+/* I2C1_DAT */
+unsigned int pin_ids_i2c1_dat[] = {
+	MX25_PAD_I2C1_DAT,
+};
+
+struct imx_pin pins_i2c1_dat__i2c1_dat[] = {
+	IMX25_PINCTRL_PIN(I2C1_DAT, I2C1_DAT),
+};
+
+
 #define IMX25_PINCTRL_PIN_GROUP(pin, func) {		\
 	.name = __stringify(pin##__##func),		\
 	.npins = ARRAY_SIZE(pins_##pin##__##func),	\
@@ -560,6 +579,8 @@ static struct imx_pin_group imx25_pinctrl_groups[] = {
 	IMX25_PINCTRL_PIN_GROUP(uart2_txd, uart2_txd),
 	IMX25_PINCTRL_PIN_GROUP(uart2_rts, uart2_rts),
 	IMX25_PINCTRL_PIN_GROUP(uart2_cts, uart2_cts),
+	IMX25_PINCTRL_PIN_GROUP(i2c1_clk, i2c1_clk),
+	IMX25_PINCTRL_PIN_GROUP(i2c1_dat, i2c1_dat),
 };
 
 static const char *uart1_groups[] = {
@@ -576,6 +597,11 @@ static const char *uart2_groups[] = {
 	"uart2_cts__uart2_cts",
 };
 
+static const char *i2c1_groups[] = {
+	"i2c1_clk__i2c1_clk",
+	"i2c1_dat__i2c1_dat",
+};
+
 #define IMX25_PINCTRL_PMX_FUNC(func) {			\
 	.name = __stringify(func),			\
 	.groups = func##_groups,			\
@@ -585,6 +611,7 @@ static const char *uart2_groups[] = {
 static struct imx_pmx_func imx25_pinctrl_functions[] = {
 	IMX25_PINCTRL_PMX_FUNC(uart1),
 	IMX25_PINCTRL_PMX_FUNC(uart2),
+	IMX25_PINCTRL_PMX_FUNC(i2c1),
 };
 
 static struct imx_pinctrl_soc_info imx25_pinctrl_info = {
