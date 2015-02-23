@@ -562,6 +562,41 @@ struct imx_pin pins_i2c1_dat__i2c1_dat[] = {
 	IMX25_PINCTRL_PIN(I2C1_DAT, I2C1_DAT),
 };
 
+/* CSPI1_SS1 */
+unsigned int pin_ids_cspi1_ss1[] = {
+	MX25_PAD_CSPI1_SS1,
+};
+
+struct imx_pin pins_cspi1_ss1__gpio_1_17[] = {
+	IMX25_PINCTRL_PIN(CSPI1_SS1, GPIO_1_17),
+};
+
+/* CSPI1_SCLK */
+unsigned int pin_ids_cspi1_sclk[] = {
+	MX25_PAD_CSPI1_SCLK,
+};
+
+struct imx_pin pins_cspi1_sclk__gpio_1_18[] = {
+	IMX25_PINCTRL_PIN(CSPI1_SCLK, GPIO_1_18),
+};
+
+/* KPP_COL1 */
+unsigned int pin_ids_kpp_col1[] = {
+	MX25_PAD_KPP_COL1,
+};
+
+struct imx_pin pins_kpp_col1__gpio_3_2[] = {
+	IMX25_PINCTRL_PIN(KPP_COL1, GPIO_3_2),
+};
+
+/* KPP_COL0 */
+unsigned int pin_ids_kpp_col0[] = {
+	MX25_PAD_KPP_COL0,
+};
+
+struct imx_pin pins_kpp_col0__gpio_3_1[] = {
+	IMX25_PINCTRL_PIN(KPP_COL0, GPIO_3_1),
+};
 
 #define IMX25_PINCTRL_PIN_GROUP(pin, func) {		\
 	.name = __stringify(pin##__##func),		\
@@ -581,6 +616,10 @@ static struct imx_pin_group imx25_pinctrl_groups[] = {
 	IMX25_PINCTRL_PIN_GROUP(uart2_cts, uart2_cts),
 	IMX25_PINCTRL_PIN_GROUP(i2c1_clk, i2c1_clk),
 	IMX25_PINCTRL_PIN_GROUP(i2c1_dat, i2c1_dat),
+	IMX25_PINCTRL_PIN_GROUP(cspi1_ss1, gpio_1_17),
+	IMX25_PINCTRL_PIN_GROUP(cspi1_sclk, gpio_1_18),
+	IMX25_PINCTRL_PIN_GROUP(kpp_col1, gpio_3_2),
+	IMX25_PINCTRL_PIN_GROUP(kpp_col0, gpio_3_1),
 };
 
 static const char *uart1_groups[] = {
@@ -602,6 +641,16 @@ static const char *i2c1_groups[] = {
 	"i2c1_dat__i2c1_dat",
 };
 
+static const char *i2c_gpio3_groups[] = {
+	"cspi1_ss1__gpio_1_17",
+	"cspi1_sclk__gpio_1_18",
+};
+
+static const char *i2c_gpio4_groups[] = {
+	"kpp_col1__gpio_3_2",
+	"kpp_col0__gpio_3_1",
+};
+
 #define IMX25_PINCTRL_PMX_FUNC(func) {			\
 	.name = __stringify(func),			\
 	.groups = func##_groups,			\
@@ -612,6 +661,8 @@ static struct imx_pmx_func imx25_pinctrl_functions[] = {
 	IMX25_PINCTRL_PMX_FUNC(uart1),
 	IMX25_PINCTRL_PMX_FUNC(uart2),
 	IMX25_PINCTRL_PMX_FUNC(i2c1),
+	IMX25_PINCTRL_PMX_FUNC(i2c_gpio3),
+	IMX25_PINCTRL_PMX_FUNC(i2c_gpio4),
 };
 
 static struct imx_pinctrl_soc_info imx25_pinctrl_info = {
