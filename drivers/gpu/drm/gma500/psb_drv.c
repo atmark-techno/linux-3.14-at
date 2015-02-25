@@ -387,7 +387,7 @@ static int psb_driver_load(struct drm_device *dev, unsigned long chipset)
 	PSB_WVDC32(0xFFFFFFFF, PSB_INT_MASK_R);
 	spin_unlock_irqrestore(&dev_priv->irqmask_lock, irqflags);
 
-	drm_irq_install(dev);
+	drm_irq_install(dev, dev->pdev->irq);
 
 	dev->vblank_disable_allowed = true;
 
@@ -660,6 +660,7 @@ static struct drm_driver driver = {
 			   DRIVER_MODESET | DRIVER_GEM ,
 	.load = psb_driver_load,
 	.unload = psb_driver_unload,
+	.set_busid = drm_pci_set_busid,
 
 	.ioctls = psb_ioctls,
 	.num_ioctls = DRM_ARRAY_SIZE(psb_ioctls),

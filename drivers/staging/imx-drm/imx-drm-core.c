@@ -23,6 +23,7 @@
 #include <linux/module.h>
 #include <drm/drm_gem_cma_helper.h>
 #include <drm/drm_fb_cma_helper.h>
+#include <drm/drm_plane_helper.h>
 
 #include "imx-drm.h"
 
@@ -214,6 +215,13 @@ static const struct file_operations imx_drm_driver_fops = {
 	.read = drm_read,
 	.llseek = noop_llseek,
 };
+
+int imx_drm_connector_mode_valid(struct drm_connector *connector,
+	struct drm_display_mode *mode)
+{
+	return MODE_OK;
+}
+EXPORT_SYMBOL(imx_drm_connector_mode_valid);
 
 static struct imx_drm_device *imx_drm_device;
 
@@ -790,6 +798,7 @@ static struct drm_driver imx_drm_driver = {
 	.unload			= imx_drm_driver_unload,
 	.lastclose		= imx_drm_driver_lastclose,
 	.preclose		= imx_drm_driver_preclose,
+	.set_busid		= drm_platform_set_busid,
 	.gem_free_object	= drm_gem_cma_free_object,
 	.gem_vm_ops		= &drm_gem_cma_vm_ops,
 	.dumb_create		= drm_gem_cma_dumb_create,

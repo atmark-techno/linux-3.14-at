@@ -56,7 +56,8 @@ static const struct rcar_du_device_info rcar_du_r8a7779_info = {
 };
 
 static const struct rcar_du_device_info rcar_du_r8a7790_info = {
-	.features = RCAR_DU_FEATURE_CRTC_IRQ_CLOCK | RCAR_DU_FEATURE_DEFR8,
+	.features = RCAR_DU_FEATURE_CRTC_IRQ_CLOCK
+		  | RCAR_DU_FEATURE_EXT_CTRL_REGS,
 	.quirks = RCAR_DU_QUIRK_ALIGN_128B | RCAR_DU_QUIRK_LVDS_LANES,
 	.num_crtcs = 3,
 	.routes = {
@@ -83,7 +84,8 @@ static const struct rcar_du_device_info rcar_du_r8a7790_info = {
 };
 
 static const struct rcar_du_device_info rcar_du_r8a7791_info = {
-	.features = RCAR_DU_FEATURE_CRTC_IRQ_CLOCK | RCAR_DU_FEATURE_DEFR8,
+	.features = RCAR_DU_FEATURE_CRTC_IRQ_CLOCK
+		  | RCAR_DU_FEATURE_EXT_CTRL_REGS,
 	.num_crtcs = 2,
 	.routes = {
 		/* R8A7791 has one RGB output, one LVDS output and one
@@ -250,6 +252,7 @@ static struct drm_driver rcar_du_driver = {
 	.unload			= rcar_du_unload,
 	.preclose		= rcar_du_preclose,
 	.lastclose		= rcar_du_lastclose,
+	.set_busid		= drm_platform_set_busid,
 	.get_vblank_counter	= drm_vblank_count,
 	.enable_vblank		= rcar_du_enable_vblank,
 	.disable_vblank		= rcar_du_disable_vblank,

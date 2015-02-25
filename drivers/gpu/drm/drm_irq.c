@@ -269,12 +269,10 @@ static void drm_irq_vgaarb_nokms(void *cookie, bool state)
  * \c irq_preinstall() and \c irq_postinstall() functions
  * before and after the installation.
  */
-int drm_irq_install(struct drm_device *dev)
+int drm_irq_install(struct drm_device *dev, int irq)
 {
-	int ret, irq;
+	int ret;
 	unsigned long sh_flags = 0;
-
-	irq = drm_dev_to_irq(dev);
 
 	if (!drm_core_check_feature(dev, DRIVER_HAVE_IRQ))
 		return -EINVAL;
@@ -282,20 +280,13 @@ int drm_irq_install(struct drm_device *dev)
 	if (irq == 0)
 		return -EINVAL;
 
-	mutex_lock(&dev->struct_mutex);
-
 	/* Driver must have been initialized */
-	if (!dev->dev_private) {
-		mutex_unlock(&dev->struct_mutex);
+	if (!dev->dev_private)
 		return -EINVAL;
-	}
 
-	if (dev->irq_enabled) {
-		mutex_unlock(&dev->struct_mutex);
+	if (dev->irq_enabled)
 		return -EBUSY;
-	}
 	dev->irq_enabled = true;
-	mutex_unlock(&dev->struct_mutex);
 
 	DRM_DEBUG("irq=%d\n", irq);
 
@@ -311,9 +302,7 @@ int drm_irq_install(struct drm_device *dev)
 			  sh_flags, dev->driver->name, dev);
 
 	if (ret < 0) {
-		mutex_lock(&dev->struct_mutex);
 		dev->irq_enabled = false;
-		mutex_unlock(&dev->struct_mutex);
 		return ret;
 	}
 
@@ -325,9 +314,7 @@ int drm_irq_install(struct drm_device *dev)
 		ret = dev->driver->irq_postinstall(dev);
 
 	if (ret < 0) {
-		mutex_lock(&dev->struct_mutex);
 		dev->irq_enabled = false;
-		mutex_unlock(&dev->struct_mutex);
 		if (!drm_core_check_feature(dev, DRIVER_MODESET))
 			vga_client_register(dev->pdev, NULL, NULL, NULL);
 		free_irq(irq, dev);
@@ -355,10 +342,8 @@ int drm_irq_uninstall(struct drm_device *dev)
 	if (!drm_core_check_feature(dev, DRIVER_HAVE_IRQ))
 		return -EINVAL;
 
-	mutex_lock(&dev->struct_mutex);
 	irq_enabled = dev->irq_enabled;
 	dev->irq_enabled = false;
-	mutex_unlock(&dev->struct_mutex);
 
 	/*
 	 * Wake up any waiters so they don't hang.
@@ -406,28 +391,38 @@ int drm_control(struct drm_device *dev, void *data,
 		struct drm_file *file_priv)
 {
 	struct drm_control *ctl = data;
+	int ret = 0, irq;
 
 	/* if we haven't irq we fallback for compatibility reasons -
 	 * this used to be a separate function in drm_dma.h
 	 */
 
+	if (!drm_core_check_feature(dev, DRIVER_HAVE_IRQ))
+		return 0;
+	if (drm_core_check_feature(dev, DRIVER_MODESET))
+		return 0;
+	/* UMS was only ever support on pci devices. */
+	if (WARN_ON(!dev->pdev))
+		return -EINVAL;
 
 	switch (ctl->func) {
 	case DRM_INST_HANDLER:
-		if (!drm_core_check_feature(dev, DRIVER_HAVE_IRQ))
-			return 0;
-		if (drm_core_check_feature(dev, DRIVER_MODESET))
-			return 0;
+		irq = dev->pdev->irq;
+
 		if (dev->if_version < DRM_IF_VERSION(1, 2) &&
-		    ctl->irq != drm_dev_to_irq(dev))
+		    ctl->irq != irq)
 			return -EINVAL;
-		return drm_irq_install(dev);
+		mutex_lock(&dev->struct_mutex);
+		ret = drm_irq_install(dev, irq);
+		mutex_unlock(&dev->struct_mutex);
+
+		return ret;
 	case DRM_UNINST_HANDLER:
-		if (!drm_core_check_feature(dev, DRIVER_HAVE_IRQ))
-			return 0;
-		if (drm_core_check_feature(dev, DRIVER_MODESET))
-			return 0;
-		return drm_irq_uninstall(dev);
+		mutex_lock(&dev->struct_mutex);
+		ret = drm_irq_uninstall(dev);
+		mutex_unlock(&dev->struct_mutex);
+
+		return ret;
 	default:
 		return -EINVAL;
 	}
@@ -1158,9 +1153,8 @@ int drm_wait_vblank(struct drm_device *dev, void *data,
 	int ret;
 	unsigned int flags, seq, crtc, high_crtc;
 
-	if (drm_core_check_feature(dev, DRIVER_HAVE_IRQ))
-		if ((!drm_dev_to_irq(dev)) || (!dev->irq_enabled))
-			return -EINVAL;
+	if (!dev->irq_enabled)
+		return -EINVAL;
 
 	if (vblwait->request.type & _DRM_VBLANK_SIGNAL)
 		return -EINVAL;

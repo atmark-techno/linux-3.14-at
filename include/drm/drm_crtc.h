@@ -387,6 +387,8 @@ struct drm_crtc_funcs {
  * @dev: parent DRM device
  * @head: list management
  * @base: base KMS object for ID tracking etc.
+ * @primary: primary plane for this CRTC
+ * @cursor: cursor plane for this CRTC
  * @enabled: is this CRTC enabled?
  * @mode: current mode timings
  * @hwmode: mode timings as programmed to hw regs
@@ -421,6 +423,10 @@ struct drm_crtc {
 	struct mutex mutex;
 
 	struct drm_mode_object base;
+
+	/* primary and cursor planes for CRTC */
+	struct drm_plane *primary;
+	struct drm_plane *cursor;
 
 	/* framebuffer the connector is currently bound to */
 	struct drm_framebuffer *fb;
@@ -514,6 +520,7 @@ struct drm_encoder_funcs {
  * @dev: parent DRM device
  * @head: list management
  * @base: base KMS object
+ * @name: encoder name
  * @encoder_type: one of the %DRM_MODE_ENCODER_<foo> types in drm_mode.h
  * @possible_crtcs: bitmask of potential CRTC bindings
  * @possible_clones: bitmask of potential sibling encoders for cloning
@@ -530,6 +537,7 @@ struct drm_encoder {
 	struct list_head head;
 
 	struct drm_mode_object base;
+	char *name;
 	int encoder_type;
 	uint32_t possible_crtcs;
 	uint32_t possible_clones;
@@ -665,6 +673,12 @@ struct drm_plane_funcs {
 			    struct drm_property *property, uint64_t val);
 };
 
+enum drm_plane_type {
+	DRM_PLANE_TYPE_OVERLAY,
+	DRM_PLANE_TYPE_PRIMARY,
+	DRM_PLANE_TYPE_CURSOR,
+};
+
 /**
  * drm_plane - central DRM plane control structure
  * @dev: DRM device this plane belongs to
@@ -677,6 +691,7 @@ struct drm_plane_funcs {
  * @fb: currently bound fb
  * @funcs: helper functions
  * @properties: property tracking for this plane
+ * @type: type of plane (overlay, primary, cursor)
  */
 struct drm_plane {
 	struct drm_device *dev;
@@ -694,6 +709,8 @@ struct drm_plane {
 	const struct drm_plane_funcs *funcs;
 
 	struct drm_object_properties properties;
+
+	enum drm_plane_type type;
 };
 
 /**
@@ -856,7 +873,15 @@ struct drm_mode_config {
 	struct list_head bridge_list;
 	int num_encoder;
 	struct list_head encoder_list;
-	int num_plane;
+
+	/*
+	 * Track # of overlay planes separately from # of total planes.  By
+	 * default we only advertise overlay planes to userspace; if userspace
+	 * sets the "universal plane" capability bit, we'll go ahead and
+	 * expose all planes.
+	 */
+	int num_overlay_plane;
+	int num_total_plane;
 	struct list_head plane_list;
 
 	int num_crtc;
@@ -930,9 +955,11 @@ extern void drm_modeset_lock_all(struct drm_device *dev);
 extern void drm_modeset_unlock_all(struct drm_device *dev);
 extern void drm_warn_on_modeset_not_all_locked(struct drm_device *dev);
 
-extern int drm_crtc_init(struct drm_device *dev,
-			 struct drm_crtc *crtc,
-			 const struct drm_crtc_funcs *funcs);
+extern int drm_crtc_init_with_planes(struct drm_device *dev,
+				     struct drm_crtc *crtc,
+				     struct drm_plane *primary,
+				     void *cursor,
+				     const struct drm_crtc_funcs *funcs);
 extern void drm_crtc_cleanup(struct drm_crtc *crtc);
 extern unsigned int drm_crtc_index(struct drm_crtc *crtc);
 
@@ -983,14 +1010,25 @@ static inline bool drm_encoder_crtc_ok(struct drm_encoder *encoder,
 	return !!(encoder->possible_crtcs & drm_crtc_mask(crtc));
 }
 
+extern int drm_universal_plane_init(struct drm_device *dev,
+				    struct drm_plane *plane,
+				    unsigned long possible_crtcs,
+				    const struct drm_plane_funcs *funcs,
+				    const uint32_t *formats,
+				    uint32_t format_count,
+				    enum drm_plane_type type);
 extern int drm_plane_init(struct drm_device *dev,
 			  struct drm_plane *plane,
 			  unsigned long possible_crtcs,
 			  const struct drm_plane_funcs *funcs,
 			  const uint32_t *formats, uint32_t format_count,
-			  bool priv);
+			  bool is_primary);
 extern void drm_plane_cleanup(struct drm_plane *plane);
 extern void drm_plane_force_disable(struct drm_plane *plane);
+extern int drm_crtc_check_viewport(const struct drm_crtc *crtc,
+				   int x, int y,
+				   const struct drm_display_mode *mode,
+				   const struct drm_framebuffer *fb);
 
 extern void drm_encoder_cleanup(struct drm_encoder *encoder);
 
@@ -1196,5 +1234,10 @@ static inline struct drm_encoder *drm_encoder_find(struct drm_device *dev,
 	mo = drm_mode_object_find(dev, id, DRM_MODE_OBJECT_ENCODER);
 	return mo ? obj_to_encoder(mo) : NULL;
 }
+
+/* Plane list iterator for legacy (overlay only) planes. */
+#define drm_for_each_legacy_plane(plane, planelist) \
+	list_for_each_entry(plane, planelist, head) \
+		if (plane->type == DRM_PLANE_TYPE_OVERLAY)
 
 #endif /* __DRM_CRTC_H__ */

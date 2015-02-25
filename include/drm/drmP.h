@@ -757,8 +757,6 @@ struct drm_master {
 
 struct drm_bus {
 	int bus_type;
-	int (*get_irq)(struct drm_device *dev);
-	const char *(*get_name)(struct drm_device *dev);
 	int (*set_busid)(struct drm_device *dev, struct drm_master *master);
 	int (*set_unique)(struct drm_device *dev, struct drm_master *master,
 			  struct drm_unique *unique);
@@ -783,6 +781,7 @@ struct drm_driver {
 	int (*dma_ioctl) (struct drm_device *dev, void *data, struct drm_file *file_priv);
 	int (*dma_quiescent) (struct drm_device *);
 	int (*context_dtor) (struct drm_device *dev, int context);
+	int (*set_busid)(struct drm_device *dev, struct drm_master *master);
 
 	/**
 	 * get_vblank_counter - get raw hardware vblank counter
@@ -1227,11 +1226,6 @@ static __inline__ int drm_core_check_feature(struct drm_device *dev,
 	return ((dev->driver->driver_features & feature) ? 1 : 0);
 }
 
-static inline int drm_dev_to_irq(struct drm_device *dev)
-{
-	return dev->driver->bus->get_irq(dev);
-}
-
 static inline void drm_device_set_unplugged(struct drm_device *dev)
 {
 	smp_wmb();
@@ -1403,7 +1397,7 @@ extern void drm_core_reclaim_buffers(struct drm_device *dev,
 				/* IRQ support (drm_irq.h) */
 extern int drm_control(struct drm_device *dev, void *data,
 		       struct drm_file *file_priv);
-extern int drm_irq_install(struct drm_device *dev);
+extern int drm_irq_install(struct drm_device *dev, int irq);
 extern int drm_irq_uninstall(struct drm_device *dev);
 
 extern int drm_vblank_init(struct drm_device *dev, int num_crtcs);
@@ -1711,6 +1705,7 @@ extern void drm_pci_exit(struct drm_driver *driver, struct pci_driver *pdriver);
 extern int drm_get_pci_dev(struct pci_dev *pdev,
 			   const struct pci_device_id *ent,
 			   struct drm_driver *driver);
+extern int drm_pci_set_busid(struct drm_device *dev, struct drm_master *master);
 
 #define DRM_PCIE_SPEED_25 1
 #define DRM_PCIE_SPEED_50 2
@@ -1720,6 +1715,7 @@ extern int drm_pcie_get_speed_cap_mask(struct drm_device *dev, u32 *speed_mask);
 
 /* platform section */
 extern int drm_platform_init(struct drm_driver *driver, struct platform_device *platform_device);
+extern int drm_platform_set_busid(struct drm_device *d, struct drm_master *m);
 
 /* returns true if currently okay to sleep */
 static __inline__ bool drm_can_sleep(void)

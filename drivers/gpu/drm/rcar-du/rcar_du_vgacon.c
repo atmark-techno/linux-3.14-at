@@ -25,15 +25,8 @@ static int rcar_du_vga_connector_get_modes(struct drm_connector *connector)
 	return 0;
 }
 
-static int rcar_du_vga_connector_mode_valid(struct drm_connector *connector,
-					    struct drm_display_mode *mode)
-{
-	return MODE_OK;
-}
-
 static const struct drm_connector_helper_funcs connector_helper_funcs = {
 	.get_modes = rcar_du_vga_connector_get_modes,
-	.mode_valid = rcar_du_vga_connector_mode_valid,
 	.best_encoder = rcar_du_connector_best_encoder,
 };
 
@@ -71,6 +64,7 @@ int rcar_du_vga_connector_init(struct rcar_du_device *rcdu,
 	connector = &rcon->connector;
 	connector->display_info.width_mm = 0;
 	connector->display_info.height_mm = 0;
+	connector->interlace_allowed = true;
 
 	ret = drm_connector_init(rcdu->ddev, connector, &connector_funcs,
 				 DRM_MODE_CONNECTOR_VGA);

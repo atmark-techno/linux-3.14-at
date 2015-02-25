@@ -21,6 +21,7 @@
 #include <linux/i2c.h>
 
 #include <drm/drmP.h>
+#include <drm/drm_plane_helper.h>
 #include "framebuffer.h"
 #include "psb_drv.h"
 #include "psb_intel_drv.h"
@@ -120,7 +121,7 @@ static int psb_intel_crtc_mode_set(struct drm_crtc *crtc,
 	const struct gma_limit_t *limit;
 
 	/* No scan out no play */
-	if (crtc->fb == NULL) {
+	if (crtc->primary->fb == NULL) {
 		crtc_funcs->mode_set_base(crtc, x, y, old_fb);
 		return 0;
 	}

@@ -808,7 +808,7 @@ static int vmw_driver_load(struct drm_device *dev, unsigned long chipset)
 	}
 
 	if (dev_priv->capabilities & SVGA_CAP_IRQMASK) {
-		ret = drm_irq_install(dev);
+		ret = drm_irq_install(dev, dev->pdev->irq);
 		if (ret != 0) {
 			DRM_ERROR("Failed installing irq: %d\n", ret);
 			goto out_no_irq;
@@ -1345,6 +1345,7 @@ static struct drm_driver driver = {
 	.open = vmw_driver_open,
 	.preclose = vmw_preclose,
 	.postclose = vmw_postclose,
+	.set_busid = drm_pci_set_busid,
 
 	.dumb_create = vmw_dumb_create,
 	.dumb_map_offset = vmw_dumb_map_offset,
