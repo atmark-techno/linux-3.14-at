@@ -328,21 +328,13 @@ char *date;</synopsis>
         <sect4>
           <title>Managed IRQ Registration</title>
           <para>
-            Both the <function>drm_irq_install</function> and
-	    <function>drm_irq_uninstall</function> functions get the device IRQ by
-	    calling <function>drm_dev_to_irq</function>. This inline function will
-	    call a bus-specific operation to retrieve the IRQ number. For platform
-	    devices, <function>platform_get_irq</function>(..., 0) is used to
-	    retrieve the IRQ number.
-          </para>
-          <para>
             <function>drm_irq_install</function> starts by calling the
             <methodname>irq_preinstall</methodname> driver operation. The operation
             is optional and must make sure that the interrupt will not get fired by
             clearing all pending interrupt flags or disabling the interrupt.
           </para>
           <para>
-            The IRQ will then be requested by a call to
+            The passed-in IRQ will then be requested by a call to
             <function>request_irq</function>. If the DRIVER_IRQ_SHARED driver
             feature flag is set, a shared (IRQF_SHARED) IRQ handler will be
             requested.
@@ -1469,7 +1461,7 @@ int max_width, max_height;</synopsis>
           The connector is then registered with a call to
           <function>drm_connector_init</function> with a pointer to the connector
           functions and a connector type, and exposed through sysfs with a call to
-          <function>drm_sysfs_connector_add</function>.
+          <function>drm_connector_register</function>.
         </para>
         <para>
           Supported connector types are
@@ -1627,7 +1619,7 @@ int max_width, max_height;</synopsis>
 	(<function>drm_encoder_cleanup</function>) and connectors
 	(<function>drm_connector_cleanup</function>). Furthermore, connectors
 	that have been added to sysfs must be removed by a call to
-	<function>drm_sysfs_connector_remove</function> before calling
+	<function>drm_connector_unregister</function> before calling
 	<function>drm_connector_cleanup</function>.
       </para>
       <para>
@@ -1672,7 +1664,7 @@ void intel_crt_init(struct drm_device *dev)
 	drm_encoder_helper_add(&intel_output->enc, &intel_crt_helper_funcs);
 	drm_connector_helper_add(connector, &intel_crt_connector_helper_funcs);
 
-	drm_sysfs_connector_add(connector);
+	drm_connector_register(connector);
 }]]></programlisting>
       <para>
         In the example above (taken from the i915 driver), a CRTC, connector and
@@ -1790,8 +1782,8 @@ void intel_crt_init(struct drm_device *dev)
           <para>
             The function filters out modes larger than
             <parameter>max_width</parameter> and <parameter>max_height</parameter>
-            if specified. It then calls the connector
-            <methodname>mode_valid</methodname> helper operation for  each mode in
+            if specified. It then calls the optional connector
+            <methodname>mode_valid</methodname> helper operation for each mode in
             the probed list to check whether the mode is valid for the connector.
           </para>
         </listitem>
@@ -2152,7 +2144,7 @@ void intel_crt_init(struct drm_device *dev)
           <para>
             Verify whether a mode is valid for the connector. Return MODE_OK for
             supported modes and one of the enum drm_mode_status values (MODE_*)
-            for unsupported modes. This operation is mandatory.
+            for unsupported modes. This operation is optional.
           </para>
           <para>
             As the mode rejection reason is currently not used beside for

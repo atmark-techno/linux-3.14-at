@@ -648,7 +648,7 @@ static int __i915_drm_thaw(struct drm_device *dev, bool restore_gtt_mappings)
 		mutex_unlock(&dev->struct_mutex);
 
 		/* We need working interrupts for modeset enabling ... */
-		drm_irq_install(dev);
+		drm_irq_install(dev, dev->pdev->irq);
 
 		intel_modeset_init_hw(dev);
 
@@ -825,8 +825,13 @@ int i915_reset(struct drm_device *dev)
 			return ret;
 		}
 
+		/*
+		 * FIXME: This is horribly race against concurrent pageflip and
+		 * vblank wait ioctls since they can observe dev->irqs_disabled
+		 * being false when they shouldn't be able to.
+		 */
 		drm_irq_uninstall(dev);
-		drm_irq_install(dev);
+		drm_irq_install(dev, dev->pdev->irq);
 		intel_hpd_init(dev);
 	} else {
 		mutex_unlock(&dev->struct_mutex);
@@ -1051,6 +1056,7 @@ static struct drm_driver driver = {
 	.lastclose = i915_driver_lastclose,
 	.preclose = i915_driver_preclose,
 	.postclose = i915_driver_postclose,
+	.set_busid = drm_pci_set_busid,
 
 	/* Used in place of i915_pm_ops for non-DRIVER_MODESET */
 	.suspend = i915_suspend,

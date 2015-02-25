@@ -64,21 +64,11 @@ static int drm_get_platform_dev(struct platform_device *platdev,
 	return 0;
 
 err_free:
-	drm_dev_free(dev);
+	drm_dev_unref(dev);
 	return ret;
 }
 
-static int drm_platform_get_irq(struct drm_device *dev)
-{
-	return platform_get_irq(dev->platformdev, 0);
-}
-
-static const char *drm_platform_get_name(struct drm_device *dev)
-{
-	return dev->platformdev->name;
-}
-
-static int drm_platform_set_busid(struct drm_device *dev, struct drm_master *master)
+int drm_platform_set_busid(struct drm_device *dev, struct drm_master *master)
 {
 	int len, ret, id;
 
@@ -106,26 +96,14 @@ static int drm_platform_set_busid(struct drm_device *dev, struct drm_master *mas
 		goto err;
 	}
 
-	dev->devname =
-		kmalloc(strlen(dev->platformdev->name) +
-			master->unique_len + 2, GFP_KERNEL);
-
-	if (dev->devname == NULL) {
-		ret = -ENOMEM;
-		goto err;
-	}
-
-	sprintf(dev->devname, "%s@%s", dev->platformdev->name,
-		master->unique);
 	return 0;
 err:
 	return ret;
 }
+EXPORT_SYMBOL(drm_platform_set_busid);
 
 static struct drm_bus drm_platform_bus = {
 	.bus_type = DRIVER_BUS_PLATFORM,
-	.get_irq = drm_platform_get_irq,
-	.get_name = drm_platform_get_name,
 	.set_busid = drm_platform_set_busid,
 };
 

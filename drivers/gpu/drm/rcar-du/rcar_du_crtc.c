@@ -19,6 +19,7 @@
 #include <drm/drm_crtc_helper.h>
 #include <drm/drm_fb_cma_helper.h>
 #include <drm/drm_gem_cma_helper.h>
+#include <drm/drm_plane_helper.h>
 
 #include "rcar_du_crtc.h"
 #include "rcar_du_drv.h"
@@ -299,7 +300,7 @@ static void rcar_du_crtc_update_base(struct rcar_du_crtc *rcrtc)
 {
 	struct drm_crtc *crtc = &rcrtc->crtc;
 
-	rcar_du_plane_compute_base(rcrtc->plane, crtc->fb);
+	rcar_du_plane_compute_base(rcrtc->plane, crtc->primary->fb);
 	rcar_du_plane_update_base(rcrtc->plane);
 }
 
@@ -358,10 +359,10 @@ static int rcar_du_crtc_mode_set(struct drm_crtc *crtc,
 	const struct rcar_du_format_info *format;
 	int ret;
 
-	format = rcar_du_format_info(crtc->fb->pixel_format);
+	format = rcar_du_format_info(crtc->primary->fb->pixel_format);
 	if (format == NULL) {
 		dev_dbg(rcdu->dev, "mode_set: unsupported format %08x\n",
-			crtc->fb->pixel_format);
+			crtc->primary->fb->pixel_format);
 		ret = -EINVAL;
 		goto error;
 	}
@@ -377,7 +378,7 @@ static int rcar_du_crtc_mode_set(struct drm_crtc *crtc,
 	rcrtc->plane->width = mode->hdisplay;
 	rcrtc->plane->height = mode->vdisplay;
 
-	rcar_du_plane_compute_base(rcrtc->plane, crtc->fb);
+	rcar_du_plane_compute_base(rcrtc->plane, crtc->primary->fb);
 
 	rcrtc->outputs = 0;
 
@@ -510,7 +511,7 @@ static int rcar_du_crtc_page_flip(struct drm_crtc *crtc,
 	}
 	spin_unlock_irqrestore(&dev->event_lock, flags);
 
-	crtc->fb = fb;
+	crtc->primary->fb = fb;
 	rcar_du_crtc_update_base(rcrtc);
 
 	if (event) {

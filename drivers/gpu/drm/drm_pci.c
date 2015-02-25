@@ -137,21 +137,9 @@ static int drm_get_pci_domain(struct drm_device *dev)
 	return pci_domain_nr(dev->pdev->bus);
 }
 
-static int drm_pci_get_irq(struct drm_device *dev)
-{
-	return dev->pdev->irq;
-}
-
-static const char *drm_pci_get_name(struct drm_device *dev)
-{
-	struct pci_driver *pdriver = dev->driver->kdriver.pci;
-	return pdriver->name;
-}
-
-static int drm_pci_set_busid(struct drm_device *dev, struct drm_master *master)
+int drm_pci_set_busid(struct drm_device *dev, struct drm_master *master)
 {
 	int len, ret;
-	struct pci_driver *pdriver = dev->driver->kdriver.pci;
 	master->unique_len = 40;
 	master->unique_size = master->unique_len;
 	master->unique = kmalloc(master->unique_size, GFP_KERNEL);
@@ -173,29 +161,17 @@ static int drm_pci_set_busid(struct drm_device *dev, struct drm_master *master)
 	} else
 		master->unique_len = len;
 
-	dev->devname =
-		kmalloc(strlen(pdriver->name) +
-			master->unique_len + 2, GFP_KERNEL);
-
-	if (dev->devname == NULL) {
-		ret = -ENOMEM;
-		goto err;
-	}
-
-	sprintf(dev->devname, "%s@%s", pdriver->name,
-		master->unique);
-
 	return 0;
 err:
 	return ret;
 }
+EXPORT_SYMBOL(drm_pci_set_busid);
 
 static int drm_pci_set_unique(struct drm_device *dev,
 			      struct drm_master *master,
 			      struct drm_unique *u)
 {
 	int domain, bus, slot, func, ret;
-	const char *bus_name;
 
 	master->unique_len = u->unique_len;
 	master->unique_size = u->unique_len + 1;
@@ -211,17 +187,6 @@ static int drm_pci_set_unique(struct drm_device *dev,
 	}
 
 	master->unique[master->unique_len] = '\0';
-
-	bus_name = dev->driver->bus->get_name(dev);
-	dev->devname = kmalloc(strlen(bus_name) +
-			       strlen(master->unique) + 2, GFP_KERNEL);
-	if (!dev->devname) {
-		ret = -ENOMEM;
-		goto err;
-	}
-
-	sprintf(dev->devname, "%s@%s", bus_name,
-		master->unique);
 
 	/* Return error if the busid submitted doesn't match the device's actual
 	 * busid.
@@ -288,8 +253,6 @@ void drm_pci_agp_destroy(struct drm_device *dev)
 
 static struct drm_bus drm_pci_bus = {
 	.bus_type = DRIVER_BUS_PCI,
-	.get_irq = drm_pci_get_irq,
-	.get_name = drm_pci_get_name,
 	.set_busid = drm_pci_set_busid,
 	.set_unique = drm_pci_set_unique,
 	.irq_by_busid = drm_pci_irq_by_busid,
@@ -351,7 +314,7 @@ err_agp:
 	drm_pci_agp_destroy(dev);
 	pci_disable_device(pdev);
 err_free:
-	drm_dev_free(dev);
+	drm_dev_unref(dev);
 	return ret;
 }
 EXPORT_SYMBOL(drm_get_pci_dev);

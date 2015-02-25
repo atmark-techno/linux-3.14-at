@@ -78,7 +78,9 @@ MODULE_PARM_DESC(runpm, "disable (0), force enable (1), optimus only default (-1
 int nouveau_runtime_pm = -1;
 module_param_named(runpm, nouveau_runtime_pm, int, 0400);
 
-static struct drm_driver driver;
+static struct drm_driver driver_stub;
+static struct drm_driver driver_pci;
+static struct drm_driver driver_platform;
 
 static u64
 nouveau_name(struct pci_dev *pdev)
@@ -288,7 +290,7 @@ static int nouveau_drm_probe(struct pci_dev *pdev,
 
 	pci_set_master(pdev);
 
-	ret = drm_get_pci_dev(pdev, pent, &driver);
+	ret = drm_get_pci_dev(pdev, pent, &driver_pci);
 	if (ret) {
 		nouveau_object_ref(NULL, (struct nouveau_object **)&device);
 		return ret;
@@ -787,7 +789,7 @@ nouveau_driver_fops = {
 };
 
 static struct drm_driver
-driver = {
+driver_stub = {
 	.driver_features =
 		DRIVER_USE_AGP |
 		DRIVER_GEM | DRIVER_MODESET | DRIVER_PRIME | DRIVER_RENDER,
@@ -983,6 +985,11 @@ nouveau_drm_pci_driver = {
 static int __init
 nouveau_drm_init(void)
 {
+	driver_pci = driver_stub;
+	driver_pci.set_busid = drm_pci_set_busid;
+	driver_platform = driver_stub;
+	driver_platform.set_busid = drm_platform_set_busid;
+
 	if (nouveau_modeset == -1) {
 #ifdef CONFIG_VGA_CONSOLE
 		if (vgacon_text_force())
@@ -994,7 +1001,7 @@ nouveau_drm_init(void)
 		return 0;
 
 	nouveau_register_dsm_handler();
-	return drm_pci_init(&driver, &nouveau_drm_pci_driver);
+	return drm_pci_init(&driver_pci, &nouveau_drm_pci_driver);
 }
 
 static void __exit
@@ -1003,7 +1010,7 @@ nouveau_drm_exit(void)
 	if (!nouveau_modeset)
 		return;
 
-	drm_pci_exit(&driver, &nouveau_drm_pci_driver);
+	drm_pci_exit(&driver_pci, &nouveau_drm_pci_driver);
 	nouveau_unregister_dsm_handler();
 }
 

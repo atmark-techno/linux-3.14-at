@@ -218,6 +218,8 @@ static struct drm_driver qxl_driver = {
 	.load = qxl_driver_load,
 	.unload = qxl_driver_unload,
 
+	.set_busid = drm_pci_set_busid,
+
 	.dumb_create = qxl_mode_dumb_create,
 	.dumb_map_offset = qxl_mode_dumb_mmap,
 	.dumb_destroy = drm_gem_dumb_destroy,

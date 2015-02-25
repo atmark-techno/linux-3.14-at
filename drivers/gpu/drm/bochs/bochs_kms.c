@@ -6,6 +6,7 @@
  */
 
 #include "bochs.h"
+#include <drm/drm_plane_helper.h>
 
 static int defx = 1024;
 static int defy = 768;
@@ -62,10 +63,10 @@ static int bochs_crtc_mode_set_base(struct drm_crtc *crtc, int x, int y,
 		}
 	}
 
-	if (WARN_ON(crtc->fb == NULL))
+	if (WARN_ON(crtc->primary->fb == NULL))
 		return -EINVAL;
 
-	bochs_fb = to_bochs_framebuffer(crtc->fb);
+	bochs_fb = to_bochs_framebuffer(crtc->primary->fb);
 	bo = gem_to_bochs_bo(bochs_fb->obj);
 	ret = ttm_bo_reserve(&bo->bo, true, false, false, 0);
 	if (ret)
