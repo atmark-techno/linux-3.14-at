@@ -753,6 +753,7 @@ static struct imx_pin_group imx25_pinctrl_groups[] = {
 	IMX25_PINCTRL_PIN_GROUP(cspi1_sclk, gpio_1_18),
 	IMX25_PINCTRL_PIN_GROUP(kpp_col1, gpio_3_2),
 	IMX25_PINCTRL_PIN_GROUP(kpp_col0, gpio_3_1),
+	IMX25_PINCTRL_PIN_GROUP(nfwp_b, gpio_3_30),
 };
 
 static const char *uart1_groups[] = {
@@ -795,17 +796,14 @@ static const char *i2c1_groups[] = {
 	"i2c1_dat__i2c1_dat",
 };
 
-static const char *i2c_gpio3_groups[] = {
+static const char *gpio1_groups[] = {
 	"cspi1_ss1__gpio_1_17",
 	"cspi1_sclk__gpio_1_18",
 };
 
-static const char *i2c_gpio4_groups[] = {
-	"kpp_col1__gpio_3_2",
+static const char *gpio3_groups[] = {
 	"kpp_col0__gpio_3_1",
-};
-
-static const char *gpio_key_groups[] = {
+	"kpp_col1__gpio_3_2",
 	"nfwp_b__gpio_3_30",
 };
 
@@ -822,9 +820,8 @@ static struct imx_pmx_func imx25_pinctrl_functions[] = {
 	IMX25_PINCTRL_PMX_FUNC(uart4),
 	IMX25_PINCTRL_PMX_FUNC(uart5),
 	IMX25_PINCTRL_PMX_FUNC(i2c1),
-	IMX25_PINCTRL_PMX_FUNC(i2c_gpio3),
-	IMX25_PINCTRL_PMX_FUNC(i2c_gpio4),
-	IMX25_PINCTRL_PMX_FUNC(gpio_key),
+	IMX25_PINCTRL_PMX_FUNC(gpio1),
+	IMX25_PINCTRL_PMX_FUNC(gpio3),
 };
 
 static struct imx_pinctrl_soc_info imx25_pinctrl_info = {
