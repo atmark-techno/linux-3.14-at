@@ -544,6 +544,114 @@ struct imx_pin pins_uart2_cts__uart2_cts[] = {
 	IMX25_PINCTRL_PIN(UART2_CTS, UART2_CTS),
 };
 
+/* KPP_ROW0 */
+unsigned int pin_ids_kpp_row0[] = {
+	MX25_PAD_KPP_ROW0,
+};
+
+struct imx_pin pins_kpp_row0__uart3_rxd[] = {
+	IMX25_PINCTRL_PIN(KPP_ROW0, UART3_RXD),
+};
+
+/* KPP_ROW1 */
+unsigned int pin_ids_kpp_row1[] = {
+	MX25_PAD_KPP_ROW1,
+};
+
+struct imx_pin pins_kpp_row1__uart3_txd[] = {
+	IMX25_PINCTRL_PIN(KPP_ROW1, UART3_TXD),
+};
+
+/* KPP_ROW2 */
+unsigned int pin_ids_kpp_row2[] = {
+	MX25_PAD_KPP_ROW2,
+};
+
+struct imx_pin pins_kpp_row2__uart3_rts[] = {
+	IMX25_PINCTRL_PIN(KPP_ROW2, UART3_RTS),
+};
+
+/* KPP_ROW3 */
+unsigned int pin_ids_kpp_row3[] = {
+	MX25_PAD_KPP_ROW3,
+};
+
+struct imx_pin pins_kpp_row3__uart3_cts[] = {
+	IMX25_PINCTRL_PIN(KPP_ROW3, UART3_CTS),
+};
+
+/* LD8 */
+unsigned int pin_ids_ld8[] = {
+	MX25_PAD_LD8,
+};
+
+struct imx_pin pins_ld8__uart4_rxd[] = {
+	IMX25_PINCTRL_PIN(LD8, UART4_RXD),
+};
+
+/* LD9 */
+unsigned int pin_ids_ld9[] = {
+	MX25_PAD_LD9,
+};
+
+struct imx_pin pins_ld9__uart4_txd[] = {
+	IMX25_PINCTRL_PIN(LD9, UART4_TXD),
+};
+
+/* LD10 */
+unsigned int pin_ids_ld10[] = {
+	MX25_PAD_LD10,
+};
+
+struct imx_pin pins_ld10__uart4_rts[] = {
+	IMX25_PINCTRL_PIN(LD10, UART4_RTS),
+};
+
+/* LD11 */
+unsigned int pin_ids_ld11[] = {
+	MX25_PAD_LD11,
+};
+
+struct imx_pin pins_ld11__uart4_cts[] = {
+	IMX25_PINCTRL_PIN(LD11, UART4_CTS),
+};
+
+/* CSI_D2 */
+unsigned int pin_ids_csi_d2[] = {
+	MX25_PAD_CSI_D2,
+};
+
+struct imx_pin pins_csi_d2__uart5_rxd_mux[] = {
+	IMX25_PINCTRL_PIN(CSI_D2, UART5_RXD_MUX),
+};
+
+/* CSI_D3 */
+unsigned int pin_ids_csi_d3[] = {
+	MX25_PAD_CSI_D3,
+};
+
+struct imx_pin pins_csi_d3__uart5_txd_mux[] = {
+	IMX25_PINCTRL_PIN(CSI_D3, UART5_TXD_MUX),
+};
+
+/* CSI_D4 */
+unsigned int pin_ids_csi_d4[] = {
+	MX25_PAD_CSI_D4,
+};
+
+struct imx_pin pins_csi_d4__uart5_rts[] = {
+	IMX25_PINCTRL_PIN(CSI_D4, UART5_RTS),
+};
+
+/* CSI_D5 */
+unsigned int pin_ids_csi_d5[] = {
+	MX25_PAD_CSI_D5,
+};
+
+struct imx_pin pins_csi_d5__uart5_cts[] = {
+	IMX25_PINCTRL_PIN(CSI_D5, UART5_CTS),
+};
+
 /* I2C1_CLK */
 unsigned int pin_ids_i2c1_clk[] = {
 	MX25_PAD_I2C1_CLK,
@@ -623,6 +731,22 @@ static struct imx_pin_group imx25_pinctrl_groups[] = {
 	IMX25_PINCTRL_PIN_GROUP(uart2_txd, uart2_txd),
 	IMX25_PINCTRL_PIN_GROUP(uart2_rts, uart2_rts),
 	IMX25_PINCTRL_PIN_GROUP(uart2_cts, uart2_cts),
+	IMX25_PINCTRL_PIN_GROUP(kpp_row0, uart3_rxd),
+	IMX25_PINCTRL_PIN_GROUP(kpp_row1, uart3_txd),
+	IMX25_PINCTRL_PIN_GROUP(kpp_row2, uart3_rts),
+	IMX25_PINCTRL_PIN_GROUP(kpp_row3, uart3_cts),
+	IMX25_PINCTRL_PIN_GROUP(ld8, uart4_rxd),
+	IMX25_PINCTRL_PIN_GROUP(ld9, uart4_txd),
+	IMX25_PINCTRL_PIN_GROUP(ld10, uart4_rts),
+	IMX25_PINCTRL_PIN_GROUP(ld11, uart4_cts),
+	IMX25_PINCTRL_PIN_GROUP(csi_d2, uart5_rxd_mux),
+	IMX25_PINCTRL_PIN_GROUP(csi_d3, uart5_txd_mux),
+	IMX25_PINCTRL_PIN_GROUP(csi_d4, uart5_rts),
+	IMX25_PINCTRL_PIN_GROUP(csi_d5, uart5_cts),
+	IMX25_PINCTRL_PIN_GROUP(kpp_row0, uart3_rxd),
+	IMX25_PINCTRL_PIN_GROUP(kpp_row1, uart3_txd),
+	IMX25_PINCTRL_PIN_GROUP(kpp_row2, uart3_rts),
+	IMX25_PINCTRL_PIN_GROUP(kpp_row3, uart3_cts),
 	IMX25_PINCTRL_PIN_GROUP(i2c1_clk, i2c1_clk),
 	IMX25_PINCTRL_PIN_GROUP(i2c1_dat, i2c1_dat),
 	IMX25_PINCTRL_PIN_GROUP(cspi1_ss1, gpio_1_17),
@@ -643,6 +767,27 @@ static const char *uart2_groups[] = {
 	"uart2_txd__uart2_txd",
 	"uart2_rts__uart2_rts",
 	"uart2_cts__uart2_cts",
+};
+
+static const char *uart3_groups[] = {
+	"kpp_row0__uart3_rxd",
+	"kpp_row1__uart3_txd",
+	"kpp_row2__uart3_rts",
+	"kpp_row3__uart3_cts",
+};
+
+static const char *uart4_groups[] = {
+	"ld8__uart4_rxd",
+	"ld9__uart4_txd",
+	"ld10__uart4_rts",
+	"ld11__uart4_cts",
+};
+
+static const char *uart5_groups[] = {
+	"csi_d2__uart5_rxd_mux",
+	"csi_d3__uart5_txd_mux",
+	"csi_d4__uart5_rts",
+	"csi_d5__uart5_cts",
 };
 
 static const char *i2c1_groups[] = {
@@ -673,6 +818,9 @@ static const char *gpio_key_groups[] = {
 static struct imx_pmx_func imx25_pinctrl_functions[] = {
 	IMX25_PINCTRL_PMX_FUNC(uart1),
 	IMX25_PINCTRL_PMX_FUNC(uart2),
+	IMX25_PINCTRL_PMX_FUNC(uart3),
+	IMX25_PINCTRL_PMX_FUNC(uart4),
+	IMX25_PINCTRL_PMX_FUNC(uart5),
 	IMX25_PINCTRL_PMX_FUNC(i2c1),
 	IMX25_PINCTRL_PMX_FUNC(i2c_gpio3),
 	IMX25_PINCTRL_PMX_FUNC(i2c_gpio4),
