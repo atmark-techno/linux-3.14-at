@@ -27,7 +27,8 @@
 #include "../../arch/arm/mach-imx/iomux-mx25.h"
 
 enum imx25_pads {
-	MX25_PAD_RESERVE0 = 1,
+	MX25_PAD_RESERVE0 = 0,
+	MX25_PAD_RESERVE1 = 1,
 	MX25_PAD_A10 = 2,
 	MX25_PAD_A13 = 3,
 	MX25_PAD_A14 = 4,
@@ -189,6 +190,7 @@ enum imx25_pads {
 /* Pad names for the pinmux subsystem */
 static const struct pinctrl_pin_desc imx25_pinctrl_pads[] = {
 	IMX_PINCTRL_PIN(MX25_PAD_RESERVE0),
+	IMX_PINCTRL_PIN(MX25_PAD_RESERVE1),
 	IMX_PINCTRL_PIN(MX25_PAD_A10),
 	IMX_PINCTRL_PIN(MX25_PAD_A13),
 	IMX_PINCTRL_PIN(MX25_PAD_A14),
@@ -360,8 +362,8 @@ static const struct pinctrl_pin_desc imx25_pinctrl_pads[] = {
 }
 
 static struct imx_pin_reg imx25_pinctrl_regs[] = {
-	{0x000, 0x000}, /* PADDING */
 	{0x000, 0x000}, /* RESERVE0 */
+	{0x000, 0x000}, /* RESERVE1 */
 	IMX25_PINCTRL_PIN_REG(A10),
 	IMX25_PINCTRL_PIN_REG(A13),
 	IMX25_PINCTRL_PIN_REG(A14),
