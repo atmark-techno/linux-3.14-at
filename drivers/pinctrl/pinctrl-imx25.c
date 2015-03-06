@@ -1809,6 +1809,10 @@ struct imx_pin pins_ld12__ld12[] = {
 	IMX25_PINCTRL_PIN(LD12, LD12),
 };
 
+struct imx_pin pins_ld12__cspi2_mosi[] = {
+	IMX25_PINCTRL_PIN(LD12, CSPI2_MOSI),
+};
+
 struct imx_pin pins_ld12__fec_rdata3[] = {
 	IMX25_PINCTRL_PIN(LD12, FEC_RDATA3),
 };
@@ -1820,6 +1824,10 @@ unsigned int pin_ids_ld13[] = {
 
 struct imx_pin pins_ld13__ld13[] = {
 	IMX25_PINCTRL_PIN(LD13, LD13),
+};
+
+struct imx_pin pins_ld13__cspi2_miso[] = {
+	IMX25_PINCTRL_PIN(LD13, CSPI2_MISO),
 };
 
 struct imx_pin pins_ld13__fec_tdata2[] = {
@@ -1835,6 +1843,10 @@ struct imx_pin pins_ld14__ld14[] = {
 	IMX25_PINCTRL_PIN(LD14, LD14),
 };
 
+struct imx_pin pins_ld14__cspi2_sclk[] = {
+	IMX25_PINCTRL_PIN(LD14, CSPI2_SCLK),
+};
+
 struct imx_pin pins_ld14__fec_tdata3[] = {
 	IMX25_PINCTRL_PIN(LD14, FEC_TDATA3),
 };
@@ -1846,6 +1858,10 @@ unsigned int pin_ids_ld15[] = {
 
 struct imx_pin pins_ld15__ld15[] = {
 	IMX25_PINCTRL_PIN(LD15, LD15),
+};
+
+struct imx_pin pins_ld15__cspi2_rdy[] = {
+	IMX25_PINCTRL_PIN(LD15, CSPI2_RDY),
 };
 
 struct imx_pin pins_ld15__fec_rx_clk[] = {
@@ -3173,12 +3189,16 @@ static struct imx_pin_group imx25_pinctrl_groups[] = {
 	IMX25_PINCTRL_PIN_GROUP(ld11, uart4_cts),
 	IMX25_PINCTRL_PIN_GROUP(ld11, fec_rdata2),
 	IMX25_PINCTRL_PIN_GROUP(ld12, ld12),
+	IMX25_PINCTRL_PIN_GROUP(ld12, cspi2_mosi),
 	IMX25_PINCTRL_PIN_GROUP(ld12, fec_rdata3),
 	IMX25_PINCTRL_PIN_GROUP(ld13, ld13),
+	IMX25_PINCTRL_PIN_GROUP(ld13, cspi2_miso),
 	IMX25_PINCTRL_PIN_GROUP(ld13, fec_tdata2),
 	IMX25_PINCTRL_PIN_GROUP(ld14, ld14),
+	IMX25_PINCTRL_PIN_GROUP(ld14, cspi2_sclk),
 	IMX25_PINCTRL_PIN_GROUP(ld14, fec_tdata3),
 	IMX25_PINCTRL_PIN_GROUP(ld15, ld15),
+	IMX25_PINCTRL_PIN_GROUP(ld15, cspi2_rdy),
 	IMX25_PINCTRL_PIN_GROUP(ld15, fec_rx_clk),
 	IMX25_PINCTRL_PIN_GROUP(hsync, hsync),
 	IMX25_PINCTRL_PIN_GROUP(hsync, gpio_1_22),
@@ -3443,6 +3463,13 @@ static const char *cspi1_groups[] = {
 	"cspi1_ss1__cspi1_ss1",
 	"cspi1_sclk__cspi1_sclk",
 	"cspi1_rdy__cspi1_rdy",
+};
+
+static const char *cspi2_groups[] = {
+	"ld12__cspi2_mosi",
+	"ld13__cspi2_miso",
+	"ld14__cspi2_sclk",
+	"ld15__cspi2_rdy",
 };
 
 static const char *cspi3_groups[] = {
@@ -3843,6 +3870,7 @@ static struct imx_pmx_func imx25_pinctrl_functions[] = {
 	IMX25_PINCTRL_PMX_FUNC(can2),
 	IMX25_PINCTRL_PMX_FUNC(csi),
 	IMX25_PINCTRL_PMX_FUNC(cspi1),
+	IMX25_PINCTRL_PMX_FUNC(cspi2),
 	IMX25_PINCTRL_PMX_FUNC(cspi3),
 	IMX25_PINCTRL_PMX_FUNC(fec),
 	IMX25_PINCTRL_PMX_FUNC(gpio1),
