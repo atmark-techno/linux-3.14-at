@@ -1364,7 +1364,7 @@ static const char *gpio3_groups[] = {
 	"nfwp_b__gpio_3_30",
 };
 
-static const char *esdhc1_groups[] = {
+static const char *sd1_groups[] = {
 	"sd1_cmd__sd1_cmd",
 	"sd1_clk__sd1_clk",
 	"sd1_data0__sd1_data0",
@@ -1373,7 +1373,7 @@ static const char *esdhc1_groups[] = {
 	"sd1_data3__sd1_data3",
 };
 
-static const char *esdhc2_groups[] = {
+static const char *sd2_groups[] = {
 	"csi_d6__sd2_cmd",
 	"csi_d7__sd2_clk",
 	"csi_mclk__sd2_data0",
@@ -1397,8 +1397,8 @@ static struct imx_pmx_func imx25_pinctrl_functions[] = {
 	IMX25_PINCTRL_PMX_FUNC(i2c1),
 	IMX25_PINCTRL_PMX_FUNC(gpio1),
 	IMX25_PINCTRL_PMX_FUNC(gpio3),
-	IMX25_PINCTRL_PMX_FUNC(esdhc1),
-	IMX25_PINCTRL_PMX_FUNC(esdhc2),
+	IMX25_PINCTRL_PMX_FUNC(sd1),
+	IMX25_PINCTRL_PMX_FUNC(sd2),
 };
 
 static struct imx_pinctrl_soc_info imx25_pinctrl_info = {
