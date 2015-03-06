@@ -904,112 +904,832 @@ static struct imx_pin_reg imx25_pinctrl_regs[] = {
 	.config = PAD_TO_PAD_CTRL(MX25_PAD_##_pin##__##_func),		\
 }
 
-/* UART1_RXD */
-unsigned int pin_ids_uart1_rxd[] = {
-	MX25_PAD_UART1_RXD,
+/* A10 */
+unsigned int pin_ids_a10[] = {
+	MX25_PAD_A10,
 };
 
-struct imx_pin pins_uart1_rxd__uart1_rxd[] = {
-	IMX25_PINCTRL_PIN(UART1_RXD, UART1_RXD),
+struct imx_pin pins_a10__a10[] = {
+	IMX25_PINCTRL_PIN(A10, A10),
 };
 
-/* UART1_TXD */
-unsigned int pin_ids_uart1_txd[] = {
-	MX25_PAD_UART1_TXD,
+struct imx_pin pins_a10__gpio_4_0[] = {
+	IMX25_PINCTRL_PIN(A10, GPIO_4_0),
 };
 
-struct imx_pin pins_uart1_txd__uart1_txd[] = {
-	IMX25_PINCTRL_PIN(UART1_TXD, UART1_TXD),
+/* A13 */
+unsigned int pin_ids_a13[] = {
+	MX25_PAD_A13,
 };
 
-/* UART1_RTS */
-unsigned int pin_ids_uart1_rts[] = {
-	MX25_PAD_UART1_RTS,
+struct imx_pin pins_a13__a13[] = {
+	IMX25_PINCTRL_PIN(A13, A13),
 };
 
-struct imx_pin pins_uart1_rts__uart1_rts[] = {
-	IMX25_PINCTRL_PIN(UART1_RTS, UART1_RTS),
+struct imx_pin pins_a13__gpio_4_1[] = {
+	IMX25_PINCTRL_PIN(A13, GPIO_4_1),
 };
 
-/* UART1_CTS */
-unsigned int pin_ids_uart1_cts[] = {
-	MX25_PAD_UART1_CTS,
+/* A14 */
+unsigned int pin_ids_a14[] = {
+	MX25_PAD_A14,
 };
 
-struct imx_pin pins_uart1_cts__uart1_cts[] = {
-	IMX25_PINCTRL_PIN(UART1_CTS, UART1_CTS),
+struct imx_pin pins_a14__a14[] = {
+	IMX25_PINCTRL_PIN(A14, A14),
 };
 
-/* UART2_RXD */
-unsigned int pin_ids_uart2_rxd[] = {
-	MX25_PAD_UART2_RXD,
+struct imx_pin pins_a14__gpio_2_0[] = {
+	IMX25_PINCTRL_PIN(A14, GPIO_2_0),
 };
 
-struct imx_pin pins_uart2_rxd__uart2_rxd[] = {
-	IMX25_PINCTRL_PIN(UART2_RXD, UART2_RXD),
+/* A15 */
+unsigned int pin_ids_a15[] = {
+	MX25_PAD_A15,
 };
 
-/* UART2_TXD */
-unsigned int pin_ids_uart2_txd[] = {
-	MX25_PAD_UART2_TXD,
+struct imx_pin pins_a15__a15[] = {
+	IMX25_PINCTRL_PIN(A15, A15),
 };
 
-struct imx_pin pins_uart2_txd__uart2_txd[] = {
-	IMX25_PINCTRL_PIN(UART2_TXD, UART2_TXD),
+struct imx_pin pins_a15__gpio_2_1[] = {
+	IMX25_PINCTRL_PIN(A15, GPIO_2_1),
 };
 
-/* UART2_RTS */
-unsigned int pin_ids_uart2_rts[] = {
-	MX25_PAD_UART2_RTS,
+/* A16 */
+unsigned int pin_ids_a16[] = {
+	MX25_PAD_A16,
 };
 
-struct imx_pin pins_uart2_rts__uart2_rts[] = {
-	IMX25_PINCTRL_PIN(UART2_RTS, UART2_RTS),
+struct imx_pin pins_a16__a16[] = {
+	IMX25_PINCTRL_PIN(A16, A16),
 };
 
-/* UART2_CTS */
-unsigned int pin_ids_uart2_cts[] = {
-	MX25_PAD_UART2_CTS,
+struct imx_pin pins_a16__gpio_2_2[] = {
+	IMX25_PINCTRL_PIN(A16, GPIO_2_2),
 };
 
-struct imx_pin pins_uart2_cts__uart2_cts[] = {
-	IMX25_PINCTRL_PIN(UART2_CTS, UART2_CTS),
+/* A17 */
+unsigned int pin_ids_a17[] = {
+	MX25_PAD_A17,
 };
 
-/* KPP_ROW0 */
-unsigned int pin_ids_kpp_row0[] = {
-	MX25_PAD_KPP_ROW0,
+struct imx_pin pins_a17__a17[] = {
+	IMX25_PINCTRL_PIN(A17, A17),
 };
 
-struct imx_pin pins_kpp_row0__uart3_rxd[] = {
-	IMX25_PINCTRL_PIN(KPP_ROW0, UART3_RXD),
+struct imx_pin pins_a17__gpio_2_3[] = {
+	IMX25_PINCTRL_PIN(A17, GPIO_2_3),
 };
 
-/* KPP_ROW1 */
-unsigned int pin_ids_kpp_row1[] = {
-	MX25_PAD_KPP_ROW1,
+/* A18 */
+unsigned int pin_ids_a18[] = {
+	MX25_PAD_A18,
 };
 
-struct imx_pin pins_kpp_row1__uart3_txd[] = {
-	IMX25_PINCTRL_PIN(KPP_ROW1, UART3_TXD),
+struct imx_pin pins_a18__a18[] = {
+	IMX25_PINCTRL_PIN(A18, A18),
 };
 
-/* KPP_ROW2 */
-unsigned int pin_ids_kpp_row2[] = {
-	MX25_PAD_KPP_ROW2,
+struct imx_pin pins_a18__gpio_2_4[] = {
+	IMX25_PINCTRL_PIN(A18, GPIO_2_4),
 };
 
-struct imx_pin pins_kpp_row2__uart3_rts[] = {
-	IMX25_PINCTRL_PIN(KPP_ROW2, UART3_RTS),
+struct imx_pin pins_a18__fec_col[] = {
+	IMX25_PINCTRL_PIN(A18, FEC_COL),
 };
 
-/* KPP_ROW3 */
-unsigned int pin_ids_kpp_row3[] = {
-	MX25_PAD_KPP_ROW3,
+/* A19 */
+unsigned int pin_ids_a19[] = {
+	MX25_PAD_A19,
 };
 
-struct imx_pin pins_kpp_row3__uart3_cts[] = {
-	IMX25_PINCTRL_PIN(KPP_ROW3, UART3_CTS),
+struct imx_pin pins_a19__a19[] = {
+	IMX25_PINCTRL_PIN(A19, A19),
+};
+
+struct imx_pin pins_a19__fec_rx_er[] = {
+	IMX25_PINCTRL_PIN(A19, FEC_RX_ER),
+};
+
+struct imx_pin pins_a19__gpio_2_5[] = {
+	IMX25_PINCTRL_PIN(A19, GPIO_2_5),
+};
+
+/* A20 */
+unsigned int pin_ids_a20[] = {
+	MX25_PAD_A20,
+};
+
+struct imx_pin pins_a20__a20[] = {
+	IMX25_PINCTRL_PIN(A20, A20),
+};
+
+struct imx_pin pins_a20__gpio_2_6[] = {
+	IMX25_PINCTRL_PIN(A20, GPIO_2_6),
+};
+
+struct imx_pin pins_a20__fec_rdata2[] = {
+	IMX25_PINCTRL_PIN(A20, FEC_RDATA2),
+};
+
+/* A21 */
+unsigned int pin_ids_a21[] = {
+	MX25_PAD_A21,
+};
+
+struct imx_pin pins_a21__a21[] = {
+	IMX25_PINCTRL_PIN(A21, A21),
+};
+
+struct imx_pin pins_a21__gpio_2_7[] = {
+	IMX25_PINCTRL_PIN(A21, GPIO_2_7),
+};
+
+struct imx_pin pins_a21__fec_rdata3[] = {
+	IMX25_PINCTRL_PIN(A21, FEC_RDATA3),
+};
+
+/* A22 */
+unsigned int pin_ids_a22[] = {
+	MX25_PAD_A22,
+};
+
+struct imx_pin pins_a22__a22[] = {
+	IMX25_PINCTRL_PIN(A22, A22),
+};
+
+struct imx_pin pins_a22__gpio_2_8[] = {
+	IMX25_PINCTRL_PIN(A22, GPIO_2_8),
+};
+
+/* A23 */
+unsigned int pin_ids_a23[] = {
+	MX25_PAD_A23,
+};
+
+struct imx_pin pins_a23__a23[] = {
+	IMX25_PINCTRL_PIN(A23, A23),
+};
+
+struct imx_pin pins_a23__gpio_2_9[] = {
+	IMX25_PINCTRL_PIN(A23, GPIO_2_9),
+};
+
+/* A24 */
+unsigned int pin_ids_a24[] = {
+	MX25_PAD_A24,
+};
+
+struct imx_pin pins_a24__a24[] = {
+	IMX25_PINCTRL_PIN(A24, A24),
+};
+
+struct imx_pin pins_a24__gpio_2_10[] = {
+	IMX25_PINCTRL_PIN(A24, GPIO_2_10),
+};
+
+struct imx_pin pins_a24__fec_rx_clk[] = {
+	IMX25_PINCTRL_PIN(A24, FEC_RX_CLK),
+};
+
+/* A25 */
+unsigned int pin_ids_a25[] = {
+	MX25_PAD_A25,
+};
+
+struct imx_pin pins_a25__a25[] = {
+	IMX25_PINCTRL_PIN(A25, A25),
+};
+
+struct imx_pin pins_a25__gpio_2_11[] = {
+	IMX25_PINCTRL_PIN(A25, GPIO_2_11),
+};
+
+struct imx_pin pins_a25__fec_crs[] = {
+	IMX25_PINCTRL_PIN(A25, FEC_CRS),
+};
+
+/* EB0 */
+unsigned int pin_ids_eb0[] = {
+	MX25_PAD_EB0,
+};
+
+struct imx_pin pins_eb0__eb0[] = {
+	IMX25_PINCTRL_PIN(EB0, EB0),
+};
+
+struct imx_pin pins_eb0__aud4_txd[] = {
+	IMX25_PINCTRL_PIN(EB0, AUD4_TXD),
+};
+
+struct imx_pin pins_eb0__gpio_2_12[] = {
+	IMX25_PINCTRL_PIN(EB0, GPIO_2_12),
+};
+
+/* EB1 */
+unsigned int pin_ids_eb1[] = {
+	MX25_PAD_EB1,
+};
+
+struct imx_pin pins_eb1__eb1[] = {
+	IMX25_PINCTRL_PIN(EB1, EB1),
+};
+
+struct imx_pin pins_eb1__aud4_rxd[] = {
+	IMX25_PINCTRL_PIN(EB1, AUD4_RXD),
+};
+
+struct imx_pin pins_eb1__gpio_2_13[] = {
+	IMX25_PINCTRL_PIN(EB1, GPIO_2_13),
+};
+
+/* OE */
+unsigned int pin_ids_oe[] = {
+	MX25_PAD_OE,
+};
+
+struct imx_pin pins_oe__oe[] = {
+	IMX25_PINCTRL_PIN(OE, OE),
+};
+
+struct imx_pin pins_oe__aud4_txc[] = {
+	IMX25_PINCTRL_PIN(OE, AUD4_TXC),
+};
+
+struct imx_pin pins_oe__gpio_2_14[] = {
+	IMX25_PINCTRL_PIN(OE, GPIO_2_14),
+};
+
+/* CS0 */
+unsigned int pin_ids_cs0[] = {
+	MX25_PAD_CS0,
+};
+
+struct imx_pin pins_cs0__cs0[] = {
+	IMX25_PINCTRL_PIN(CS0, CS0),
+};
+
+struct imx_pin pins_cs0__gpio_4_2[] = {
+	IMX25_PINCTRL_PIN(CS0, GPIO_4_2),
+};
+
+/* CS1 */
+unsigned int pin_ids_cs1[] = {
+	MX25_PAD_CS1,
+};
+
+struct imx_pin pins_cs1__cs1[] = {
+	IMX25_PINCTRL_PIN(CS1, CS1),
+};
+
+struct imx_pin pins_cs1__nf_ce3[] = {
+	IMX25_PINCTRL_PIN(CS1, NF_CE3),
+};
+
+struct imx_pin pins_cs1__gpio_4_3[] = {
+	IMX25_PINCTRL_PIN(CS1, GPIO_4_3),
+};
+
+/* CS4 */
+unsigned int pin_ids_cs4[] = {
+	MX25_PAD_CS4,
+};
+
+struct imx_pin pins_cs4__cs4[] = {
+	IMX25_PINCTRL_PIN(CS4, CS4),
+};
+
+struct imx_pin pins_cs4__nf_ce1[] = {
+	IMX25_PINCTRL_PIN(CS4, NF_CE1),
+};
+
+struct imx_pin pins_cs4__uart5_cts[] = {
+	IMX25_PINCTRL_PIN(CS4, UART5_CTS),
+};
+
+struct imx_pin pins_cs4__gpio_3_20[] = {
+	IMX25_PINCTRL_PIN(CS4, GPIO_3_20),
+};
+
+/* CS5 */
+unsigned int pin_ids_cs5[] = {
+	MX25_PAD_CS5,
+};
+
+struct imx_pin pins_cs5__cs5[] = {
+	IMX25_PINCTRL_PIN(CS5, CS5),
+};
+
+struct imx_pin pins_cs5__nf_ce2[] = {
+	IMX25_PINCTRL_PIN(CS5, NF_CE2),
+};
+
+struct imx_pin pins_cs5__uart5_rts[] = {
+	IMX25_PINCTRL_PIN(CS5, UART5_RTS),
+};
+
+struct imx_pin pins_cs5__gpio_3_21[] = {
+	IMX25_PINCTRL_PIN(CS5, GPIO_3_21),
+};
+
+/* NF_CE0 */
+unsigned int pin_ids_nf_ce0[] = {
+	MX25_PAD_NF_CE0,
+};
+
+struct imx_pin pins_nf_ce0__nf_ce0[] = {
+	IMX25_PINCTRL_PIN(NF_CE0, NF_CE0),
+};
+
+struct imx_pin pins_nf_ce0__gpio_3_22[] = {
+	IMX25_PINCTRL_PIN(NF_CE0, GPIO_3_22),
+};
+
+/* ECB */
+unsigned int pin_ids_ecb[] = {
+	MX25_PAD_ECB,
+};
+
+struct imx_pin pins_ecb__ecb[] = {
+	IMX25_PINCTRL_PIN(ECB, ECB),
+};
+
+struct imx_pin pins_ecb__uart5_txd_mux[] = {
+	IMX25_PINCTRL_PIN(ECB, UART5_TXD_MUX),
+};
+
+struct imx_pin pins_ecb__gpio_3_23[] = {
+	IMX25_PINCTRL_PIN(ECB, GPIO_3_23),
+};
+
+/* LBA */
+unsigned int pin_ids_lba[] = {
+	MX25_PAD_LBA,
+};
+
+struct imx_pin pins_lba__lba[] = {
+	IMX25_PINCTRL_PIN(LBA, LBA),
+};
+
+struct imx_pin pins_lba__uart5_rxd_mux[] = {
+	IMX25_PINCTRL_PIN(LBA, UART5_RXD_MUX),
+};
+
+struct imx_pin pins_lba__gpio_3_24[] = {
+	IMX25_PINCTRL_PIN(LBA, GPIO_3_24),
+};
+
+/* BCLK */
+unsigned int pin_ids_bclk[] = {
+	MX25_PAD_BCLK,
+};
+
+struct imx_pin pins_bclk__bclk[] = {
+	IMX25_PINCTRL_PIN(BCLK, BCLK),
+};
+
+struct imx_pin pins_bclk__gpio_4_4[] = {
+	IMX25_PINCTRL_PIN(BCLK, GPIO_4_4),
+};
+
+/* RW */
+unsigned int pin_ids_rw[] = {
+	MX25_PAD_RW,
+};
+
+struct imx_pin pins_rw__rw[] = {
+	IMX25_PINCTRL_PIN(RW, RW),
+};
+
+struct imx_pin pins_rw__aud4_txfs[] = {
+	IMX25_PINCTRL_PIN(RW, AUD4_TXFS),
+};
+
+struct imx_pin pins_rw__gpio_3_25[] = {
+	IMX25_PINCTRL_PIN(RW, GPIO_3_25),
+};
+
+/* NFWE_B */
+unsigned int pin_ids_nfwe_b[] = {
+	MX25_PAD_NFWE_B,
+};
+
+struct imx_pin pins_nfwe_b__nfwe_b[] = {
+	IMX25_PINCTRL_PIN(NFWE_B, NFWE_B),
+};
+
+struct imx_pin pins_nfwe_b__gpio_3_26[] = {
+	IMX25_PINCTRL_PIN(NFWE_B, GPIO_3_26),
+};
+
+/* NFRE_B */
+unsigned int pin_ids_nfre_b[] = {
+	MX25_PAD_NFRE_B,
+};
+
+struct imx_pin pins_nfre_b__nfre_b[] = {
+	IMX25_PINCTRL_PIN(NFRE_B, NFRE_B),
+};
+
+struct imx_pin pins_nfre_b__gpio_3_27[] = {
+	IMX25_PINCTRL_PIN(NFRE_B, GPIO_3_27),
+};
+
+/* NFALE */
+unsigned int pin_ids_nfale[] = {
+	MX25_PAD_NFALE,
+};
+
+struct imx_pin pins_nfale__nfale[] = {
+	IMX25_PINCTRL_PIN(NFALE, NFALE),
+};
+
+struct imx_pin pins_nfale__gpio_3_28[] = {
+	IMX25_PINCTRL_PIN(NFALE, GPIO_3_28),
+};
+
+/* NFCLE */
+unsigned int pin_ids_nfcle[] = {
+	MX25_PAD_NFCLE,
+};
+
+struct imx_pin pins_nfcle__nfcle[] = {
+	IMX25_PINCTRL_PIN(NFCLE, NFCLE),
+};
+
+struct imx_pin pins_nfcle__gpio_3_29[] = {
+	IMX25_PINCTRL_PIN(NFCLE, GPIO_3_29),
+};
+
+/* NFWP_B */
+unsigned int pin_ids_nfwp_b[] = {
+	MX25_PAD_NFWP_B,
+};
+
+struct imx_pin pins_nfwp_b__nfwp_b[] = {
+	IMX25_PINCTRL_PIN(NFWP_B, NFWP_B),
+};
+
+struct imx_pin pins_nfwp_b__gpio_3_30[] = {
+	IMX25_PINCTRL_PIN(NFWP_B, GPIO_3_30),
+};
+
+/* NFRB */
+unsigned int pin_ids_nfrb[] = {
+	MX25_PAD_NFRB,
+};
+
+struct imx_pin pins_nfrb__nfrb[] = {
+	IMX25_PINCTRL_PIN(NFRB, NFRB),
+};
+
+struct imx_pin pins_nfrb__gpio_3_31[] = {
+	IMX25_PINCTRL_PIN(NFRB, GPIO_3_31),
+};
+
+/* D15 */
+unsigned int pin_ids_d15[] = {
+	MX25_PAD_D15,
+};
+
+struct imx_pin pins_d15__d15[] = {
+	IMX25_PINCTRL_PIN(D15, D15),
+};
+
+struct imx_pin pins_d15__ld16[] = {
+	IMX25_PINCTRL_PIN(D15, LD16),
+};
+
+struct imx_pin pins_d15__gpio_4_5[] = {
+	IMX25_PINCTRL_PIN(D15, GPIO_4_5),
+};
+
+/* D14 */
+unsigned int pin_ids_d14[] = {
+	MX25_PAD_D14,
+};
+
+struct imx_pin pins_d14__d14[] = {
+	IMX25_PINCTRL_PIN(D14, D14),
+};
+
+struct imx_pin pins_d14__ld17[] = {
+	IMX25_PINCTRL_PIN(D14, LD17),
+};
+
+struct imx_pin pins_d14__gpio_4_6[] = {
+	IMX25_PINCTRL_PIN(D14, GPIO_4_6),
+};
+
+/* D13 */
+unsigned int pin_ids_d13[] = {
+	MX25_PAD_D13,
+};
+
+struct imx_pin pins_d13__d13[] = {
+	IMX25_PINCTRL_PIN(D13, D13),
+};
+
+struct imx_pin pins_d13__ld18[] = {
+	IMX25_PINCTRL_PIN(D13, LD18),
+};
+
+struct imx_pin pins_d13__gpio_4_7[] = {
+	IMX25_PINCTRL_PIN(D13, GPIO_4_7),
+};
+
+/* D12 */
+unsigned int pin_ids_d12[] = {
+	MX25_PAD_D12,
+};
+
+struct imx_pin pins_d12__d12[] = {
+	IMX25_PINCTRL_PIN(D12, D12),
+};
+
+struct imx_pin pins_d12__gpio_4_8[] = {
+	IMX25_PINCTRL_PIN(D12, GPIO_4_8),
+};
+
+/* D11 */
+unsigned int pin_ids_d11[] = {
+	MX25_PAD_D11,
+};
+
+struct imx_pin pins_d11__d11[] = {
+	IMX25_PINCTRL_PIN(D11, D11),
+};
+
+struct imx_pin pins_d11__gpio_4_9[] = {
+	IMX25_PINCTRL_PIN(D11, GPIO_4_9),
+};
+
+/* D10 */
+unsigned int pin_ids_d10[] = {
+	MX25_PAD_D10,
+};
+
+struct imx_pin pins_d10__d10[] = {
+	IMX25_PINCTRL_PIN(D10, D10),
+};
+
+struct imx_pin pins_d10__gpio_4_10[] = {
+	IMX25_PINCTRL_PIN(D10, GPIO_4_10),
+};
+
+struct imx_pin pins_d10__usbotg_oc[] = {
+	IMX25_PINCTRL_PIN(D10, USBOTG_OC),
+};
+
+/* D9 */
+unsigned int pin_ids_d9[] = {
+	MX25_PAD_D9,
+};
+
+struct imx_pin pins_d9__d9[] = {
+	IMX25_PINCTRL_PIN(D9, D9),
+};
+
+struct imx_pin pins_d9__gpio_4_11[] = {
+	IMX25_PINCTRL_PIN(D9, GPIO_4_11),
+};
+
+struct imx_pin pins_d9__usbh2_pwr[] = {
+	IMX25_PINCTRL_PIN(D9, USBH2_PWR),
+};
+
+/* D8 */
+unsigned int pin_ids_d8[] = {
+	MX25_PAD_D8,
+};
+
+struct imx_pin pins_d8__d8[] = {
+	IMX25_PINCTRL_PIN(D8, D8),
+};
+
+struct imx_pin pins_d8__gpio_4_12[] = {
+	IMX25_PINCTRL_PIN(D8, GPIO_4_12),
+};
+
+struct imx_pin pins_d8__usbh2_oc[] = {
+	IMX25_PINCTRL_PIN(D8, USBH2_OC),
+};
+
+/* D7 */
+unsigned int pin_ids_d7[] = {
+	MX25_PAD_D7,
+};
+
+struct imx_pin pins_d7__d7[] = {
+	IMX25_PINCTRL_PIN(D7, D7),
+};
+
+struct imx_pin pins_d7__gpio_4_13[] = {
+	IMX25_PINCTRL_PIN(D7, GPIO_4_13),
+};
+
+/* D6 */
+unsigned int pin_ids_d6[] = {
+	MX25_PAD_D6,
+};
+
+struct imx_pin pins_d6__d6[] = {
+	IMX25_PINCTRL_PIN(D6, D6),
+};
+
+struct imx_pin pins_d6__gpio_4_14[] = {
+	IMX25_PINCTRL_PIN(D6, GPIO_4_14),
+};
+
+/* D5 */
+unsigned int pin_ids_d5[] = {
+	MX25_PAD_D5,
+};
+
+struct imx_pin pins_d5__d5[] = {
+	IMX25_PINCTRL_PIN(D5, D5),
+};
+
+struct imx_pin pins_d5__gpio_4_15[] = {
+	IMX25_PINCTRL_PIN(D5, GPIO_4_15),
+};
+
+/* D4 */
+unsigned int pin_ids_d4[] = {
+	MX25_PAD_D4,
+};
+
+struct imx_pin pins_d4__d4[] = {
+	IMX25_PINCTRL_PIN(D4, D4),
+};
+
+struct imx_pin pins_d4__gpio_4_16[] = {
+	IMX25_PINCTRL_PIN(D4, GPIO_4_16),
+};
+
+/* D3 */
+unsigned int pin_ids_d3[] = {
+	MX25_PAD_D3,
+};
+
+struct imx_pin pins_d3__d3[] = {
+	IMX25_PINCTRL_PIN(D3, D3),
+};
+
+struct imx_pin pins_d3__gpio_4_17[] = {
+	IMX25_PINCTRL_PIN(D3, GPIO_4_17),
+};
+
+/* D2 */
+unsigned int pin_ids_d2[] = {
+	MX25_PAD_D2,
+};
+
+struct imx_pin pins_d2__d2[] = {
+	IMX25_PINCTRL_PIN(D2, D2),
+};
+
+struct imx_pin pins_d2__gpio_4_18[] = {
+	IMX25_PINCTRL_PIN(D2, GPIO_4_18),
+};
+
+/* D1 */
+unsigned int pin_ids_d1[] = {
+	MX25_PAD_D1,
+};
+
+struct imx_pin pins_d1__d1[] = {
+	IMX25_PINCTRL_PIN(D1, D1),
+};
+
+struct imx_pin pins_d1__gpio_4_19[] = {
+	IMX25_PINCTRL_PIN(D1, GPIO_4_19),
+};
+
+/* D0 */
+unsigned int pin_ids_d0[] = {
+	MX25_PAD_D0,
+};
+
+struct imx_pin pins_d0__d0[] = {
+	IMX25_PINCTRL_PIN(D0, D0),
+};
+
+struct imx_pin pins_d0__gpio_4_20[] = {
+	IMX25_PINCTRL_PIN(D0, GPIO_4_20),
+};
+
+/* LD0 */
+unsigned int pin_ids_ld0[] = {
+	MX25_PAD_LD0,
+};
+
+struct imx_pin pins_ld0__ld0[] = {
+	IMX25_PINCTRL_PIN(LD0, LD0),
+};
+
+struct imx_pin pins_ld0__csi_d0[] = {
+	IMX25_PINCTRL_PIN(LD0, CSI_D0),
+};
+
+struct imx_pin pins_ld0__gpio_2_15[] = {
+	IMX25_PINCTRL_PIN(LD0, GPIO_2_15),
+};
+
+/* LD1 */
+unsigned int pin_ids_ld1[] = {
+	MX25_PAD_LD1,
+};
+
+struct imx_pin pins_ld1__ld1[] = {
+	IMX25_PINCTRL_PIN(LD1, LD1),
+};
+
+struct imx_pin pins_ld1__csi_d1[] = {
+	IMX25_PINCTRL_PIN(LD1, CSI_D1),
+};
+
+struct imx_pin pins_ld1__gpio_2_16[] = {
+	IMX25_PINCTRL_PIN(LD1, GPIO_2_16),
+};
+
+/* LD2 */
+unsigned int pin_ids_ld2[] = {
+	MX25_PAD_LD2,
+};
+
+struct imx_pin pins_ld2__ld2[] = {
+	IMX25_PINCTRL_PIN(LD2, LD2),
+};
+
+struct imx_pin pins_ld2__gpio_2_17[] = {
+	IMX25_PINCTRL_PIN(LD2, GPIO_2_17),
+};
+
+/* LD3 */
+unsigned int pin_ids_ld3[] = {
+	MX25_PAD_LD3,
+};
+
+struct imx_pin pins_ld3__ld3[] = {
+	IMX25_PINCTRL_PIN(LD3, LD3),
+};
+
+struct imx_pin pins_ld3__gpio_2_18[] = {
+	IMX25_PINCTRL_PIN(LD3, GPIO_2_18),
+};
+
+/* LD4 */
+unsigned int pin_ids_ld4[] = {
+	MX25_PAD_LD4,
+};
+
+struct imx_pin pins_ld4__ld4[] = {
+	IMX25_PINCTRL_PIN(LD4, LD4),
+};
+
+struct imx_pin pins_ld4__gpio_2_19[] = {
+	IMX25_PINCTRL_PIN(LD4, GPIO_2_19),
+};
+
+/* LD5 */
+unsigned int pin_ids_ld5[] = {
+	MX25_PAD_LD5,
+};
+
+struct imx_pin pins_ld5__ld5[] = {
+	IMX25_PINCTRL_PIN(LD5, LD5),
+};
+
+struct imx_pin pins_ld5__gpio_1_19[] = {
+	IMX25_PINCTRL_PIN(LD5, GPIO_1_19),
+};
+
+/* LD6 */
+unsigned int pin_ids_ld6[] = {
+	MX25_PAD_LD6,
+};
+
+struct imx_pin pins_ld6__ld6[] = {
+	IMX25_PINCTRL_PIN(LD6, LD6),
+};
+
+struct imx_pin pins_ld6__gpio_1_20[] = {
+	IMX25_PINCTRL_PIN(LD6, GPIO_1_20),
+};
+
+/* LD7 */
+unsigned int pin_ids_ld7[] = {
+	MX25_PAD_LD7,
+};
+
+struct imx_pin pins_ld7__ld7[] = {
+	IMX25_PINCTRL_PIN(LD7, LD7),
+};
+
+struct imx_pin pins_ld7__gpio_1_21[] = {
+	IMX25_PINCTRL_PIN(LD7, GPIO_1_21),
 };
 
 /* LD8 */
@@ -1017,8 +1737,16 @@ unsigned int pin_ids_ld8[] = {
 	MX25_PAD_LD8,
 };
 
+struct imx_pin pins_ld8__ld8[] = {
+	IMX25_PINCTRL_PIN(LD8, LD8),
+};
+
 struct imx_pin pins_ld8__uart4_rxd[] = {
 	IMX25_PINCTRL_PIN(LD8, UART4_RXD),
+};
+
+struct imx_pin pins_ld8__fec_tx_err[] = {
+	IMX25_PINCTRL_PIN(LD8, FEC_TX_ERR),
 };
 
 /* LD9 */
@@ -1026,8 +1754,16 @@ unsigned int pin_ids_ld9[] = {
 	MX25_PAD_LD9,
 };
 
+struct imx_pin pins_ld9__ld9[] = {
+	IMX25_PINCTRL_PIN(LD9, LD9),
+};
+
 struct imx_pin pins_ld9__uart4_txd[] = {
 	IMX25_PINCTRL_PIN(LD9, UART4_TXD),
+};
+
+struct imx_pin pins_ld9__fec_col[] = {
+	IMX25_PINCTRL_PIN(LD9, FEC_COL),
 };
 
 /* LD10 */
@@ -1035,8 +1771,16 @@ unsigned int pin_ids_ld10[] = {
 	MX25_PAD_LD10,
 };
 
+struct imx_pin pins_ld10__ld10[] = {
+	IMX25_PINCTRL_PIN(LD10, LD10),
+};
+
 struct imx_pin pins_ld10__uart4_rts[] = {
 	IMX25_PINCTRL_PIN(LD10, UART4_RTS),
+};
+
+struct imx_pin pins_ld10__fec_rx_er[] = {
+	IMX25_PINCTRL_PIN(LD10, FEC_RX_ER),
 };
 
 /* LD11 */
@@ -1044,8 +1788,154 @@ unsigned int pin_ids_ld11[] = {
 	MX25_PAD_LD11,
 };
 
+struct imx_pin pins_ld11__ld11[] = {
+	IMX25_PINCTRL_PIN(LD11, LD11),
+};
+
 struct imx_pin pins_ld11__uart4_cts[] = {
 	IMX25_PINCTRL_PIN(LD11, UART4_CTS),
+};
+
+struct imx_pin pins_ld11__fec_rdata2[] = {
+	IMX25_PINCTRL_PIN(LD11, FEC_RDATA2),
+};
+
+/* LD12 */
+unsigned int pin_ids_ld12[] = {
+	MX25_PAD_LD12,
+};
+
+struct imx_pin pins_ld12__ld12[] = {
+	IMX25_PINCTRL_PIN(LD12, LD12),
+};
+
+struct imx_pin pins_ld12__fec_rdata3[] = {
+	IMX25_PINCTRL_PIN(LD12, FEC_RDATA3),
+};
+
+/* LD13 */
+unsigned int pin_ids_ld13[] = {
+	MX25_PAD_LD13,
+};
+
+struct imx_pin pins_ld13__ld13[] = {
+	IMX25_PINCTRL_PIN(LD13, LD13),
+};
+
+struct imx_pin pins_ld13__fec_tdata2[] = {
+	IMX25_PINCTRL_PIN(LD13, FEC_TDATA2),
+};
+
+/* LD14 */
+unsigned int pin_ids_ld14[] = {
+	MX25_PAD_LD14,
+};
+
+struct imx_pin pins_ld14__ld14[] = {
+	IMX25_PINCTRL_PIN(LD14, LD14),
+};
+
+struct imx_pin pins_ld14__fec_tdata3[] = {
+	IMX25_PINCTRL_PIN(LD14, FEC_TDATA3),
+};
+
+/* LD15 */
+unsigned int pin_ids_ld15[] = {
+	MX25_PAD_LD15,
+};
+
+struct imx_pin pins_ld15__ld15[] = {
+	IMX25_PINCTRL_PIN(LD15, LD15),
+};
+
+struct imx_pin pins_ld15__fec_rx_clk[] = {
+	IMX25_PINCTRL_PIN(LD15, FEC_RX_CLK),
+};
+
+/* HSYNC */
+unsigned int pin_ids_hsync[] = {
+	MX25_PAD_HSYNC,
+};
+
+struct imx_pin pins_hsync__hsync[] = {
+	IMX25_PINCTRL_PIN(HSYNC, HSYNC),
+};
+
+struct imx_pin pins_hsync__gpio_1_22[] = {
+	IMX25_PINCTRL_PIN(HSYNC, GPIO_1_22),
+};
+
+/* VSYNC */
+unsigned int pin_ids_vsync[] = {
+	MX25_PAD_VSYNC,
+};
+
+struct imx_pin pins_vsync__vsync[] = {
+	IMX25_PINCTRL_PIN(VSYNC, VSYNC),
+};
+
+struct imx_pin pins_vsync__gpio_1_23[] = {
+	IMX25_PINCTRL_PIN(VSYNC, GPIO_1_23),
+};
+
+/* LSCLK */
+unsigned int pin_ids_lsclk[] = {
+	MX25_PAD_LSCLK,
+};
+
+struct imx_pin pins_lsclk__lsclk[] = {
+	IMX25_PINCTRL_PIN(LSCLK, LSCLK),
+};
+
+struct imx_pin pins_lsclk__gpio_1_24[] = {
+	IMX25_PINCTRL_PIN(LSCLK, GPIO_1_24),
+};
+
+/* OE_ACD */
+unsigned int pin_ids_oe_acd[] = {
+	MX25_PAD_OE_ACD,
+};
+
+struct imx_pin pins_oe_acd__oe_acd[] = {
+	IMX25_PINCTRL_PIN(OE_ACD, OE_ACD),
+};
+
+struct imx_pin pins_oe_acd__gpio_1_25[] = {
+	IMX25_PINCTRL_PIN(OE_ACD, GPIO_1_25),
+};
+
+/* CONTRAST */
+unsigned int pin_ids_contrast[] = {
+	MX25_PAD_CONTRAST,
+};
+
+struct imx_pin pins_contrast__contrast[] = {
+	IMX25_PINCTRL_PIN(CONTRAST, CONTRAST),
+};
+
+struct imx_pin pins_contrast__pwm4_pwmo[] = {
+	IMX25_PINCTRL_PIN(CONTRAST, PWM4_PWMO),
+};
+
+struct imx_pin pins_contrast__fec_crs[] = {
+	IMX25_PINCTRL_PIN(CONTRAST, FEC_CRS),
+};
+
+/* PWM */
+unsigned int pin_ids_pwm[] = {
+	MX25_PAD_PWM,
+};
+
+struct imx_pin pins_pwm__pwm[] = {
+	IMX25_PINCTRL_PIN(PWM, PWM),
+};
+
+struct imx_pin pins_pwm__gpio_1_26[] = {
+	IMX25_PINCTRL_PIN(PWM, GPIO_1_26),
+};
+
+struct imx_pin pins_pwm__usbh2_oc[] = {
+	IMX25_PINCTRL_PIN(PWM, USBH2_OC),
 };
 
 /* CSI_D2 */
@@ -1053,8 +1943,20 @@ unsigned int pin_ids_csi_d2[] = {
 	MX25_PAD_CSI_D2,
 };
 
+struct imx_pin pins_csi_d2__csi_d2[] = {
+	IMX25_PINCTRL_PIN(CSI_D2, CSI_D2),
+};
+
 struct imx_pin pins_csi_d2__uart5_rxd_mux[] = {
 	IMX25_PINCTRL_PIN(CSI_D2, UART5_RXD_MUX),
+};
+
+struct imx_pin pins_csi_d2__gpio_1_27[] = {
+	IMX25_PINCTRL_PIN(CSI_D2, GPIO_1_27),
+};
+
+struct imx_pin pins_csi_d2__cspi3_mosi[] = {
+	IMX25_PINCTRL_PIN(CSI_D2, CSPI3_MOSI),
 };
 
 /* CSI_D3 */
@@ -1062,8 +1964,20 @@ unsigned int pin_ids_csi_d3[] = {
 	MX25_PAD_CSI_D3,
 };
 
+struct imx_pin pins_csi_d3__csi_d3[] = {
+	IMX25_PINCTRL_PIN(CSI_D3, CSI_D3),
+};
+
 struct imx_pin pins_csi_d3__uart5_txd_mux[] = {
 	IMX25_PINCTRL_PIN(CSI_D3, UART5_TXD_MUX),
+};
+
+struct imx_pin pins_csi_d3__gpio_1_28[] = {
+	IMX25_PINCTRL_PIN(CSI_D3, GPIO_1_28),
+};
+
+struct imx_pin pins_csi_d3__cspi3_miso[] = {
+	IMX25_PINCTRL_PIN(CSI_D3, CSPI3_MISO),
 };
 
 /* CSI_D4 */
@@ -1071,8 +1985,20 @@ unsigned int pin_ids_csi_d4[] = {
 	MX25_PAD_CSI_D4,
 };
 
+struct imx_pin pins_csi_d4__csi_d4[] = {
+	IMX25_PINCTRL_PIN(CSI_D4, CSI_D4),
+};
+
 struct imx_pin pins_csi_d4__uart5_rts[] = {
 	IMX25_PINCTRL_PIN(CSI_D4, UART5_RTS),
+};
+
+struct imx_pin pins_csi_d4__gpio_1_29[] = {
+	IMX25_PINCTRL_PIN(CSI_D4, GPIO_1_29),
+};
+
+struct imx_pin pins_csi_d4__cspi3_sclk[] = {
+	IMX25_PINCTRL_PIN(CSI_D4, CSPI3_SCLK),
 };
 
 /* CSI_D5 */
@@ -1080,8 +2006,148 @@ unsigned int pin_ids_csi_d5[] = {
 	MX25_PAD_CSI_D5,
 };
 
+struct imx_pin pins_csi_d5__csi_d5[] = {
+	IMX25_PINCTRL_PIN(CSI_D5, CSI_D5),
+};
+
 struct imx_pin pins_csi_d5__uart5_cts[] = {
 	IMX25_PINCTRL_PIN(CSI_D5, UART5_CTS),
+};
+
+struct imx_pin pins_csi_d5__gpio_1_30[] = {
+	IMX25_PINCTRL_PIN(CSI_D5, GPIO_1_30),
+};
+
+struct imx_pin pins_csi_d5__cspi3_rdy[] = {
+	IMX25_PINCTRL_PIN(CSI_D5, CSPI3_RDY),
+};
+
+/* CSI_D6 */
+unsigned int pin_ids_csi_d6[] = {
+	MX25_PAD_CSI_D6,
+};
+
+struct imx_pin pins_csi_d6__csi_d6[] = {
+	IMX25_PINCTRL_PIN(CSI_D6, CSI_D6),
+};
+
+struct imx_pin pins_csi_d6__sd2_cmd[] = {
+	IMX25_PINCTRL_PIN(CSI_D6, SD2_CMD),
+};
+
+struct imx_pin pins_csi_d6__gpio_1_31[] = {
+	IMX25_PINCTRL_PIN(CSI_D6, GPIO_1_31),
+};
+
+/* CSI_D7 */
+unsigned int pin_ids_csi_d7[] = {
+	MX25_PAD_CSI_D7,
+};
+
+struct imx_pin pins_csi_d7__csi_d7[] = {
+	IMX25_PINCTRL_PIN(CSI_D7, CSI_D7),
+};
+
+struct imx_pin pins_csi_d7__sd2_clk[] = {
+	IMX25_PINCTRL_PIN(CSI_D7, SD2_CLK),
+};
+
+struct imx_pin pins_csi_d7__gpio_1_6[] = {
+	IMX25_PINCTRL_PIN(CSI_D7, GPIO_1_6),
+};
+
+/* CSI_D8 */
+unsigned int pin_ids_csi_d8[] = {
+	MX25_PAD_CSI_D8,
+};
+
+struct imx_pin pins_csi_d8__csi_d8[] = {
+	IMX25_PINCTRL_PIN(CSI_D8, CSI_D8),
+};
+
+struct imx_pin pins_csi_d8__gpio_1_7[] = {
+	IMX25_PINCTRL_PIN(CSI_D8, GPIO_1_7),
+};
+
+/* CSI_D9 */
+unsigned int pin_ids_csi_d9[] = {
+	MX25_PAD_CSI_D9,
+};
+
+struct imx_pin pins_csi_d9__csi_d9[] = {
+	IMX25_PINCTRL_PIN(CSI_D9, CSI_D9),
+};
+
+struct imx_pin pins_csi_d9__gpio_4_21[] = {
+	IMX25_PINCTRL_PIN(CSI_D9, GPIO_4_21),
+};
+
+/* CSI_MCLK */
+unsigned int pin_ids_csi_mclk[] = {
+	MX25_PAD_CSI_MCLK,
+};
+
+struct imx_pin pins_csi_mclk__csi_mclk[] = {
+	IMX25_PINCTRL_PIN(CSI_MCLK, CSI_MCLK),
+};
+
+struct imx_pin pins_csi_mclk__sd2_data0[] = {
+	IMX25_PINCTRL_PIN(CSI_MCLK, SD2_DATA0),
+};
+
+struct imx_pin pins_csi_mclk__gpio_1_8[] = {
+	IMX25_PINCTRL_PIN(CSI_MCLK, GPIO_1_8),
+};
+
+/* CSI_VSYNC */
+unsigned int pin_ids_csi_vsync[] = {
+	MX25_PAD_CSI_VSYNC,
+};
+
+struct imx_pin pins_csi_vsync__csi_vsync[] = {
+	IMX25_PINCTRL_PIN(CSI_VSYNC, CSI_VSYNC),
+};
+
+struct imx_pin pins_csi_vsync__sd2_data1[] = {
+	IMX25_PINCTRL_PIN(CSI_VSYNC, SD2_DATA1),
+};
+
+struct imx_pin pins_csi_vsync__gpio_1_9[] = {
+	IMX25_PINCTRL_PIN(CSI_VSYNC, GPIO_1_9),
+};
+
+/* CSI_HSYNC */
+unsigned int pin_ids_csi_hsync[] = {
+	MX25_PAD_CSI_HSYNC,
+};
+
+struct imx_pin pins_csi_hsync__csi_hsync[] = {
+	IMX25_PINCTRL_PIN(CSI_HSYNC, CSI_HSYNC),
+};
+
+struct imx_pin pins_csi_hsync__sd2_data2[] = {
+	IMX25_PINCTRL_PIN(CSI_HSYNC, SD2_DATA2),
+};
+
+struct imx_pin pins_csi_hsync__gpio_1_10[] = {
+	IMX25_PINCTRL_PIN(CSI_HSYNC, GPIO_1_10),
+};
+
+/* CSI_PIXCLK */
+unsigned int pin_ids_csi_pixclk[] = {
+	MX25_PAD_CSI_PIXCLK,
+};
+
+struct imx_pin pins_csi_pixclk__csi_pixclk[] = {
+	IMX25_PINCTRL_PIN(CSI_PIXCLK, CSI_PIXCLK),
+};
+
+struct imx_pin pins_csi_pixclk__sd2_data3[] = {
+	IMX25_PINCTRL_PIN(CSI_PIXCLK, SD2_DATA3),
+};
+
+struct imx_pin pins_csi_pixclk__gpio_1_11[] = {
+	IMX25_PINCTRL_PIN(CSI_PIXCLK, GPIO_1_11),
 };
 
 /* I2C1_CLK */
@@ -1093,6 +2159,10 @@ struct imx_pin pins_i2c1_clk__i2c1_clk[] = {
 	IMX25_PINCTRL_PIN(I2C1_CLK, I2C1_CLK),
 };
 
+struct imx_pin pins_i2c1_clk__gpio_1_12[] = {
+	IMX25_PINCTRL_PIN(I2C1_CLK, GPIO_1_12),
+};
+
 /* I2C1_DAT */
 unsigned int pin_ids_i2c1_dat[] = {
 	MX25_PAD_I2C1_DAT,
@@ -1102,9 +2172,56 @@ struct imx_pin pins_i2c1_dat__i2c1_dat[] = {
 	IMX25_PINCTRL_PIN(I2C1_DAT, I2C1_DAT),
 };
 
+struct imx_pin pins_i2c1_dat__gpio_1_13[] = {
+	IMX25_PINCTRL_PIN(I2C1_DAT, GPIO_1_13),
+};
+
+/* CSPI1_MOSI */
+unsigned int pin_ids_cspi1_mosi[] = {
+	MX25_PAD_CSPI1_MOSI,
+};
+
+struct imx_pin pins_cspi1_mosi__cspi1_mosi[] = {
+	IMX25_PINCTRL_PIN(CSPI1_MOSI, CSPI1_MOSI),
+};
+
+struct imx_pin pins_cspi1_mosi__gpio_1_14[] = {
+	IMX25_PINCTRL_PIN(CSPI1_MOSI, GPIO_1_14),
+};
+
+/* CSPI1_MISO */
+unsigned int pin_ids_cspi1_miso[] = {
+	MX25_PAD_CSPI1_MISO,
+};
+
+struct imx_pin pins_cspi1_miso__cspi1_miso[] = {
+	IMX25_PINCTRL_PIN(CSPI1_MISO, CSPI1_MISO),
+};
+
+struct imx_pin pins_cspi1_miso__gpio_1_15[] = {
+	IMX25_PINCTRL_PIN(CSPI1_MISO, GPIO_1_15),
+};
+
+/* CSPI1_SS0 */
+unsigned int pin_ids_cspi1_ss0[] = {
+	MX25_PAD_CSPI1_SS0,
+};
+
+struct imx_pin pins_cspi1_ss0__cspi1_ss0[] = {
+	IMX25_PINCTRL_PIN(CSPI1_SS0, CSPI1_SS0),
+};
+
+struct imx_pin pins_cspi1_ss0__gpio_1_16[] = {
+	IMX25_PINCTRL_PIN(CSPI1_SS0, GPIO_1_16),
+};
+
 /* CSPI1_SS1 */
 unsigned int pin_ids_cspi1_ss1[] = {
 	MX25_PAD_CSPI1_SS1,
+};
+
+struct imx_pin pins_cspi1_ss1__cspi1_ss1[] = {
+	IMX25_PINCTRL_PIN(CSPI1_SS1, CSPI1_SS1),
 };
 
 struct imx_pin pins_cspi1_ss1__gpio_1_17[] = {
@@ -1116,89 +2233,145 @@ unsigned int pin_ids_cspi1_sclk[] = {
 	MX25_PAD_CSPI1_SCLK,
 };
 
+struct imx_pin pins_cspi1_sclk__cspi1_sclk[] = {
+	IMX25_PINCTRL_PIN(CSPI1_SCLK, CSPI1_SCLK),
+};
+
 struct imx_pin pins_cspi1_sclk__gpio_1_18[] = {
 	IMX25_PINCTRL_PIN(CSPI1_SCLK, GPIO_1_18),
 };
 
-/* KPP_COL1 */
-unsigned int pin_ids_kpp_col1[] = {
-	MX25_PAD_KPP_COL1,
+/* CSPI1_RDY */
+unsigned int pin_ids_cspi1_rdy[] = {
+	MX25_PAD_CSPI1_RDY,
 };
 
-struct imx_pin pins_kpp_col1__gpio_3_2[] = {
-	IMX25_PINCTRL_PIN(KPP_COL1, GPIO_3_2),
+struct imx_pin pins_cspi1_rdy__cspi1_rdy[] = {
+	IMX25_PINCTRL_PIN(CSPI1_RDY, CSPI1_RDY),
 };
 
-/* KPP_COL0 */
-unsigned int pin_ids_kpp_col0[] = {
-	MX25_PAD_KPP_COL0,
+struct imx_pin pins_cspi1_rdy__gpio_2_22[] = {
+	IMX25_PINCTRL_PIN(CSPI1_RDY, GPIO_2_22),
 };
 
-struct imx_pin pins_kpp_col0__gpio_3_1[] = {
-	IMX25_PINCTRL_PIN(KPP_COL0, GPIO_3_1),
+/* UART1_RXD */
+unsigned int pin_ids_uart1_rxd[] = {
+	MX25_PAD_UART1_RXD,
 };
 
-/* NFWP_B */
-unsigned int pin_ids_nfwp_b[] = {
-	MX25_PAD_NFWP_B,
+struct imx_pin pins_uart1_rxd__uart1_rxd[] = {
+	IMX25_PINCTRL_PIN(UART1_RXD, UART1_RXD),
 };
 
-struct imx_pin pins_nfwp_b__gpio_3_30[] = {
-	IMX25_PINCTRL_PIN(NFWP_B, GPIO_3_30),
+struct imx_pin pins_uart1_rxd__gpio_4_22[] = {
+	IMX25_PINCTRL_PIN(UART1_RXD, GPIO_4_22),
 };
 
-/* CSI_D6 */
-unsigned int pin_ids_csi_d6[] = {
-	MX25_PAD_CSI_D6,
+/* UART1_TXD */
+unsigned int pin_ids_uart1_txd[] = {
+	MX25_PAD_UART1_TXD,
 };
 
-struct imx_pin pins_csi_d6__sd2_cmd[] = {
-	IMX25_PINCTRL_PIN(CSI_D6, SD2_CMD),
+struct imx_pin pins_uart1_txd__uart1_txd[] = {
+	IMX25_PINCTRL_PIN(UART1_TXD, UART1_TXD),
 };
 
-/* CSI_D7 */
-unsigned int pin_ids_csi_d7[] = {
-	MX25_PAD_CSI_D7,
+struct imx_pin pins_uart1_txd__gpio_4_23[] = {
+	IMX25_PINCTRL_PIN(UART1_TXD, GPIO_4_23),
 };
 
-struct imx_pin pins_csi_d7__sd2_clk[] = {
-	IMX25_PINCTRL_PIN(CSI_D7, SD2_CLK),
+/* UART1_RTS */
+unsigned int pin_ids_uart1_rts[] = {
+	MX25_PAD_UART1_RTS,
 };
 
-/* CSI_MCLK */
-unsigned int pin_ids_csi_mclk[] = {
-	MX25_PAD_CSI_MCLK,
+struct imx_pin pins_uart1_rts__uart1_rts[] = {
+	IMX25_PINCTRL_PIN(UART1_RTS, UART1_RTS),
 };
 
-struct imx_pin pins_csi_mclk__sd2_data0[] = {
-	IMX25_PINCTRL_PIN(CSI_MCLK, SD2_DATA0),
+struct imx_pin pins_uart1_rts__csi_d0[] = {
+	IMX25_PINCTRL_PIN(UART1_RTS, CSI_D0),
 };
 
-/* CSI_VSYNC */
-unsigned int pin_ids_csi_vsync[] = {
-	MX25_PAD_CSI_VSYNC,
+struct imx_pin pins_uart1_rts__gpio_4_24[] = {
+	IMX25_PINCTRL_PIN(UART1_RTS, GPIO_4_24),
 };
 
-struct imx_pin pins_csi_vsync__sd2_data1[] = {
-	IMX25_PINCTRL_PIN(CSI_VSYNC, SD2_DATA1),
+/* UART1_CTS */
+unsigned int pin_ids_uart1_cts[] = {
+	MX25_PAD_UART1_CTS,
 };
 
-/* CSI_HSYNC */
-unsigned int pin_ids_csi_hsync[] = {
-	MX25_PAD_CSI_HSYNC,
+struct imx_pin pins_uart1_cts__uart1_cts[] = {
+	IMX25_PINCTRL_PIN(UART1_CTS, UART1_CTS),
 };
 
-struct imx_pin pins_csi_hsync__sd2_data2[] = {
-	IMX25_PINCTRL_PIN(CSI_HSYNC, SD2_DATA2),
+struct imx_pin pins_uart1_cts__csi_d1[] = {
+	IMX25_PINCTRL_PIN(UART1_CTS, CSI_D1),
 };
 
-/* CSI_PIXCLK */
-unsigned int pin_ids_csi_pixclk[] = {
-	MX25_PAD_CSI_PIXCLK,
+struct imx_pin pins_uart1_cts__gpio_4_25[] = {
+	IMX25_PINCTRL_PIN(UART1_CTS, GPIO_4_25),
 };
 
-struct imx_pin pins_csi_pixclk__sd2_data3[] = {
-	IMX25_PINCTRL_PIN(CSI_PIXCLK, SD2_DATA3),
+/* UART2_RXD */
+unsigned int pin_ids_uart2_rxd[] = {
+	MX25_PAD_UART2_RXD,
+};
+
+struct imx_pin pins_uart2_rxd__uart2_rxd[] = {
+	IMX25_PINCTRL_PIN(UART2_RXD, UART2_RXD),
+};
+
+struct imx_pin pins_uart2_rxd__gpio_4_26[] = {
+	IMX25_PINCTRL_PIN(UART2_RXD, GPIO_4_26),
+};
+
+/* UART2_TXD */
+unsigned int pin_ids_uart2_txd[] = {
+	MX25_PAD_UART2_TXD,
+};
+
+struct imx_pin pins_uart2_txd__uart2_txd[] = {
+	IMX25_PINCTRL_PIN(UART2_TXD, UART2_TXD),
+};
+
+struct imx_pin pins_uart2_txd__gpio_4_27[] = {
+	IMX25_PINCTRL_PIN(UART2_TXD, GPIO_4_27),
+};
+
+/* UART2_RTS */
+unsigned int pin_ids_uart2_rts[] = {
+	MX25_PAD_UART2_RTS,
+};
+
+struct imx_pin pins_uart2_rts__uart2_rts[] = {
+	IMX25_PINCTRL_PIN(UART2_RTS, UART2_RTS),
+};
+
+struct imx_pin pins_uart2_rts__fec_col[] = {
+	IMX25_PINCTRL_PIN(UART2_RTS, FEC_COL),
+};
+
+struct imx_pin pins_uart2_rts__gpio_4_28[] = {
+	IMX25_PINCTRL_PIN(UART2_RTS, GPIO_4_28),
+};
+
+/* UART2_CTS */
+unsigned int pin_ids_uart2_cts[] = {
+	MX25_PAD_UART2_CTS,
+};
+
+struct imx_pin pins_uart2_cts__fec_rx_er[] = {
+	IMX25_PINCTRL_PIN(UART2_CTS, FEC_RX_ER),
+};
+
+struct imx_pin pins_uart2_cts__uart2_cts[] = {
+	IMX25_PINCTRL_PIN(UART2_CTS, UART2_CTS),
+};
+
+struct imx_pin pins_uart2_cts__gpio_4_29[] = {
+	IMX25_PINCTRL_PIN(UART2_CTS, GPIO_4_29),
 };
 
 /* SD1_CMD */
@@ -1210,6 +2383,14 @@ struct imx_pin pins_sd1_cmd__sd1_cmd[] = {
 	IMX25_PINCTRL_PIN(SD1_CMD, SD1_CMD),
 };
 
+struct imx_pin pins_sd1_cmd__fec_rdata2[] = {
+	IMX25_PINCTRL_PIN(SD1_CMD, FEC_RDATA2),
+};
+
+struct imx_pin pins_sd1_cmd__gpio_2_23[] = {
+	IMX25_PINCTRL_PIN(SD1_CMD, GPIO_2_23),
+};
+
 /* SD1_CLK */
 unsigned int pin_ids_sd1_clk[] = {
 	MX25_PAD_SD1_CLK,
@@ -1217,6 +2398,14 @@ unsigned int pin_ids_sd1_clk[] = {
 
 struct imx_pin pins_sd1_clk__sd1_clk[] = {
 	IMX25_PINCTRL_PIN(SD1_CLK, SD1_CLK),
+};
+
+struct imx_pin pins_sd1_clk__fec_rdata3[] = {
+	IMX25_PINCTRL_PIN(SD1_CLK, FEC_RDATA3),
+};
+
+struct imx_pin pins_sd1_clk__gpio_2_24[] = {
+	IMX25_PINCTRL_PIN(SD1_CLK, GPIO_2_24),
 };
 
 /* SD1_DATA0 */
@@ -1228,6 +2417,10 @@ struct imx_pin pins_sd1_data0__sd1_data0[] = {
 	IMX25_PINCTRL_PIN(SD1_DATA0, SD1_DATA0),
 };
 
+struct imx_pin pins_sd1_data0__gpio_2_25[] = {
+	IMX25_PINCTRL_PIN(SD1_DATA0, GPIO_2_25),
+};
+
 /* SD1_DATA1 */
 unsigned int pin_ids_sd1_data1[] = {
 	MX25_PAD_SD1_DATA1,
@@ -1235,6 +2428,14 @@ unsigned int pin_ids_sd1_data1[] = {
 
 struct imx_pin pins_sd1_data1__sd1_data1[] = {
 	IMX25_PINCTRL_PIN(SD1_DATA1, SD1_DATA1),
+};
+
+struct imx_pin pins_sd1_data1__aud7_rxd[] = {
+	IMX25_PINCTRL_PIN(SD1_DATA1, AUD7_RXD),
+};
+
+struct imx_pin pins_sd1_data1__gpio_2_26[] = {
+	IMX25_PINCTRL_PIN(SD1_DATA1, GPIO_2_26),
 };
 
 /* SD1_DATA2 */
@@ -1246,6 +2447,14 @@ struct imx_pin pins_sd1_data2__sd1_data2[] = {
 	IMX25_PINCTRL_PIN(SD1_DATA2, SD1_DATA2),
 };
 
+struct imx_pin pins_sd1_data2__fec_rx_clk[] = {
+	IMX25_PINCTRL_PIN(SD1_DATA2, FEC_RX_CLK),
+};
+
+struct imx_pin pins_sd1_data2__gpio_2_27[] = {
+	IMX25_PINCTRL_PIN(SD1_DATA2, GPIO_2_27),
+};
+
 /* SD1_DATA3 */
 unsigned int pin_ids_sd1_data3[] = {
 	MX25_PAD_SD1_DATA3,
@@ -1253,6 +2462,552 @@ unsigned int pin_ids_sd1_data3[] = {
 
 struct imx_pin pins_sd1_data3__sd1_data3[] = {
 	IMX25_PINCTRL_PIN(SD1_DATA3, SD1_DATA3),
+};
+
+struct imx_pin pins_sd1_data3__fec_crs[] = {
+	IMX25_PINCTRL_PIN(SD1_DATA3, FEC_CRS),
+};
+
+struct imx_pin pins_sd1_data3__gpio_2_28[] = {
+	IMX25_PINCTRL_PIN(SD1_DATA3, GPIO_2_28),
+};
+
+/* KPP_ROW0 */
+unsigned int pin_ids_kpp_row0[] = {
+	MX25_PAD_KPP_ROW0,
+};
+
+struct imx_pin pins_kpp_row0__kpp_row0[] = {
+	IMX25_PINCTRL_PIN(KPP_ROW0, KPP_ROW0),
+};
+
+struct imx_pin pins_kpp_row0__uart3_rxd[] = {
+	IMX25_PINCTRL_PIN(KPP_ROW0, UART3_RXD),
+};
+
+struct imx_pin pins_kpp_row0__gpio_2_29[] = {
+	IMX25_PINCTRL_PIN(KPP_ROW0, GPIO_2_29),
+};
+
+/* KPP_ROW1 */
+unsigned int pin_ids_kpp_row1[] = {
+	MX25_PAD_KPP_ROW1,
+};
+
+struct imx_pin pins_kpp_row1__kpp_row1[] = {
+	IMX25_PINCTRL_PIN(KPP_ROW1, KPP_ROW1),
+};
+
+struct imx_pin pins_kpp_row1__uart3_txd[] = {
+	IMX25_PINCTRL_PIN(KPP_ROW1, UART3_TXD),
+};
+
+struct imx_pin pins_kpp_row1__gpio_2_30[] = {
+	IMX25_PINCTRL_PIN(KPP_ROW1, GPIO_2_30),
+};
+
+/* KPP_ROW2 */
+unsigned int pin_ids_kpp_row2[] = {
+	MX25_PAD_KPP_ROW2,
+};
+
+struct imx_pin pins_kpp_row2__kpp_row2[] = {
+	IMX25_PINCTRL_PIN(KPP_ROW2, KPP_ROW2),
+};
+
+struct imx_pin pins_kpp_row2__uart3_rts[] = {
+	IMX25_PINCTRL_PIN(KPP_ROW2, UART3_RTS),
+};
+
+struct imx_pin pins_kpp_row2__csi_d0[] = {
+	IMX25_PINCTRL_PIN(KPP_ROW2, CSI_D0),
+};
+
+struct imx_pin pins_kpp_row2__gpio_2_31[] = {
+	IMX25_PINCTRL_PIN(KPP_ROW2, GPIO_2_31),
+};
+
+/* KPP_ROW3 */
+unsigned int pin_ids_kpp_row3[] = {
+	MX25_PAD_KPP_ROW3,
+};
+
+struct imx_pin pins_kpp_row3__kpp_row3[] = {
+	IMX25_PINCTRL_PIN(KPP_ROW3, KPP_ROW3),
+};
+
+struct imx_pin pins_kpp_row3__uart3_cts[] = {
+	IMX25_PINCTRL_PIN(KPP_ROW3, UART3_CTS),
+};
+
+struct imx_pin pins_kpp_row3__csi_ld1[] = {
+	IMX25_PINCTRL_PIN(KPP_ROW3, CSI_LD1),
+};
+
+struct imx_pin pins_kpp_row3__gpio_3_0[] = {
+	IMX25_PINCTRL_PIN(KPP_ROW3, GPIO_3_0),
+};
+
+/* KPP_COL0 */
+unsigned int pin_ids_kpp_col0[] = {
+	MX25_PAD_KPP_COL0,
+};
+
+struct imx_pin pins_kpp_col0__kpp_col0[] = {
+	IMX25_PINCTRL_PIN(KPP_COL0, KPP_COL0),
+};
+
+struct imx_pin pins_kpp_col0__uart4_rxd_mux[] = {
+	IMX25_PINCTRL_PIN(KPP_COL0, UART4_RXD_MUX),
+};
+
+struct imx_pin pins_kpp_col0__aud5_txd[] = {
+	IMX25_PINCTRL_PIN(KPP_COL0, AUD5_TXD),
+};
+
+struct imx_pin pins_kpp_col0__gpio_3_1[] = {
+	IMX25_PINCTRL_PIN(KPP_COL0, GPIO_3_1),
+};
+
+/* KPP_COL1 */
+unsigned int pin_ids_kpp_col1[] = {
+	MX25_PAD_KPP_COL1,
+};
+
+struct imx_pin pins_kpp_col1__kpp_col1[] = {
+	IMX25_PINCTRL_PIN(KPP_COL1, KPP_COL1),
+};
+
+struct imx_pin pins_kpp_col1__uart4_txd_mux[] = {
+	IMX25_PINCTRL_PIN(KPP_COL1, UART4_TXD_MUX),
+};
+
+struct imx_pin pins_kpp_col1__aud5_rxd[] = {
+	IMX25_PINCTRL_PIN(KPP_COL1, AUD5_RXD),
+};
+
+struct imx_pin pins_kpp_col1__gpio_3_2[] = {
+	IMX25_PINCTRL_PIN(KPP_COL1, GPIO_3_2),
+};
+
+/* KPP_COL2 */
+unsigned int pin_ids_kpp_col2[] = {
+	MX25_PAD_KPP_COL2,
+};
+
+struct imx_pin pins_kpp_col2__kpp_col2[] = {
+	IMX25_PINCTRL_PIN(KPP_COL2, KPP_COL2),
+};
+
+struct imx_pin pins_kpp_col2__uart4_rts[] = {
+	IMX25_PINCTRL_PIN(KPP_COL2, UART4_RTS),
+};
+
+struct imx_pin pins_kpp_col2__aud5_txc[] = {
+	IMX25_PINCTRL_PIN(KPP_COL2, AUD5_TXC),
+};
+
+struct imx_pin pins_kpp_col2__gpio_3_3[] = {
+	IMX25_PINCTRL_PIN(KPP_COL2, GPIO_3_3),
+};
+
+/* KPP_COL3 */
+unsigned int pin_ids_kpp_col3[] = {
+	MX25_PAD_KPP_COL3,
+};
+
+struct imx_pin pins_kpp_col3__kpp_col3[] = {
+	IMX25_PINCTRL_PIN(KPP_COL3, KPP_COL3),
+};
+
+struct imx_pin pins_kpp_col3__uart4_cts[] = {
+	IMX25_PINCTRL_PIN(KPP_COL3, UART4_CTS),
+};
+
+struct imx_pin pins_kpp_col3__aud5_txfs[] = {
+	IMX25_PINCTRL_PIN(KPP_COL3, AUD5_TXFS),
+};
+
+struct imx_pin pins_kpp_col3__gpio_3_4[] = {
+	IMX25_PINCTRL_PIN(KPP_COL3, GPIO_3_4),
+};
+
+/* FEC_MDC */
+unsigned int pin_ids_fec_mdc[] = {
+	MX25_PAD_FEC_MDC,
+};
+
+struct imx_pin pins_fec_mdc__fec_mdc[] = {
+	IMX25_PINCTRL_PIN(FEC_MDC, FEC_MDC),
+};
+
+struct imx_pin pins_fec_mdc__aud4_txd[] = {
+	IMX25_PINCTRL_PIN(FEC_MDC, AUD4_TXD),
+};
+
+struct imx_pin pins_fec_mdc__gpio_3_5[] = {
+	IMX25_PINCTRL_PIN(FEC_MDC, GPIO_3_5),
+};
+
+/* FEC_MDIO */
+unsigned int pin_ids_fec_mdio[] = {
+	MX25_PAD_FEC_MDIO,
+};
+
+struct imx_pin pins_fec_mdio__fec_mdio[] = {
+	IMX25_PINCTRL_PIN(FEC_MDIO, FEC_MDIO),
+};
+
+struct imx_pin pins_fec_mdio__aud4_rxd[] = {
+	IMX25_PINCTRL_PIN(FEC_MDIO, AUD4_RXD),
+};
+
+struct imx_pin pins_fec_mdio__gpio_3_6[] = {
+	IMX25_PINCTRL_PIN(FEC_MDIO, GPIO_3_6),
+};
+
+/* FEC_TDATA0 */
+unsigned int pin_ids_fec_tdata0[] = {
+	MX25_PAD_FEC_TDATA0,
+};
+
+struct imx_pin pins_fec_tdata0__fec_tdata0[] = {
+	IMX25_PINCTRL_PIN(FEC_TDATA0, FEC_TDATA0),
+};
+
+struct imx_pin pins_fec_tdata0__gpio_3_7[] = {
+	IMX25_PINCTRL_PIN(FEC_TDATA0, GPIO_3_7),
+};
+
+/* FEC_TDATA1 */
+unsigned int pin_ids_fec_tdata1[] = {
+	MX25_PAD_FEC_TDATA1,
+};
+
+struct imx_pin pins_fec_tdata1__fec_tdata1[] = {
+	IMX25_PINCTRL_PIN(FEC_TDATA1, FEC_TDATA1),
+};
+
+struct imx_pin pins_fec_tdata1__aud4_txfs[] = {
+	IMX25_PINCTRL_PIN(FEC_TDATA1, AUD4_TXFS),
+};
+
+struct imx_pin pins_fec_tdata1__gpio_3_8[] = {
+	IMX25_PINCTRL_PIN(FEC_TDATA1, GPIO_3_8),
+};
+
+/* FEC_TX_EN */
+unsigned int pin_ids_fec_tx_en[] = {
+	MX25_PAD_FEC_TX_EN,
+};
+
+struct imx_pin pins_fec_tx_en__fec_tx_en[] = {
+	IMX25_PINCTRL_PIN(FEC_TX_EN, FEC_TX_EN),
+};
+
+struct imx_pin pins_fec_tx_en__gpio_3_9[] = {
+	IMX25_PINCTRL_PIN(FEC_TX_EN, GPIO_3_9),
+};
+
+/* FEC_RDATA0 */
+unsigned int pin_ids_fec_rdata0[] = {
+	MX25_PAD_FEC_RDATA0,
+};
+
+struct imx_pin pins_fec_rdata0__fec_rdata0[] = {
+	IMX25_PINCTRL_PIN(FEC_RDATA0, FEC_RDATA0),
+};
+
+struct imx_pin pins_fec_rdata0__gpio_3_10[] = {
+	IMX25_PINCTRL_PIN(FEC_RDATA0, GPIO_3_10),
+};
+
+/* FEC_RDATA1 */
+unsigned int pin_ids_fec_rdata1[] = {
+	MX25_PAD_FEC_RDATA1,
+};
+
+struct imx_pin pins_fec_rdata1__fec_rdata1[] = {
+	IMX25_PINCTRL_PIN(FEC_RDATA1, FEC_RDATA1),
+};
+
+struct imx_pin pins_fec_rdata1__gpio_3_11[] = {
+	IMX25_PINCTRL_PIN(FEC_RDATA1, GPIO_3_11),
+};
+
+/* FEC_RX_DV */
+unsigned int pin_ids_fec_rx_dv[] = {
+	MX25_PAD_FEC_RX_DV,
+};
+
+struct imx_pin pins_fec_rx_dv__fec_rx_dv[] = {
+	IMX25_PINCTRL_PIN(FEC_RX_DV, FEC_RX_DV),
+};
+
+struct imx_pin pins_fec_rx_dv__can2_rx[] = {
+	IMX25_PINCTRL_PIN(FEC_RX_DV, CAN2_RX),
+};
+
+struct imx_pin pins_fec_rx_dv__gpio_3_12[] = {
+	IMX25_PINCTRL_PIN(FEC_RX_DV, GPIO_3_12),
+};
+
+/* FEC_TX_CLK */
+unsigned int pin_ids_fec_tx_clk[] = {
+	MX25_PAD_FEC_TX_CLK,
+};
+
+struct imx_pin pins_fec_tx_clk__fec_tx_clk[] = {
+	IMX25_PINCTRL_PIN(FEC_TX_CLK, FEC_TX_CLK),
+};
+
+struct imx_pin pins_fec_tx_clk__gpio_3_13[] = {
+	IMX25_PINCTRL_PIN(FEC_TX_CLK, GPIO_3_13),
+};
+
+/* RTCK */
+unsigned int pin_ids_rtck[] = {
+	MX25_PAD_RTCK,
+};
+
+struct imx_pin pins_rtck__rtck[] = {
+	IMX25_PINCTRL_PIN(RTCK, RTCK),
+};
+
+struct imx_pin pins_rtck__owire[] = {
+	IMX25_PINCTRL_PIN(RTCK, OWIRE),
+};
+
+struct imx_pin pins_rtck__gpio_3_14[] = {
+	IMX25_PINCTRL_PIN(RTCK, GPIO_3_14),
+};
+
+/* DE_B */
+unsigned int pin_ids_de_b[] = {
+	MX25_PAD_DE_B,
+};
+
+struct imx_pin pins_de_b__de_b[] = {
+	IMX25_PINCTRL_PIN(DE_B, DE_B),
+};
+
+struct imx_pin pins_de_b__gpio_2_20[] = {
+	IMX25_PINCTRL_PIN(DE_B, GPIO_2_20),
+};
+
+/* GPIO_A */
+unsigned int pin_ids_gpio_a[] = {
+	MX25_PAD_GPIO_A,
+};
+
+struct imx_pin pins_gpio_a__gpio_a[] = {
+	IMX25_PINCTRL_PIN(GPIO_A, GPIO_A),
+};
+
+struct imx_pin pins_gpio_a__can1_tx[] = {
+	IMX25_PINCTRL_PIN(GPIO_A, CAN1_TX),
+};
+
+struct imx_pin pins_gpio_a__usbotg_pwr[] = {
+	IMX25_PINCTRL_PIN(GPIO_A, USBOTG_PWR),
+};
+
+/* GPIO_B */
+unsigned int pin_ids_gpio_b[] = {
+	MX25_PAD_GPIO_B,
+};
+
+struct imx_pin pins_gpio_b__gpio_b[] = {
+	IMX25_PINCTRL_PIN(GPIO_B, GPIO_B),
+};
+
+struct imx_pin pins_gpio_b__can1_rx[] = {
+	IMX25_PINCTRL_PIN(GPIO_B, CAN1_RX),
+};
+
+struct imx_pin pins_gpio_b__usbotg_oc[] = {
+	IMX25_PINCTRL_PIN(GPIO_B, USBOTG_OC),
+};
+
+/* GPIO_C */
+unsigned int pin_ids_gpio_c[] = {
+	MX25_PAD_GPIO_C,
+};
+
+struct imx_pin pins_gpio_c__gpio_c[] = {
+	IMX25_PINCTRL_PIN(GPIO_C, GPIO_C),
+};
+
+struct imx_pin pins_gpio_c__can2_tx[] = {
+	IMX25_PINCTRL_PIN(GPIO_C, CAN2_TX),
+};
+
+/* GPIO_D */
+unsigned int pin_ids_gpio_d[] = {
+	MX25_PAD_GPIO_D,
+};
+
+struct imx_pin pins_gpio_d__gpio_d[] = {
+	IMX25_PINCTRL_PIN(GPIO_D, GPIO_D),
+};
+
+struct imx_pin pins_gpio_d__can2_rx[] = {
+	IMX25_PINCTRL_PIN(GPIO_D, CAN2_RX),
+};
+
+/* GPIO_E */
+unsigned int pin_ids_gpio_e[] = {
+	MX25_PAD_GPIO_E,
+};
+
+struct imx_pin pins_gpio_e__ld16[] = {
+	IMX25_PINCTRL_PIN(GPIO_E, LD16),
+};
+
+struct imx_pin pins_gpio_e__gpio_e[] = {
+	IMX25_PINCTRL_PIN(GPIO_E, GPIO_E),
+};
+
+struct imx_pin pins_gpio_e__aud7_txd[] = {
+	IMX25_PINCTRL_PIN(GPIO_E, AUD7_TXD),
+};
+
+/* GPIO_F */
+unsigned int pin_ids_gpio_f[] = {
+	MX25_PAD_GPIO_F,
+};
+
+struct imx_pin pins_gpio_f__ld17[] = {
+	IMX25_PINCTRL_PIN(GPIO_F, LD17),
+};
+
+struct imx_pin pins_gpio_f__gpio_f[] = {
+	IMX25_PINCTRL_PIN(GPIO_F, GPIO_F),
+};
+
+struct imx_pin pins_gpio_f__aud7_txc[] = {
+	IMX25_PINCTRL_PIN(GPIO_F, AUD7_TXC),
+};
+
+/* EXT_ARMCLK */
+unsigned int pin_ids_ext_armclk[] = {
+	MX25_PAD_EXT_ARMCLK,
+};
+
+struct imx_pin pins_ext_armclk__ext_armclk[] = {
+	IMX25_PINCTRL_PIN(EXT_ARMCLK, EXT_ARMCLK),
+};
+
+struct imx_pin pins_ext_armclk__gpio_3_15[] = {
+	IMX25_PINCTRL_PIN(EXT_ARMCLK, GPIO_3_15),
+};
+
+/* UPLL_BYPCLK */
+unsigned int pin_ids_upll_bypclk[] = {
+	MX25_PAD_UPLL_BYPCLK,
+};
+
+struct imx_pin pins_upll_bypclk__upll_bypclk[] = {
+	IMX25_PINCTRL_PIN(UPLL_BYPCLK, UPLL_BYPCLK),
+};
+
+struct imx_pin pins_upll_bypclk__gpio_3_16[] = {
+	IMX25_PINCTRL_PIN(UPLL_BYPCLK, GPIO_3_16),
+};
+
+/* VSTBY_REQ */
+unsigned int pin_ids_vstby_req[] = {
+	MX25_PAD_VSTBY_REQ,
+};
+
+struct imx_pin pins_vstby_req__vstby_req[] = {
+	IMX25_PINCTRL_PIN(VSTBY_REQ, VSTBY_REQ),
+};
+
+struct imx_pin pins_vstby_req__aud7_txfs[] = {
+	IMX25_PINCTRL_PIN(VSTBY_REQ, AUD7_TXFS),
+};
+
+struct imx_pin pins_vstby_req__gpio_3_17[] = {
+	IMX25_PINCTRL_PIN(VSTBY_REQ, GPIO_3_17),
+};
+
+/* VSTBY_ACK */
+unsigned int pin_ids_vstby_ack[] = {
+	MX25_PAD_VSTBY_ACK,
+};
+
+struct imx_pin pins_vstby_ack__vstby_ack[] = {
+	IMX25_PINCTRL_PIN(VSTBY_ACK, VSTBY_ACK),
+};
+
+struct imx_pin pins_vstby_ack__gpio_3_18[] = {
+	IMX25_PINCTRL_PIN(VSTBY_ACK, GPIO_3_18),
+};
+
+/* POWER_FAIL */
+unsigned int pin_ids_power_fail[] = {
+	MX25_PAD_POWER_FAIL,
+};
+
+struct imx_pin pins_power_fail__power_fail[] = {
+	IMX25_PINCTRL_PIN(POWER_FAIL, POWER_FAIL),
+};
+
+struct imx_pin pins_power_fail__aud7_rxd[] = {
+	IMX25_PINCTRL_PIN(POWER_FAIL, AUD7_RXD),
+};
+
+struct imx_pin pins_power_fail__gpio_3_19[] = {
+	IMX25_PINCTRL_PIN(POWER_FAIL, GPIO_3_19),
+};
+
+/* CLKO */
+unsigned int pin_ids_clko[] = {
+	MX25_PAD_CLKO,
+};
+
+struct imx_pin pins_clko__clko[] = {
+	IMX25_PINCTRL_PIN(CLKO, CLKO),
+};
+
+struct imx_pin pins_clko__gpio_2_21[] = {
+	IMX25_PINCTRL_PIN(CLKO, GPIO_2_21),
+};
+
+/* BOOT_MODE0 */
+unsigned int pin_ids_boot_mode0[] = {
+	MX25_PAD_BOOT_MODE0,
+};
+
+struct imx_pin pins_boot_mode0__boot_mode0[] = {
+	IMX25_PINCTRL_PIN(BOOT_MODE0, BOOT_MODE0),
+};
+
+struct imx_pin pins_boot_mode0__gpio_4_30[] = {
+	IMX25_PINCTRL_PIN(BOOT_MODE0, GPIO_4_30),
+};
+
+/* BOOT_MODE1 */
+unsigned int pin_ids_boot_mode1[] = {
+	MX25_PAD_BOOT_MODE1,
+};
+
+struct imx_pin pins_boot_mode1__boot_mode1[] = {
+	IMX25_PINCTRL_PIN(BOOT_MODE1, BOOT_MODE1),
+};
+
+struct imx_pin pins_boot_mode1__gpio_4_31[] = {
+	IMX25_PINCTRL_PIN(BOOT_MODE1, GPIO_4_31),
+};
+
+/* TDO */
+unsigned int pin_ids_tdo[] = {
+	MX25_PAD_TDO,
+};
+
+struct imx_pin pins_tdo__tdo[] = {
+	IMX25_PINCTRL_PIN(TDO, TDO),
 };
 
 /* CTL_GRP_DSE_CSI */
@@ -1268,49 +3023,699 @@ unsigned int pin_ids_ctl_grp_dse_csi[] = {
 }
 
 static struct imx_pin_group imx25_pinctrl_groups[] = {
-	IMX25_PINCTRL_PIN_GROUP(uart1_rxd, uart1_rxd),
-	IMX25_PINCTRL_PIN_GROUP(uart1_txd, uart1_txd),
-	IMX25_PINCTRL_PIN_GROUP(uart1_rts, uart1_rts),
-	IMX25_PINCTRL_PIN_GROUP(uart1_cts, uart1_cts),
-	IMX25_PINCTRL_PIN_GROUP(uart2_rxd, uart2_rxd),
-	IMX25_PINCTRL_PIN_GROUP(uart2_txd, uart2_txd),
-	IMX25_PINCTRL_PIN_GROUP(uart2_rts, uart2_rts),
-	IMX25_PINCTRL_PIN_GROUP(uart2_cts, uart2_cts),
-	IMX25_PINCTRL_PIN_GROUP(kpp_row0, uart3_rxd),
-	IMX25_PINCTRL_PIN_GROUP(kpp_row1, uart3_txd),
-	IMX25_PINCTRL_PIN_GROUP(kpp_row2, uart3_rts),
-	IMX25_PINCTRL_PIN_GROUP(kpp_row3, uart3_cts),
-	IMX25_PINCTRL_PIN_GROUP(ld8, uart4_rxd),
-	IMX25_PINCTRL_PIN_GROUP(ld9, uart4_txd),
-	IMX25_PINCTRL_PIN_GROUP(ld10, uart4_rts),
-	IMX25_PINCTRL_PIN_GROUP(ld11, uart4_cts),
-	IMX25_PINCTRL_PIN_GROUP(csi_d2, uart5_rxd_mux),
-	IMX25_PINCTRL_PIN_GROUP(csi_d3, uart5_txd_mux),
-	IMX25_PINCTRL_PIN_GROUP(csi_d4, uart5_rts),
-	IMX25_PINCTRL_PIN_GROUP(csi_d5, uart5_cts),
-	IMX25_PINCTRL_PIN_GROUP(kpp_row0, uart3_rxd),
-	IMX25_PINCTRL_PIN_GROUP(kpp_row1, uart3_txd),
-	IMX25_PINCTRL_PIN_GROUP(kpp_row2, uart3_rts),
-	IMX25_PINCTRL_PIN_GROUP(kpp_row3, uart3_cts),
-	IMX25_PINCTRL_PIN_GROUP(i2c1_clk, i2c1_clk),
-	IMX25_PINCTRL_PIN_GROUP(i2c1_dat, i2c1_dat),
-	IMX25_PINCTRL_PIN_GROUP(cspi1_ss1, gpio_1_17),
-	IMX25_PINCTRL_PIN_GROUP(cspi1_sclk, gpio_1_18),
-	IMX25_PINCTRL_PIN_GROUP(kpp_col1, gpio_3_2),
-	IMX25_PINCTRL_PIN_GROUP(kpp_col0, gpio_3_1),
+	IMX25_PINCTRL_PIN_GROUP(a10, a10),
+	IMX25_PINCTRL_PIN_GROUP(a10, gpio_4_0),
+	IMX25_PINCTRL_PIN_GROUP(a13, a13),
+	IMX25_PINCTRL_PIN_GROUP(a13, gpio_4_1),
+	IMX25_PINCTRL_PIN_GROUP(a14, a14),
+	IMX25_PINCTRL_PIN_GROUP(a14, gpio_2_0),
+	IMX25_PINCTRL_PIN_GROUP(a15, a15),
+	IMX25_PINCTRL_PIN_GROUP(a15, gpio_2_1),
+	IMX25_PINCTRL_PIN_GROUP(a16, a16),
+	IMX25_PINCTRL_PIN_GROUP(a16, gpio_2_2),
+	IMX25_PINCTRL_PIN_GROUP(a17, a17),
+	IMX25_PINCTRL_PIN_GROUP(a17, gpio_2_3),
+	IMX25_PINCTRL_PIN_GROUP(a18, a18),
+	IMX25_PINCTRL_PIN_GROUP(a18, gpio_2_4),
+	IMX25_PINCTRL_PIN_GROUP(a18, fec_col),
+	IMX25_PINCTRL_PIN_GROUP(a19, a19),
+	IMX25_PINCTRL_PIN_GROUP(a19, fec_rx_er),
+	IMX25_PINCTRL_PIN_GROUP(a19, gpio_2_5),
+	IMX25_PINCTRL_PIN_GROUP(a20, a20),
+	IMX25_PINCTRL_PIN_GROUP(a20, gpio_2_6),
+	IMX25_PINCTRL_PIN_GROUP(a20, fec_rdata2),
+	IMX25_PINCTRL_PIN_GROUP(a21, a21),
+	IMX25_PINCTRL_PIN_GROUP(a21, gpio_2_7),
+	IMX25_PINCTRL_PIN_GROUP(a21, fec_rdata3),
+	IMX25_PINCTRL_PIN_GROUP(a22, a22),
+	IMX25_PINCTRL_PIN_GROUP(a22, gpio_2_8),
+	IMX25_PINCTRL_PIN_GROUP(a23, a23),
+	IMX25_PINCTRL_PIN_GROUP(a23, gpio_2_9),
+	IMX25_PINCTRL_PIN_GROUP(a24, a24),
+	IMX25_PINCTRL_PIN_GROUP(a24, gpio_2_10),
+	IMX25_PINCTRL_PIN_GROUP(a24, fec_rx_clk),
+	IMX25_PINCTRL_PIN_GROUP(a25, a25),
+	IMX25_PINCTRL_PIN_GROUP(a25, gpio_2_11),
+	IMX25_PINCTRL_PIN_GROUP(a25, fec_crs),
+	IMX25_PINCTRL_PIN_GROUP(eb0, eb0),
+	IMX25_PINCTRL_PIN_GROUP(eb0, aud4_txd),
+	IMX25_PINCTRL_PIN_GROUP(eb0, gpio_2_12),
+	IMX25_PINCTRL_PIN_GROUP(eb1, eb1),
+	IMX25_PINCTRL_PIN_GROUP(eb1, aud4_rxd),
+	IMX25_PINCTRL_PIN_GROUP(eb1, gpio_2_13),
+	IMX25_PINCTRL_PIN_GROUP(oe, oe),
+	IMX25_PINCTRL_PIN_GROUP(oe, aud4_txc),
+	IMX25_PINCTRL_PIN_GROUP(oe, gpio_2_14),
+	IMX25_PINCTRL_PIN_GROUP(cs0, cs0),
+	IMX25_PINCTRL_PIN_GROUP(cs0, gpio_4_2),
+	IMX25_PINCTRL_PIN_GROUP(cs1, cs1),
+	IMX25_PINCTRL_PIN_GROUP(cs1, nf_ce3),
+	IMX25_PINCTRL_PIN_GROUP(cs1, gpio_4_3),
+	IMX25_PINCTRL_PIN_GROUP(cs4, cs4),
+	IMX25_PINCTRL_PIN_GROUP(cs4, nf_ce1),
+	IMX25_PINCTRL_PIN_GROUP(cs4, uart5_cts),
+	IMX25_PINCTRL_PIN_GROUP(cs4, gpio_3_20),
+	IMX25_PINCTRL_PIN_GROUP(cs5, cs5),
+	IMX25_PINCTRL_PIN_GROUP(cs5, nf_ce2),
+	IMX25_PINCTRL_PIN_GROUP(cs5, uart5_rts),
+	IMX25_PINCTRL_PIN_GROUP(cs5, gpio_3_21),
+	IMX25_PINCTRL_PIN_GROUP(nf_ce0, nf_ce0),
+	IMX25_PINCTRL_PIN_GROUP(nf_ce0, gpio_3_22),
+	IMX25_PINCTRL_PIN_GROUP(ecb, ecb),
+	IMX25_PINCTRL_PIN_GROUP(ecb, uart5_txd_mux),
+	IMX25_PINCTRL_PIN_GROUP(ecb, gpio_3_23),
+	IMX25_PINCTRL_PIN_GROUP(lba, lba),
+	IMX25_PINCTRL_PIN_GROUP(lba, uart5_rxd_mux),
+	IMX25_PINCTRL_PIN_GROUP(lba, gpio_3_24),
+	IMX25_PINCTRL_PIN_GROUP(bclk, bclk),
+	IMX25_PINCTRL_PIN_GROUP(bclk, gpio_4_4),
+	IMX25_PINCTRL_PIN_GROUP(rw, rw),
+	IMX25_PINCTRL_PIN_GROUP(rw, aud4_txfs),
+	IMX25_PINCTRL_PIN_GROUP(rw, gpio_3_25),
+	IMX25_PINCTRL_PIN_GROUP(nfwe_b, nfwe_b),
+	IMX25_PINCTRL_PIN_GROUP(nfwe_b, gpio_3_26),
+	IMX25_PINCTRL_PIN_GROUP(nfre_b, nfre_b),
+	IMX25_PINCTRL_PIN_GROUP(nfre_b, gpio_3_27),
+	IMX25_PINCTRL_PIN_GROUP(nfale, nfale),
+	IMX25_PINCTRL_PIN_GROUP(nfale, gpio_3_28),
+	IMX25_PINCTRL_PIN_GROUP(nfcle, nfcle),
+	IMX25_PINCTRL_PIN_GROUP(nfcle, gpio_3_29),
+	IMX25_PINCTRL_PIN_GROUP(nfwp_b, nfwp_b),
 	IMX25_PINCTRL_PIN_GROUP(nfwp_b, gpio_3_30),
+	IMX25_PINCTRL_PIN_GROUP(nfrb, nfrb),
+	IMX25_PINCTRL_PIN_GROUP(nfrb, gpio_3_31),
+	IMX25_PINCTRL_PIN_GROUP(d15, d15),
+	IMX25_PINCTRL_PIN_GROUP(d15, ld16),
+	IMX25_PINCTRL_PIN_GROUP(d15, gpio_4_5),
+	IMX25_PINCTRL_PIN_GROUP(d14, d14),
+	IMX25_PINCTRL_PIN_GROUP(d14, ld17),
+	IMX25_PINCTRL_PIN_GROUP(d14, gpio_4_6),
+	IMX25_PINCTRL_PIN_GROUP(d13, d13),
+	IMX25_PINCTRL_PIN_GROUP(d13, ld18),
+	IMX25_PINCTRL_PIN_GROUP(d13, gpio_4_7),
+	IMX25_PINCTRL_PIN_GROUP(d12, d12),
+	IMX25_PINCTRL_PIN_GROUP(d12, gpio_4_8),
+	IMX25_PINCTRL_PIN_GROUP(d11, d11),
+	IMX25_PINCTRL_PIN_GROUP(d11, gpio_4_9),
+	IMX25_PINCTRL_PIN_GROUP(d10, d10),
+	IMX25_PINCTRL_PIN_GROUP(d10, gpio_4_10),
+	IMX25_PINCTRL_PIN_GROUP(d10, usbotg_oc),
+	IMX25_PINCTRL_PIN_GROUP(d9, d9),
+	IMX25_PINCTRL_PIN_GROUP(d9, gpio_4_11),
+	IMX25_PINCTRL_PIN_GROUP(d9, usbh2_pwr),
+	IMX25_PINCTRL_PIN_GROUP(d8, d8),
+	IMX25_PINCTRL_PIN_GROUP(d8, gpio_4_12),
+	IMX25_PINCTRL_PIN_GROUP(d8, usbh2_oc),
+	IMX25_PINCTRL_PIN_GROUP(d7, d7),
+	IMX25_PINCTRL_PIN_GROUP(d7, gpio_4_13),
+	IMX25_PINCTRL_PIN_GROUP(d6, d6),
+	IMX25_PINCTRL_PIN_GROUP(d6, gpio_4_14),
+	IMX25_PINCTRL_PIN_GROUP(d5, d5),
+	IMX25_PINCTRL_PIN_GROUP(d5, gpio_4_15),
+	IMX25_PINCTRL_PIN_GROUP(d4, d4),
+	IMX25_PINCTRL_PIN_GROUP(d4, gpio_4_16),
+	IMX25_PINCTRL_PIN_GROUP(d3, d3),
+	IMX25_PINCTRL_PIN_GROUP(d3, gpio_4_17),
+	IMX25_PINCTRL_PIN_GROUP(d2, d2),
+	IMX25_PINCTRL_PIN_GROUP(d2, gpio_4_18),
+	IMX25_PINCTRL_PIN_GROUP(d1, d1),
+	IMX25_PINCTRL_PIN_GROUP(d1, gpio_4_19),
+	IMX25_PINCTRL_PIN_GROUP(d0, d0),
+	IMX25_PINCTRL_PIN_GROUP(d0, gpio_4_20),
+	IMX25_PINCTRL_PIN_GROUP(ld0, ld0),
+	IMX25_PINCTRL_PIN_GROUP(ld0, csi_d0),
+	IMX25_PINCTRL_PIN_GROUP(ld0, gpio_2_15),
+	IMX25_PINCTRL_PIN_GROUP(ld1, ld1),
+	IMX25_PINCTRL_PIN_GROUP(ld1, csi_d1),
+	IMX25_PINCTRL_PIN_GROUP(ld1, gpio_2_16),
+	IMX25_PINCTRL_PIN_GROUP(ld2, ld2),
+	IMX25_PINCTRL_PIN_GROUP(ld2, gpio_2_17),
+	IMX25_PINCTRL_PIN_GROUP(ld3, ld3),
+	IMX25_PINCTRL_PIN_GROUP(ld3, gpio_2_18),
+	IMX25_PINCTRL_PIN_GROUP(ld4, ld4),
+	IMX25_PINCTRL_PIN_GROUP(ld4, gpio_2_19),
+	IMX25_PINCTRL_PIN_GROUP(ld5, ld5),
+	IMX25_PINCTRL_PIN_GROUP(ld5, gpio_1_19),
+	IMX25_PINCTRL_PIN_GROUP(ld6, ld6),
+	IMX25_PINCTRL_PIN_GROUP(ld6, gpio_1_20),
+	IMX25_PINCTRL_PIN_GROUP(ld7, ld7),
+	IMX25_PINCTRL_PIN_GROUP(ld7, gpio_1_21),
+	IMX25_PINCTRL_PIN_GROUP(ld8, ld8),
+	IMX25_PINCTRL_PIN_GROUP(ld8, uart4_rxd),
+	IMX25_PINCTRL_PIN_GROUP(ld8, fec_tx_err),
+	IMX25_PINCTRL_PIN_GROUP(ld9, ld9),
+	IMX25_PINCTRL_PIN_GROUP(ld9, uart4_txd),
+	IMX25_PINCTRL_PIN_GROUP(ld9, fec_col),
+	IMX25_PINCTRL_PIN_GROUP(ld10, ld10),
+	IMX25_PINCTRL_PIN_GROUP(ld10, uart4_rts),
+	IMX25_PINCTRL_PIN_GROUP(ld10, fec_rx_er),
+	IMX25_PINCTRL_PIN_GROUP(ld11, ld11),
+	IMX25_PINCTRL_PIN_GROUP(ld11, uart4_cts),
+	IMX25_PINCTRL_PIN_GROUP(ld11, fec_rdata2),
+	IMX25_PINCTRL_PIN_GROUP(ld12, ld12),
+	IMX25_PINCTRL_PIN_GROUP(ld12, fec_rdata3),
+	IMX25_PINCTRL_PIN_GROUP(ld13, ld13),
+	IMX25_PINCTRL_PIN_GROUP(ld13, fec_tdata2),
+	IMX25_PINCTRL_PIN_GROUP(ld14, ld14),
+	IMX25_PINCTRL_PIN_GROUP(ld14, fec_tdata3),
+	IMX25_PINCTRL_PIN_GROUP(ld15, ld15),
+	IMX25_PINCTRL_PIN_GROUP(ld15, fec_rx_clk),
+	IMX25_PINCTRL_PIN_GROUP(hsync, hsync),
+	IMX25_PINCTRL_PIN_GROUP(hsync, gpio_1_22),
+	IMX25_PINCTRL_PIN_GROUP(vsync, vsync),
+	IMX25_PINCTRL_PIN_GROUP(vsync, gpio_1_23),
+	IMX25_PINCTRL_PIN_GROUP(lsclk, lsclk),
+	IMX25_PINCTRL_PIN_GROUP(lsclk, gpio_1_24),
+	IMX25_PINCTRL_PIN_GROUP(oe_acd, oe_acd),
+	IMX25_PINCTRL_PIN_GROUP(oe_acd, gpio_1_25),
+	IMX25_PINCTRL_PIN_GROUP(contrast, contrast),
+	IMX25_PINCTRL_PIN_GROUP(contrast, pwm4_pwmo),
+	IMX25_PINCTRL_PIN_GROUP(contrast, fec_crs),
+	IMX25_PINCTRL_PIN_GROUP(pwm, pwm),
+	IMX25_PINCTRL_PIN_GROUP(pwm, gpio_1_26),
+	IMX25_PINCTRL_PIN_GROUP(pwm, usbh2_oc),
+	IMX25_PINCTRL_PIN_GROUP(csi_d2, csi_d2),
+	IMX25_PINCTRL_PIN_GROUP(csi_d2, uart5_rxd_mux),
+	IMX25_PINCTRL_PIN_GROUP(csi_d2, gpio_1_27),
+	IMX25_PINCTRL_PIN_GROUP(csi_d2, cspi3_mosi),
+	IMX25_PINCTRL_PIN_GROUP(csi_d3, csi_d3),
+	IMX25_PINCTRL_PIN_GROUP(csi_d3, uart5_txd_mux),
+	IMX25_PINCTRL_PIN_GROUP(csi_d3, gpio_1_28),
+	IMX25_PINCTRL_PIN_GROUP(csi_d3, cspi3_miso),
+	IMX25_PINCTRL_PIN_GROUP(csi_d4, csi_d4),
+	IMX25_PINCTRL_PIN_GROUP(csi_d4, uart5_rts),
+	IMX25_PINCTRL_PIN_GROUP(csi_d4, gpio_1_29),
+	IMX25_PINCTRL_PIN_GROUP(csi_d4, cspi3_sclk),
+	IMX25_PINCTRL_PIN_GROUP(csi_d5, csi_d5),
+	IMX25_PINCTRL_PIN_GROUP(csi_d5, uart5_cts),
+	IMX25_PINCTRL_PIN_GROUP(csi_d5, gpio_1_30),
+	IMX25_PINCTRL_PIN_GROUP(csi_d5, cspi3_rdy),
+	IMX25_PINCTRL_PIN_GROUP(csi_d6, csi_d6),
 	IMX25_PINCTRL_PIN_GROUP(csi_d6, sd2_cmd),
+	IMX25_PINCTRL_PIN_GROUP(csi_d6, gpio_1_31),
+	IMX25_PINCTRL_PIN_GROUP(csi_d7, csi_d7),
 	IMX25_PINCTRL_PIN_GROUP(csi_d7, sd2_clk),
+	IMX25_PINCTRL_PIN_GROUP(csi_d7, gpio_1_6),
+	IMX25_PINCTRL_PIN_GROUP(csi_d8, csi_d8),
+	IMX25_PINCTRL_PIN_GROUP(csi_d8, gpio_1_7),
+	IMX25_PINCTRL_PIN_GROUP(csi_d9, csi_d9),
+	IMX25_PINCTRL_PIN_GROUP(csi_d9, gpio_4_21),
+	IMX25_PINCTRL_PIN_GROUP(csi_mclk, csi_mclk),
 	IMX25_PINCTRL_PIN_GROUP(csi_mclk, sd2_data0),
+	IMX25_PINCTRL_PIN_GROUP(csi_mclk, gpio_1_8),
+	IMX25_PINCTRL_PIN_GROUP(csi_vsync, csi_vsync),
 	IMX25_PINCTRL_PIN_GROUP(csi_vsync, sd2_data1),
+	IMX25_PINCTRL_PIN_GROUP(csi_vsync, gpio_1_9),
+	IMX25_PINCTRL_PIN_GROUP(csi_hsync, csi_hsync),
 	IMX25_PINCTRL_PIN_GROUP(csi_hsync, sd2_data2),
+	IMX25_PINCTRL_PIN_GROUP(csi_hsync, gpio_1_10),
+	IMX25_PINCTRL_PIN_GROUP(csi_pixclk, csi_pixclk),
 	IMX25_PINCTRL_PIN_GROUP(csi_pixclk, sd2_data3),
+	IMX25_PINCTRL_PIN_GROUP(csi_pixclk, gpio_1_11),
+	IMX25_PINCTRL_PIN_GROUP(i2c1_clk, i2c1_clk),
+	IMX25_PINCTRL_PIN_GROUP(i2c1_clk, gpio_1_12),
+	IMX25_PINCTRL_PIN_GROUP(i2c1_dat, i2c1_dat),
+	IMX25_PINCTRL_PIN_GROUP(i2c1_dat, gpio_1_13),
+	IMX25_PINCTRL_PIN_GROUP(cspi1_mosi, cspi1_mosi),
+	IMX25_PINCTRL_PIN_GROUP(cspi1_mosi, gpio_1_14),
+	IMX25_PINCTRL_PIN_GROUP(cspi1_miso, cspi1_miso),
+	IMX25_PINCTRL_PIN_GROUP(cspi1_miso, gpio_1_15),
+	IMX25_PINCTRL_PIN_GROUP(cspi1_ss0, cspi1_ss0),
+	IMX25_PINCTRL_PIN_GROUP(cspi1_ss0, gpio_1_16),
+	IMX25_PINCTRL_PIN_GROUP(cspi1_ss1, cspi1_ss1),
+	IMX25_PINCTRL_PIN_GROUP(cspi1_ss1, gpio_1_17),
+	IMX25_PINCTRL_PIN_GROUP(cspi1_sclk, cspi1_sclk),
+	IMX25_PINCTRL_PIN_GROUP(cspi1_sclk, gpio_1_18),
+	IMX25_PINCTRL_PIN_GROUP(cspi1_rdy, cspi1_rdy),
+	IMX25_PINCTRL_PIN_GROUP(cspi1_rdy, gpio_2_22),
+	IMX25_PINCTRL_PIN_GROUP(uart1_rxd, uart1_rxd),
+	IMX25_PINCTRL_PIN_GROUP(uart1_rxd, gpio_4_22),
+	IMX25_PINCTRL_PIN_GROUP(uart1_txd, uart1_txd),
+	IMX25_PINCTRL_PIN_GROUP(uart1_txd, gpio_4_23),
+	IMX25_PINCTRL_PIN_GROUP(uart1_rts, uart1_rts),
+	IMX25_PINCTRL_PIN_GROUP(uart1_rts, csi_d0),
+	IMX25_PINCTRL_PIN_GROUP(uart1_rts, gpio_4_24),
+	IMX25_PINCTRL_PIN_GROUP(uart1_cts, uart1_cts),
+	IMX25_PINCTRL_PIN_GROUP(uart1_cts, csi_d1),
+	IMX25_PINCTRL_PIN_GROUP(uart1_cts, gpio_4_25),
+	IMX25_PINCTRL_PIN_GROUP(uart2_rxd, uart2_rxd),
+	IMX25_PINCTRL_PIN_GROUP(uart2_rxd, gpio_4_26),
+	IMX25_PINCTRL_PIN_GROUP(uart2_txd, uart2_txd),
+	IMX25_PINCTRL_PIN_GROUP(uart2_txd, gpio_4_27),
+	IMX25_PINCTRL_PIN_GROUP(uart2_rts, uart2_rts),
+	IMX25_PINCTRL_PIN_GROUP(uart2_rts, fec_col),
+	IMX25_PINCTRL_PIN_GROUP(uart2_rts, gpio_4_28),
+	IMX25_PINCTRL_PIN_GROUP(uart2_cts, fec_rx_er),
+	IMX25_PINCTRL_PIN_GROUP(uart2_cts, uart2_cts),
+	IMX25_PINCTRL_PIN_GROUP(uart2_cts, gpio_4_29),
 	IMX25_PINCTRL_PIN_GROUP(sd1_cmd, sd1_cmd),
+	IMX25_PINCTRL_PIN_GROUP(sd1_cmd, fec_rdata2),
+	IMX25_PINCTRL_PIN_GROUP(sd1_cmd, gpio_2_23),
 	IMX25_PINCTRL_PIN_GROUP(sd1_clk, sd1_clk),
+	IMX25_PINCTRL_PIN_GROUP(sd1_clk, fec_rdata3),
+	IMX25_PINCTRL_PIN_GROUP(sd1_clk, gpio_2_24),
 	IMX25_PINCTRL_PIN_GROUP(sd1_data0, sd1_data0),
+	IMX25_PINCTRL_PIN_GROUP(sd1_data0, gpio_2_25),
 	IMX25_PINCTRL_PIN_GROUP(sd1_data1, sd1_data1),
+	IMX25_PINCTRL_PIN_GROUP(sd1_data1, aud7_rxd),
+	IMX25_PINCTRL_PIN_GROUP(sd1_data1, gpio_2_26),
 	IMX25_PINCTRL_PIN_GROUP(sd1_data2, sd1_data2),
+	IMX25_PINCTRL_PIN_GROUP(sd1_data2, fec_rx_clk),
+	IMX25_PINCTRL_PIN_GROUP(sd1_data2, gpio_2_27),
 	IMX25_PINCTRL_PIN_GROUP(sd1_data3, sd1_data3),
+	IMX25_PINCTRL_PIN_GROUP(sd1_data3, fec_crs),
+	IMX25_PINCTRL_PIN_GROUP(sd1_data3, gpio_2_28),
+	IMX25_PINCTRL_PIN_GROUP(kpp_row0, kpp_row0),
+	IMX25_PINCTRL_PIN_GROUP(kpp_row0, uart3_rxd),
+	IMX25_PINCTRL_PIN_GROUP(kpp_row0, gpio_2_29),
+	IMX25_PINCTRL_PIN_GROUP(kpp_row1, kpp_row1),
+	IMX25_PINCTRL_PIN_GROUP(kpp_row1, uart3_txd),
+	IMX25_PINCTRL_PIN_GROUP(kpp_row1, gpio_2_30),
+	IMX25_PINCTRL_PIN_GROUP(kpp_row2, kpp_row2),
+	IMX25_PINCTRL_PIN_GROUP(kpp_row2, uart3_rts),
+	IMX25_PINCTRL_PIN_GROUP(kpp_row2, csi_d0),
+	IMX25_PINCTRL_PIN_GROUP(kpp_row2, gpio_2_31),
+	IMX25_PINCTRL_PIN_GROUP(kpp_row3, kpp_row3),
+	IMX25_PINCTRL_PIN_GROUP(kpp_row3, uart3_cts),
+	IMX25_PINCTRL_PIN_GROUP(kpp_row3, csi_ld1),
+	IMX25_PINCTRL_PIN_GROUP(kpp_row3, gpio_3_0),
+	IMX25_PINCTRL_PIN_GROUP(kpp_col0, kpp_col0),
+	IMX25_PINCTRL_PIN_GROUP(kpp_col0, uart4_rxd_mux),
+	IMX25_PINCTRL_PIN_GROUP(kpp_col0, aud5_txd),
+	IMX25_PINCTRL_PIN_GROUP(kpp_col0, gpio_3_1),
+	IMX25_PINCTRL_PIN_GROUP(kpp_col1, kpp_col1),
+	IMX25_PINCTRL_PIN_GROUP(kpp_col1, uart4_txd_mux),
+	IMX25_PINCTRL_PIN_GROUP(kpp_col1, aud5_rxd),
+	IMX25_PINCTRL_PIN_GROUP(kpp_col1, gpio_3_2),
+	IMX25_PINCTRL_PIN_GROUP(kpp_col2, kpp_col2),
+	IMX25_PINCTRL_PIN_GROUP(kpp_col2, uart4_rts),
+	IMX25_PINCTRL_PIN_GROUP(kpp_col2, aud5_txc),
+	IMX25_PINCTRL_PIN_GROUP(kpp_col2, gpio_3_3),
+	IMX25_PINCTRL_PIN_GROUP(kpp_col3, kpp_col3),
+	IMX25_PINCTRL_PIN_GROUP(kpp_col3, uart4_cts),
+	IMX25_PINCTRL_PIN_GROUP(kpp_col3, aud5_txfs),
+	IMX25_PINCTRL_PIN_GROUP(kpp_col3, gpio_3_4),
+	IMX25_PINCTRL_PIN_GROUP(fec_mdc, fec_mdc),
+	IMX25_PINCTRL_PIN_GROUP(fec_mdc, aud4_txd),
+	IMX25_PINCTRL_PIN_GROUP(fec_mdc, gpio_3_5),
+	IMX25_PINCTRL_PIN_GROUP(fec_mdio, fec_mdio),
+	IMX25_PINCTRL_PIN_GROUP(fec_mdio, aud4_rxd),
+	IMX25_PINCTRL_PIN_GROUP(fec_mdio, gpio_3_6),
+	IMX25_PINCTRL_PIN_GROUP(fec_tdata0, fec_tdata0),
+	IMX25_PINCTRL_PIN_GROUP(fec_tdata0, gpio_3_7),
+	IMX25_PINCTRL_PIN_GROUP(fec_tdata1, fec_tdata1),
+	IMX25_PINCTRL_PIN_GROUP(fec_tdata1, aud4_txfs),
+	IMX25_PINCTRL_PIN_GROUP(fec_tdata1, gpio_3_8),
+	IMX25_PINCTRL_PIN_GROUP(fec_tx_en, fec_tx_en),
+	IMX25_PINCTRL_PIN_GROUP(fec_tx_en, gpio_3_9),
+	IMX25_PINCTRL_PIN_GROUP(fec_rdata0, fec_rdata0),
+	IMX25_PINCTRL_PIN_GROUP(fec_rdata0, gpio_3_10),
+	IMX25_PINCTRL_PIN_GROUP(fec_rdata1, fec_rdata1),
+	IMX25_PINCTRL_PIN_GROUP(fec_rdata1, gpio_3_11),
+	IMX25_PINCTRL_PIN_GROUP(fec_rx_dv, fec_rx_dv),
+	IMX25_PINCTRL_PIN_GROUP(fec_rx_dv, can2_rx),
+	IMX25_PINCTRL_PIN_GROUP(fec_rx_dv, gpio_3_12),
+	IMX25_PINCTRL_PIN_GROUP(fec_tx_clk, fec_tx_clk),
+	IMX25_PINCTRL_PIN_GROUP(fec_tx_clk, gpio_3_13),
+	IMX25_PINCTRL_PIN_GROUP(rtck, rtck),
+	IMX25_PINCTRL_PIN_GROUP(rtck, owire),
+	IMX25_PINCTRL_PIN_GROUP(rtck, gpio_3_14),
+	IMX25_PINCTRL_PIN_GROUP(de_b, de_b),
+	IMX25_PINCTRL_PIN_GROUP(de_b, gpio_2_20),
+	IMX25_PINCTRL_PIN_GROUP(tdo, tdo),
+	IMX25_PINCTRL_PIN_GROUP(gpio_a, gpio_a),
+	IMX25_PINCTRL_PIN_GROUP(gpio_a, can1_tx),
+	IMX25_PINCTRL_PIN_GROUP(gpio_a, usbotg_pwr),
+	IMX25_PINCTRL_PIN_GROUP(gpio_b, gpio_b),
+	IMX25_PINCTRL_PIN_GROUP(gpio_b, can1_rx),
+	IMX25_PINCTRL_PIN_GROUP(gpio_b, usbotg_oc),
+	IMX25_PINCTRL_PIN_GROUP(gpio_c, gpio_c),
+	IMX25_PINCTRL_PIN_GROUP(gpio_c, can2_tx),
+	IMX25_PINCTRL_PIN_GROUP(gpio_d, gpio_d),
+	IMX25_PINCTRL_PIN_GROUP(gpio_e, ld16),
+	IMX25_PINCTRL_PIN_GROUP(gpio_d, can2_rx),
+	IMX25_PINCTRL_PIN_GROUP(gpio_e, gpio_e),
+	IMX25_PINCTRL_PIN_GROUP(gpio_f, ld17),
+	IMX25_PINCTRL_PIN_GROUP(gpio_e, aud7_txd),
+	IMX25_PINCTRL_PIN_GROUP(gpio_f, gpio_f),
+	IMX25_PINCTRL_PIN_GROUP(gpio_f, aud7_txc),
+	IMX25_PINCTRL_PIN_GROUP(ext_armclk, ext_armclk),
+	IMX25_PINCTRL_PIN_GROUP(ext_armclk, gpio_3_15),
+	IMX25_PINCTRL_PIN_GROUP(upll_bypclk, upll_bypclk),
+	IMX25_PINCTRL_PIN_GROUP(upll_bypclk, gpio_3_16),
+	IMX25_PINCTRL_PIN_GROUP(vstby_req, vstby_req),
+	IMX25_PINCTRL_PIN_GROUP(vstby_req, aud7_txfs),
+	IMX25_PINCTRL_PIN_GROUP(vstby_req, gpio_3_17),
+	IMX25_PINCTRL_PIN_GROUP(vstby_ack, vstby_ack),
+	IMX25_PINCTRL_PIN_GROUP(vstby_ack, gpio_3_18),
+	IMX25_PINCTRL_PIN_GROUP(power_fail, power_fail),
+	IMX25_PINCTRL_PIN_GROUP(power_fail, aud7_rxd),
+	IMX25_PINCTRL_PIN_GROUP(power_fail, gpio_3_19),
+	IMX25_PINCTRL_PIN_GROUP(clko, clko),
+	IMX25_PINCTRL_PIN_GROUP(clko, gpio_2_21),
+	IMX25_PINCTRL_PIN_GROUP(boot_mode0, boot_mode0),
+	IMX25_PINCTRL_PIN_GROUP(boot_mode0, gpio_4_30),
+	IMX25_PINCTRL_PIN_GROUP(boot_mode1, boot_mode1),
+	IMX25_PINCTRL_PIN_GROUP(boot_mode1, gpio_4_31),
+};
+
+static const char *aud4_groups[] = {
+	"eb0__aud4_txd",
+	"eb1__aud4_rxd",
+	"oe__aud4_txc",
+	"rw__aud4_txfs",
+	"fec_mdc__aud4_txd",
+	"fec_mdio__aud4_rxd",
+	"fec_tdata1__aud4_txfs",
+};
+
+static const char *aud5_groups[] = {
+	"kpp_col0__aud5_txd",
+	"kpp_col1__aud5_rxd",
+	"kpp_col2__aud5_txc",
+	"kpp_col3__aud5_txfs",
+};
+
+static const char *aud7_groups[] = {
+	"sd1_data1__aud7_rxd",
+	"gpio_e__aud7_txd",
+	"gpio_f__aud7_txc",
+	"vstby_req__aud7_txfs",
+	"power_fail__aud7_rxd",
+};
+
+static const char *can1_groups[] = {
+	"gpio_a__can1_tx",
+	"gpio_b__can1_rx",
+};
+
+static const char *can2_groups[] = {
+	"fec_rx_dv__can2_rx",
+	"gpio_c__can2_tx",
+	"gpio_d__can2_rx",
+};
+
+static const char *csi_groups[] = {
+	"ld0__csi_d0",
+	"ld1__csi_d1",
+	"csi_d2__csi_d2",
+	"csi_d3__csi_d3",
+	"csi_d4__csi_d4",
+	"csi_d5__csi_d5",
+	"csi_d6__csi_d6",
+	"csi_d7__csi_d7",
+	"csi_d8__csi_d8",
+	"csi_d9__csi_d9",
+	"csi_mclk__csi_mclk",
+	"csi_vsync__csi_vsync",
+	"csi_hsync__csi_hsync",
+	"csi_pixclk__csi_pixclk",
+	"uart1_rts__csi_d0",
+	"uart1_cts__csi_d1",
+	"kpp_row2__csi_d0",
+	"kpp_row3__csi_ld1",
+};
+
+static const char *cspi1_groups[] = {
+	"cspi1_mosi__cspi1_mosi",
+	"cspi1_miso__cspi1_miso",
+	"cspi1_ss0__cspi1_ss0",
+	"cspi1_ss1__cspi1_ss1",
+	"cspi1_sclk__cspi1_sclk",
+	"cspi1_rdy__cspi1_rdy",
+};
+
+static const char *cspi3_groups[] = {
+	"csi_d2__cspi3_mosi",
+	"csi_d3__cspi3_miso",
+	"csi_d4__cspi3_sclk",
+	"csi_d5__cspi3_rdy",
+};
+
+static const char *fec_groups[] = {
+	"a18__fec_col",
+	"a19__fec_rx_er",
+	"a20__fec_rdata2",
+	"a21__fec_rdata3",
+	"a24__fec_rx_clk",
+	"a25__fec_crs",
+	"ld8__fec_tx_err",
+	"ld9__fec_col",
+	"ld10__fec_rx_er",
+	"ld11__fec_rdata2",
+	"ld12__fec_rdata3",
+	"ld13__fec_tdata2",
+	"ld14__fec_tdata3",
+	"ld15__fec_rx_clk",
+	"contrast__fec_crs",
+	"uart2_rts__fec_col",
+	"uart2_cts__fec_rx_er",
+	"sd1_cmd__fec_rdata2",
+	"sd1_clk__fec_rdata3",
+	"sd1_data2__fec_rx_clk",
+	"sd1_data3__fec_crs",
+	"fec_mdc__fec_mdc",
+	"fec_mdio__fec_mdio",
+	"fec_tdata0__fec_tdata0",
+	"fec_tdata1__fec_tdata1",
+	"fec_tx_en__fec_tx_en",
+	"fec_rdata0__fec_rdata0",
+	"fec_rdata1__fec_rdata1",
+	"fec_rx_dv__fec_rx_dv",
+	"fec_tx_clk__fec_tx_clk",
+};
+
+static const char *gpio1_groups[] = {
+	"ld5__gpio_1_19",
+	"ld6__gpio_1_20",
+	"ld7__gpio_1_21",
+	"hsync__gpio_1_22",
+	"vsync__gpio_1_23",
+	"lsclk__gpio_1_24",
+	"oe_acd__gpio_1_25",
+	"pwm__gpio_1_26",
+	"csi_d2__gpio_1_27",
+	"csi_d3__gpio_1_28",
+	"csi_d4__gpio_1_29",
+	"csi_d5__gpio_1_30",
+	"csi_d6__gpio_1_31",
+	"csi_d7__gpio_1_6",
+	"csi_d8__gpio_1_7",
+	"csi_mclk__gpio_1_8",
+	"csi_vsync__gpio_1_9",
+	"csi_hsync__gpio_1_10",
+	"csi_pixclk__gpio_1_11",
+	"i2c1_clk__gpio_1_12",
+	"i2c1_dat__gpio_1_13",
+	"cspi1_mosi__gpio_1_14",
+	"cspi1_miso__gpio_1_15",
+	"cspi1_ss0__gpio_1_16",
+	"cspi1_ss1__gpio_1_17",
+	"cspi1_sclk__gpio_1_18",
+	"gpio_a__gpio_a",
+	"gpio_b__gpio_b",
+	"gpio_c__gpio_c",
+	"gpio_d__gpio_d",
+	"gpio_e__gpio_e",
+	"gpio_f__gpio_f",
+};
+
+static const char *gpio2_groups[] = {
+	"a14__gpio_2_0",
+	"a15__gpio_2_1",
+	"a16__gpio_2_2",
+	"a17__gpio_2_3",
+	"a18__gpio_2_4",
+	"a19__gpio_2_5",
+	"a20__gpio_2_6",
+	"a21__gpio_2_7",
+	"a22__gpio_2_8",
+	"a23__gpio_2_9",
+	"a24__gpio_2_10",
+	"a25__gpio_2_11",
+	"eb0__gpio_2_12",
+	"eb1__gpio_2_13",
+	"oe__gpio_2_14",
+	"ld0__gpio_2_15",
+	"ld1__gpio_2_16",
+	"ld2__gpio_2_17",
+	"ld3__gpio_2_18",
+	"ld4__gpio_2_19",
+	"cspi1_rdy__gpio_2_22",
+	"sd1_cmd__gpio_2_23",
+	"sd1_clk__gpio_2_24",
+	"sd1_data0__gpio_2_25",
+	"sd1_data1__gpio_2_26",
+	"sd1_data2__gpio_2_27",
+	"sd1_data3__gpio_2_28",
+	"kpp_row0__gpio_2_29",
+	"kpp_row1__gpio_2_30",
+	"kpp_row2__gpio_2_31",
+	"de_b__gpio_2_20",
+	"clko__gpio_2_21",
+};
+
+static const char *gpio3_groups[] = {
+	"cs4__gpio_3_20",
+	"cs5__gpio_3_21",
+	"nf_ce0__gpio_3_22",
+	"ecb__gpio_3_23",
+	"lba__gpio_3_24",
+	"rw__gpio_3_25",
+	"nfwe_b__gpio_3_26",
+	"nfre_b__gpio_3_27",
+	"nfale__gpio_3_28",
+	"nfcle__gpio_3_29",
+	"nfwp_b__gpio_3_30",
+	"nfrb__gpio_3_31",
+	"kpp_row3__gpio_3_0",
+	"kpp_col0__gpio_3_1",
+	"kpp_col1__gpio_3_2",
+	"kpp_col2__gpio_3_3",
+	"kpp_col3__gpio_3_4",
+	"fec_mdc__gpio_3_5",
+	"fec_mdio__gpio_3_6",
+	"fec_tdata0__gpio_3_7",
+	"fec_tdata1__gpio_3_8",
+	"fec_tx_en__gpio_3_9",
+	"fec_rdata0__gpio_3_10",
+	"fec_rdata1__gpio_3_11",
+	"fec_rx_dv__gpio_3_12",
+	"fec_tx_clk__gpio_3_13",
+	"rtck__gpio_3_14",
+	"ext_armclk__gpio_3_15",
+	"upll_bypclk__gpio_3_16",
+	"vstby_req__gpio_3_17",
+	"vstby_ack__gpio_3_18",
+	"power_fail__gpio_3_19",
+};
+
+static const char *gpio4_groups[] = {
+	"a10__gpio_4_0",
+	"a13__gpio_4_1",
+	"cs0__gpio_4_2",
+	"cs1__gpio_4_3",
+	"bclk__gpio_4_4",
+	"d15__gpio_4_5",
+	"d14__gpio_4_6",
+	"d13__gpio_4_7",
+	"d12__gpio_4_8",
+	"d11__gpio_4_9",
+	"d10__gpio_4_10",
+	"d9__gpio_4_11",
+	"d8__gpio_4_12",
+	"d7__gpio_4_13",
+	"d6__gpio_4_14",
+	"d5__gpio_4_15",
+	"d4__gpio_4_16",
+	"d3__gpio_4_17",
+	"d2__gpio_4_18",
+	"d1__gpio_4_19",
+	"d0__gpio_4_20",
+	"csi_d9__gpio_4_21",
+	"uart1_rxd__gpio_4_22",
+	"uart1_txd__gpio_4_23",
+	"uart1_rts__gpio_4_24",
+	"uart1_cts__gpio_4_25",
+	"uart2_rxd__gpio_4_26",
+	"uart2_txd__gpio_4_27",
+	"uart2_rts__gpio_4_28",
+	"uart2_cts__gpio_4_29",
+	"boot_mode0__gpio_4_30",
+	"boot_mode1__gpio_4_31",
+};
+
+static const char *i2c1_groups[] = {
+	"i2c1_clk__i2c1_clk",
+	"i2c1_dat__i2c1_dat",
+};
+
+static const char *jtag_groups[] = {
+	"rtck__rtck",
+	"tdo__tdo",
+};
+
+static const char *kpp_groups[] = {
+	"kpp_row0__kpp_row0",
+	"kpp_row1__kpp_row1",
+	"kpp_row2__kpp_row2",
+	"kpp_row3__kpp_row3",
+	"kpp_col0__kpp_col0",
+	"kpp_col1__kpp_col1",
+	"kpp_col2__kpp_col2",
+	"kpp_col3__kpp_col3",
+};
+
+static const char *lcd_groups[] = {
+	"d15__ld16",
+	"d14__ld17",
+	"d13__ld18",
+	"ld0__ld0",
+	"ld1__ld1",
+	"ld2__ld2",
+	"ld3__ld3",
+	"ld4__ld4",
+	"ld5__ld5",
+	"ld6__ld6",
+	"ld7__ld7",
+	"ld8__ld8",
+	"ld9__ld9",
+	"ld10__ld10",
+	"ld11__ld11",
+	"ld12__ld12",
+	"ld13__ld13",
+	"ld14__ld14",
+	"ld15__ld15",
+	"hsync__hsync",
+	"vsync__vsync",
+	"lsclk__lsclk",
+	"oe_acd__oe_acd",
+	"contrast__contrast",
+	"gpio_e__ld16",
+	"gpio_f__ld17",
+};
+
+static const char *nfc_groups[] = {
+	"cs1__nf_ce3",
+	"cs4__nf_ce1",
+	"cs5__nf_ce2",
+	"nf_ce0__nf_ce0",
+	"nfwe_b__nfwe_b",
+	"nfre_b__nfre_b",
+	"nfale__nfale",
+	"nfcle__nfcle",
+	"nfwp_b__nfwp_b",
+	"nfrb__nfrb",
+};
+
+static const char *owire_groups[] = {
+	"rtck__owire",
+};
+
+static const char *pwm1_groups[] = {
+	"pwm__pwm",
+};
+
+static const char *pwm4_groups[] = {
+	"contrast__pwm4_pwmo",
+};
+
+static const char *sd1_groups[] = {
+	"sd1_cmd__sd1_cmd",
+	"sd1_clk__sd1_clk",
+	"sd1_data0__sd1_data0",
+	"sd1_data1__sd1_data1",
+	"sd1_data2__sd1_data2",
+	"sd1_data3__sd1_data3",
+};
+
+static const char *sd2_groups[] = {
+	"csi_d6__sd2_cmd",
+	"csi_d7__sd2_clk",
+	"csi_mclk__sd2_data0",
+	"csi_vsync__sd2_data1",
+	"csi_hsync__sd2_data2",
+	"csi_pixclk__sd2_data3",
 };
 
 static const char *uart1_groups[] = {
@@ -1339,47 +3744,89 @@ static const char *uart4_groups[] = {
 	"ld9__uart4_txd",
 	"ld10__uart4_rts",
 	"ld11__uart4_cts",
+	"kpp_col0__uart4_rxd_mux",
+	"kpp_col1__uart4_txd_mux",
+	"kpp_col2__uart4_rts",
+	"kpp_col3__uart4_cts",
 };
 
 static const char *uart5_groups[] = {
+	"cs4__uart5_cts",
+	"cs5__uart5_rts",
+	"ecb__uart5_txd_mux",
+	"lba__uart5_rxd_mux",
 	"csi_d2__uart5_rxd_mux",
 	"csi_d3__uart5_txd_mux",
 	"csi_d4__uart5_rts",
 	"csi_d5__uart5_cts",
 };
 
-static const char *i2c1_groups[] = {
-	"i2c1_clk__i2c1_clk",
-	"i2c1_dat__i2c1_dat",
+static const char *usbh2_groups[] = {
+	"d9__usbh2_pwr",
+	"d8__usbh2_oc",
+	"pwm__usbh2_oc",
 };
 
-static const char *gpio1_groups[] = {
-	"cspi1_ss1__gpio_1_17",
-	"cspi1_sclk__gpio_1_18",
+static const char *usbotg_groups[] = {
+	"d10__usbotg_oc",
+	"gpio_a__usbotg_pwr",
+	"gpio_b__usbotg_oc",
 };
 
-static const char *gpio3_groups[] = {
-	"kpp_col0__gpio_3_1",
-	"kpp_col1__gpio_3_2",
-	"nfwp_b__gpio_3_30",
+static const char *emi_groups[] = {
+	"a10__a10",
+	"a13__a13",
+	"a14__a14",
+	"a15__a15",
+	"a16__a16",
+	"a17__a17",
+	"a18__a18",
+	"a19__a19",
+	"a20__a20",
+	"a21__a21",
+	"a22__a22",
+	"a23__a23",
+	"a24__a24",
+	"a25__a25",
+	"eb0__eb0",
+	"eb1__eb1",
+	"oe__oe",
+	"cs0__cs0",
+	"cs1__cs1",
+	"cs4__cs4",
+	"cs5__cs5",
+	"ecb__ecb",
+	"lba__lba",
+	"bclk__bclk",
+	"rw__rw",
+	"d15__d15",
+	"d14__d14",
+	"d13__d13",
+	"d12__d12",
+	"d11__d11",
+	"d10__d10",
+	"d9__d9",
+	"d8__d8",
+	"d7__d7",
+	"d6__d6",
+	"d5__d5",
+	"d4__d4",
+	"d3__d3",
+	"d2__d2",
+	"d1__d1",
+	"d0__d0",
+	"de_b__de_b",
 };
 
-static const char *sd1_groups[] = {
-	"sd1_cmd__sd1_cmd",
-	"sd1_clk__sd1_clk",
-	"sd1_data0__sd1_data0",
-	"sd1_data1__sd1_data1",
-	"sd1_data2__sd1_data2",
-	"sd1_data3__sd1_data3",
-};
-
-static const char *sd2_groups[] = {
-	"csi_d6__sd2_cmd",
-	"csi_d7__sd2_clk",
-	"csi_mclk__sd2_data0",
-	"csi_vsync__sd2_data1",
-	"csi_hsync__sd2_data2",
-	"csi_pixclk__sd2_data3",
+static const char *ccm_groups[] = {
+	"ext_armclk__ext_armclk",
+	"upll_bypclk__upll_bypclk",
+	"vstby_req__vstby_req",
+	"vstby_ack__vstby_ack",
+	"power_fail__power_fail",
+	"clko__clko",
+	"boot_mode0__boot_mode0",
+	"boot_mode1__boot_mode1",
 };
 
 #define IMX25_PINCTRL_PMX_FUNC(func) {			\
@@ -1389,16 +3836,38 @@ static const char *sd2_groups[] = {
 }
 
 static struct imx_pmx_func imx25_pinctrl_functions[] = {
+	IMX25_PINCTRL_PMX_FUNC(aud4),
+	IMX25_PINCTRL_PMX_FUNC(aud5),
+	IMX25_PINCTRL_PMX_FUNC(aud7),
+	IMX25_PINCTRL_PMX_FUNC(can1),
+	IMX25_PINCTRL_PMX_FUNC(can2),
+	IMX25_PINCTRL_PMX_FUNC(csi),
+	IMX25_PINCTRL_PMX_FUNC(cspi1),
+	IMX25_PINCTRL_PMX_FUNC(cspi3),
+	IMX25_PINCTRL_PMX_FUNC(fec),
+	IMX25_PINCTRL_PMX_FUNC(gpio1),
+	IMX25_PINCTRL_PMX_FUNC(gpio2),
+	IMX25_PINCTRL_PMX_FUNC(gpio3),
+	IMX25_PINCTRL_PMX_FUNC(gpio4),
+	IMX25_PINCTRL_PMX_FUNC(i2c1),
+	IMX25_PINCTRL_PMX_FUNC(jtag),
+	IMX25_PINCTRL_PMX_FUNC(kpp),
+	IMX25_PINCTRL_PMX_FUNC(lcd),
+	IMX25_PINCTRL_PMX_FUNC(nfc),
+	IMX25_PINCTRL_PMX_FUNC(owire),
+	IMX25_PINCTRL_PMX_FUNC(pwm1),
+	IMX25_PINCTRL_PMX_FUNC(pwm4),
+	IMX25_PINCTRL_PMX_FUNC(sd1),
+	IMX25_PINCTRL_PMX_FUNC(sd2),
 	IMX25_PINCTRL_PMX_FUNC(uart1),
 	IMX25_PINCTRL_PMX_FUNC(uart2),
 	IMX25_PINCTRL_PMX_FUNC(uart3),
 	IMX25_PINCTRL_PMX_FUNC(uart4),
 	IMX25_PINCTRL_PMX_FUNC(uart5),
-	IMX25_PINCTRL_PMX_FUNC(i2c1),
-	IMX25_PINCTRL_PMX_FUNC(gpio1),
-	IMX25_PINCTRL_PMX_FUNC(gpio3),
-	IMX25_PINCTRL_PMX_FUNC(sd1),
-	IMX25_PINCTRL_PMX_FUNC(sd2),
+	IMX25_PINCTRL_PMX_FUNC(usbh2),
+	IMX25_PINCTRL_PMX_FUNC(usbotg),
+	IMX25_PINCTRL_PMX_FUNC(emi),
+	IMX25_PINCTRL_PMX_FUNC(ccm),
 };
 
 static struct imx_pinctrl_soc_info imx25_pinctrl_info = {
