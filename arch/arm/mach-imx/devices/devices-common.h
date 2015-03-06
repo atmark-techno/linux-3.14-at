@@ -291,6 +291,7 @@ struct platform_device *__init imx_add_pata_imx(
 		const struct imx_pata_imx_data *data);
 
 struct imx_mxc_pwm_data {
+	const char *devid;
 	int id;
 	resource_size_t iobase;
 	resource_size_t iosize;

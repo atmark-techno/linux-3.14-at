@@ -40,6 +40,11 @@
 #define MX3_PWMCR_CLKSRC_IPG      (1 << 16)
 #define MX3_PWMCR_EN              (1 << 0)
 
+enum imx_pwm_type {
+	IMX1_PWM,
+	IMX27_PWM,
+};
+
 struct imx_chip {
 	struct clk	*clk_per;
 	struct clk	*clk_ipg;
@@ -51,6 +56,7 @@ struct imx_chip {
 	int (*config)(struct pwm_chip *chip,
 		struct pwm_device *pwm, int duty_ns, int period_ns);
 	void (*set_enable)(struct pwm_chip *chip, bool enable);
+	enum imx_pwm_type devtype;
 };
 
 #define to_imx_chip(chip)	container_of(chip, struct imx_chip, chip)
@@ -198,6 +204,11 @@ static void imx_pwm_disable(struct pwm_chip *chip, struct pwm_device *pwm)
 	clk_disable_unprepare(imx->clk_per);
 }
 
+static inline int is_imx1_pwm(struct imx_chip *chip)
+{
+	return chip->devtype == IMX1_PWM;
+}
+
 static struct pwm_ops imx_pwm_ops = {
 	.enable = imx_pwm_enable,
 	.disable = imx_pwm_disable,
@@ -221,6 +232,19 @@ static struct imx_pwm_data imx_pwm_data_v2 = {
 	.set_enable = imx_pwm_set_enable_v2,
 };
 
+static const struct platform_device_id imx_pwm_devtype[] = {
+	{
+		.name = "imx1-pwm",
+		.driver_data = IMX1_PWM,
+	}, {
+		.name = "imx27-pwm",
+		.driver_data = IMX27_PWM,
+	}, {
+		/* sentinel */
+	}
+};
+MODULE_DEVICE_TABLE(platform, imx_pwm_devtype);
+
 static const struct of_device_id imx_pwm_dt_ids[] = {
 	{ .compatible = "fsl,imx1-pwm", .data = &imx_pwm_data_v1, },
 	{ .compatible = "fsl,imx27-pwm", .data = &imx_pwm_data_v2, },
@@ -230,15 +254,11 @@ MODULE_DEVICE_TABLE(of, imx_pwm_dt_ids);
 
 static int imx_pwm_probe(struct platform_device *pdev)
 {
-	const struct of_device_id *of_id =
-			of_match_device(imx_pwm_dt_ids, &pdev->dev);
+	const struct of_device_id *of_id;
 	const struct imx_pwm_data *data;
 	struct imx_chip *imx;
 	struct resource *r;
 	int ret = 0;
-
-	if (!of_id)
-		return -ENODEV;
 
 	imx = devm_kzalloc(&pdev->dev, sizeof(*imx), GFP_KERNEL);
 	if (imx == NULL) {
@@ -270,9 +290,24 @@ static int imx_pwm_probe(struct platform_device *pdev)
 	if (IS_ERR(imx->mmio_base))
 		return PTR_ERR(imx->mmio_base);
 
-	data = of_id->data;
-	imx->config = data->config;
-	imx->set_enable = data->set_enable;
+	if (pdev->dev.of_node) {
+		of_id = of_match_device(imx_pwm_dt_ids, &pdev->dev);
+		if (!of_id)
+			return -ENODEV;
+
+		data = of_id->data;
+		imx->config = data->config;
+		imx->set_enable = data->set_enable;
+	} else {
+		imx->devtype = pdev->id_entry->driver_data;
+		if (is_imx1_pwm(imx)) {
+			imx->config = imx_pwm_config_v1;
+			imx->set_enable = imx_pwm_set_enable_v1;
+		} else {
+			imx->config = imx_pwm_config_v2;
+			imx->set_enable = imx_pwm_set_enable_v2;
+		}
+	}
 
 	ret = pwmchip_add(&imx->chip);
 	if (ret < 0)
@@ -301,6 +336,7 @@ static struct platform_driver imx_pwm_driver = {
 	},
 	.probe		= imx_pwm_probe,
 	.remove		= imx_pwm_remove,
+	.id_table	= imx_pwm_devtype,
 };
 
 module_platform_driver(imx_pwm_driver);
