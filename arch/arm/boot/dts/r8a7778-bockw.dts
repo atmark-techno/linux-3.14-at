@@ -46,6 +46,25 @@
 		regulator-always-on;
 	};
 
+	sound {
+		compatible = "simple-audio-card";
+
+		simple-audio-card,format = "left_j";
+		simple-audio-card,bitclock-master = <&sndcodec>;
+		simple-audio-card,frame-master = <&sndcodec>;
+
+		sndcpu: simple-audio-card,cpu {
+			sound-dai = <&rcar_sound>;
+		};
+
+		sndcodec: simple-audio-card,codec {
+			sound-dai = <&ak4643>;
+			system-clock-frequency = <11289600>;
+		};
+	};
+};
+
+&bsc {
 	ethernet@18300000 {
 		compatible = "smsc,lan9220", "smsc,lan9115";
 		reg = <0x18300000 0x1000>;
@@ -59,22 +78,33 @@
 	};
 };
 
-&bsc {
-	ethernet@18300000 {
-		compatible = "smsc,lan89218", "smsc,lan9115";
-		reg = <0x18300000 0x1000>;
-
-		phy-mode = "mii";
-		interrupt-parent = <&irqpin>;
-		interrupts = <0 IRQ_TYPE_EDGE_FALLING>;
-		reg-io-width = <4>;
-		vddvario-supply = <&fixedregulator3v3>;
-		vdd33a-supply = <&fixedregulator3v3>;
-	};
-};
-
 &extal_clk {
 	clock-frequency = <33333333>;
+};
+
+&i2c0 {
+	status = "okay";
+
+	ak4643: sound-codec@12 {
+		compatible = "asahi-kasei,ak4643";
+		#sound-dai-cells = <0>;
+		reg = <0x12>;
+	};
+
+	camera@41 {
+		compatible = "oki,ml86v7667";
+		reg = <0x41>;
+	};
+
+	camera@43 {
+		compatible = "oki,ml86v7667";
+		reg = <0x43>;
+	};
+
+	rx8581: rtc@51 {
+		compatible = "epson,rx8581";
+		reg = <0x51>;
+	};
 };
 
 &mmcif {
