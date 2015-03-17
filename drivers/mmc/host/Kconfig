@@ -166,6 +166,15 @@ config MMC_SDHCI_ESDHC_IMX
 
 	  If unsure, say N.
 
+config MMC_SDHCI_ESDHC_IMX_FORCE_MULTIBLOCK_TRANSFER
+	bool "Enforce to use multi-block transfer"
+	depends on MMC_SDHCI_ESDHC_IMX
+	default n
+	help
+	  Perform multi-block transfer by ignoring the workaround of
+	  the chip erratum ENGcm07207 (Always perform single-block
+	  transfer).
+
 config MMC_SDHCI_DOVE
 	tristate "SDHCI support on Marvell's Dove SoC"
 	depends on ARCH_DOVE

@@ -1034,9 +1034,11 @@ static int sdhci_esdhc_imx_probe(struct platform_device *pdev)
 
 	host->quirks |= SDHCI_QUIRK_BROKEN_TIMEOUT_VAL;
 
-	if (imx_data->socdata->flags & ESDHC_FLAG_ENGCM07207)
-		/* Fix errata ENGcm07207 present on i.MX25 and i.MX35 */
-		host->quirks |= SDHCI_QUIRK_NO_MULTIBLOCK;
+	if (!IS_ENABLED(CONFIG_MMC_SDHCI_ESDHC_IMX_FORCE_MULTIBLOCK_TRANSFER)) {
+		if (imx_data->socdata->flags & ESDHC_FLAG_ENGCM07207)
+			/* Fix errata ENGcm07207 present on i.MX25 and i.MX35 */
+			host->quirks |= SDHCI_QUIRK_NO_MULTIBLOCK;
+	}
 
 	if (is_imx25_esdhc(imx_data) || is_imx35_esdhc(imx_data))
 		host->quirks |= SDHCI_QUIRK_BROKEN_ADMA;
