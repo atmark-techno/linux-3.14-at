@@ -198,6 +198,11 @@ static inline int is_imx25_esdhc(struct pltfm_imx_data *data)
 	return data->socdata == &esdhc_imx25_data;
 }
 
+static inline int is_imx35_esdhc(struct pltfm_imx_data *data)
+{
+	return data->socdata == &esdhc_imx35_data;
+}
+
 static inline int is_imx53_esdhc(struct pltfm_imx_data *data)
 {
 	return data->socdata == &esdhc_imx53_data;
@@ -1031,8 +1036,10 @@ static int sdhci_esdhc_imx_probe(struct platform_device *pdev)
 
 	if (imx_data->socdata->flags & ESDHC_FLAG_ENGCM07207)
 		/* Fix errata ENGcm07207 present on i.MX25 and i.MX35 */
-		host->quirks |= SDHCI_QUIRK_NO_MULTIBLOCK
-			| SDHCI_QUIRK_BROKEN_ADMA;
+		host->quirks |= SDHCI_QUIRK_NO_MULTIBLOCK;
+
+	if (is_imx25_esdhc(imx_data) || is_imx35_esdhc(imx_data))
+		host->quirks |= SDHCI_QUIRK_BROKEN_ADMA;
 
 	/*
 	 * The imx6q ROM code will change the default watermark level setting
