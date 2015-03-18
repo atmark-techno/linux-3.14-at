@@ -2182,6 +2182,13 @@ static void sdhci_tasklet_finish(unsigned long param)
 		sdhci_reset(host, SDHCI_RESET_DATA);
 	}
 
+	if (!(host->flags & SDHCI_DEVICE_DEAD) &&
+	    (host->quirks2 & SDHCI_QUIRK_RESET_CMD_AFTER_READ_REQUEST) &&
+	    (mrq->data && (mrq->data->flags & MMC_DATA_READ))) {
+		/* Some controllers need a command reset after read request.  */
+		sdhci_reset(host, SDHCI_RESET_CMD);
+	}
+
 	host->mrq = NULL;
 	host->cmd = NULL;
 	host->data = NULL;
