@@ -116,13 +116,18 @@
 #define ESDHC_FLAG_STD_TUNING		BIT(5)
 /* The IP has SDHCI_CAPABILITIES_1 register */
 #define ESDHC_FLAG_HAVE_CAP1		BIT(6)
+/*
+ * The flag enables the workaround for ESDHC errata ENGcm08158 which
+ * affects i.MX25.
+ */
+#define ESDHC_FLAG_ENGCM08158		BIT(7)
 
 struct esdhc_soc_data {
 	u32 flags;
 };
 
 static struct esdhc_soc_data esdhc_imx25_data = {
-	.flags = ESDHC_FLAG_ENGCM07207,
+	.flags = ESDHC_FLAG_ENGCM07207 | ESDHC_FLAG_ENGCM08158,
 };
 
 static struct esdhc_soc_data esdhc_imx35_data = {
@@ -1036,6 +1041,10 @@ static int sdhci_esdhc_imx_probe(struct platform_device *pdev)
 			/* Fix errata ENGcm07207 present on i.MX25 and i.MX35 */
 			host->quirks |= SDHCI_QUIRK_NO_MULTIBLOCK;
 	}
+
+	if (imx_data->socdata->flags & ESDHC_FLAG_ENGCM08158)
+		/* Fix errata ENGcm08158 present on i.MX25 */
+		host->quirks2 |= SDHCI_QUIRK_RESET_CMD_AFTER_READ_REQUEST;
 
 	if (is_imx25_esdhc(imx_data) || is_imx35_esdhc(imx_data))
 		host->quirks |= SDHCI_QUIRK_BROKEN_ADMA;
