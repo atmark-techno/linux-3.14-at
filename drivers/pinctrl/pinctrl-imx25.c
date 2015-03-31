@@ -1881,6 +1881,10 @@ struct imx_pin pins_hsync__gpio_1_22[] = {
 	IMX25_PINCTRL_PIN(HSYNC, GPIO_1_22),
 };
 
+struct imx_pin pins_hsync__i2c3_clk[] = {
+	IMX25_PINCTRL_PIN(HSYNC, I2C3_CLK),
+};
+
 /* VSYNC */
 unsigned int pin_ids_vsync[] = {
 	MX25_PAD_VSYNC,
@@ -1892,6 +1896,10 @@ struct imx_pin pins_vsync__vsync[] = {
 
 struct imx_pin pins_vsync__gpio_1_23[] = {
 	IMX25_PINCTRL_PIN(VSYNC, GPIO_1_23),
+};
+
+struct imx_pin pins_vsync__i2c3_dat[] = {
+	IMX25_PINCTRL_PIN(VSYNC, I2C3_DAT),
 };
 
 /* LSCLK */
@@ -2242,6 +2250,10 @@ struct imx_pin pins_cspi1_ss1__cspi1_ss1[] = {
 
 struct imx_pin pins_cspi1_ss1__gpio_1_17[] = {
 	IMX25_PINCTRL_PIN(CSPI1_SS1, GPIO_1_17),
+};
+
+struct imx_pin pins_cspi1_ss1__i2c3_dat[] = {
+	IMX25_PINCTRL_PIN(CSPI1_SS1, I2C3_DAT),
 };
 
 /* CSPI1_SCLK */
@@ -2828,6 +2840,10 @@ struct imx_pin pins_gpio_a__usbotg_pwr[] = {
 	IMX25_PINCTRL_PIN(GPIO_A, USBOTG_PWR),
 };
 
+struct imx_pin pins_gpio_a__i2c3_clk[] = {
+	IMX25_PINCTRL_PIN(GPIO_A, I2C3_CLK),
+};
+
 /* GPIO_B */
 unsigned int pin_ids_gpio_b[] = {
 	MX25_PAD_GPIO_B,
@@ -2843,6 +2859,10 @@ struct imx_pin pins_gpio_b__can1_rx[] = {
 
 struct imx_pin pins_gpio_b__usbotg_oc[] = {
 	IMX25_PINCTRL_PIN(GPIO_B, USBOTG_OC),
+};
+
+struct imx_pin pins_gpio_b__i2c3_dat[] = {
+	IMX25_PINCTRL_PIN(GPIO_B, I2C3_DAT),
 };
 
 /* GPIO_C */
@@ -2894,6 +2914,10 @@ struct imx_pin pins_gpio_e__gpio_e[] = {
 
 struct imx_pin pins_gpio_e__aud7_txd[] = {
 	IMX25_PINCTRL_PIN(GPIO_E, AUD7_TXD),
+};
+
+struct imx_pin pins_gpio_e__i2c3_clk[] = {
+	IMX25_PINCTRL_PIN(GPIO_E, I2C3_CLK),
 };
 
 /* GPIO_F */
@@ -3210,8 +3234,10 @@ static struct imx_pin_group imx25_pinctrl_groups[] = {
 	IMX25_PINCTRL_PIN_GROUP(ld15, fec_rx_clk),
 	IMX25_PINCTRL_PIN_GROUP(hsync, hsync),
 	IMX25_PINCTRL_PIN_GROUP(hsync, gpio_1_22),
+	IMX25_PINCTRL_PIN_GROUP(hsync, i2c3_clk),
 	IMX25_PINCTRL_PIN_GROUP(vsync, vsync),
 	IMX25_PINCTRL_PIN_GROUP(vsync, gpio_1_23),
+	IMX25_PINCTRL_PIN_GROUP(vsync, i2c3_dat),
 	IMX25_PINCTRL_PIN_GROUP(lsclk, lsclk),
 	IMX25_PINCTRL_PIN_GROUP(lsclk, gpio_1_24),
 	IMX25_PINCTRL_PIN_GROUP(oe_acd, oe_acd),
@@ -3272,6 +3298,7 @@ static struct imx_pin_group imx25_pinctrl_groups[] = {
 	IMX25_PINCTRL_PIN_GROUP(cspi1_ss0, gpio_1_16),
 	IMX25_PINCTRL_PIN_GROUP(cspi1_ss1, cspi1_ss1),
 	IMX25_PINCTRL_PIN_GROUP(cspi1_ss1, gpio_1_17),
+	IMX25_PINCTRL_PIN_GROUP(cspi1_ss1, i2c3_dat),
 	IMX25_PINCTRL_PIN_GROUP(cspi1_sclk, cspi1_sclk),
 	IMX25_PINCTRL_PIN_GROUP(cspi1_sclk, gpio_1_18),
 	IMX25_PINCTRL_PIN_GROUP(cspi1_rdy, cspi1_rdy),
@@ -3374,9 +3401,11 @@ static struct imx_pin_group imx25_pinctrl_groups[] = {
 	IMX25_PINCTRL_PIN_GROUP(gpio_a, gpio_a),
 	IMX25_PINCTRL_PIN_GROUP(gpio_a, can1_tx),
 	IMX25_PINCTRL_PIN_GROUP(gpio_a, usbotg_pwr),
+	IMX25_PINCTRL_PIN_GROUP(gpio_a, i2c3_clk),
 	IMX25_PINCTRL_PIN_GROUP(gpio_b, gpio_b),
 	IMX25_PINCTRL_PIN_GROUP(gpio_b, can1_rx),
 	IMX25_PINCTRL_PIN_GROUP(gpio_b, usbotg_oc),
+	IMX25_PINCTRL_PIN_GROUP(gpio_b, i2c3_dat),
 	IMX25_PINCTRL_PIN_GROUP(gpio_c, gpio_c),
 	IMX25_PINCTRL_PIN_GROUP(gpio_c, can2_tx),
 	IMX25_PINCTRL_PIN_GROUP(gpio_c, i2c2_clk),
@@ -3387,6 +3416,7 @@ static struct imx_pin_group imx25_pinctrl_groups[] = {
 	IMX25_PINCTRL_PIN_GROUP(gpio_e, gpio_e),
 	IMX25_PINCTRL_PIN_GROUP(gpio_f, ld17),
 	IMX25_PINCTRL_PIN_GROUP(gpio_e, aud7_txd),
+	IMX25_PINCTRL_PIN_GROUP(gpio_e, i2c3_clk),
 	IMX25_PINCTRL_PIN_GROUP(gpio_f, gpio_f),
 	IMX25_PINCTRL_PIN_GROUP(gpio_f, aud7_txc),
 	IMX25_PINCTRL_PIN_GROUP(ext_armclk, ext_armclk),
@@ -3672,6 +3702,15 @@ static const char *i2c2_groups[] = {
 	"gpio_d__i2c2_dat",
 };
 
+static const char *i2c3_groups[] = {
+	"hsync__i2c3_clk",
+	"vsync__i2c3_dat",
+	"cspi1_ss1__i2c3_dat",
+	"gpio_a__i2c3_clk",
+	"gpio_b__i2c3_dat",
+	"gpio_e__i2c3_clk",
+};
+
 static const char *jtag_groups[] = {
 	"rtck__rtck",
 	"tdo__tdo",
@@ -3894,6 +3933,7 @@ static struct imx_pmx_func imx25_pinctrl_functions[] = {
 	IMX25_PINCTRL_PMX_FUNC(gpio4),
 	IMX25_PINCTRL_PMX_FUNC(i2c1),
 	IMX25_PINCTRL_PMX_FUNC(i2c2),
+	IMX25_PINCTRL_PMX_FUNC(i2c3),
 	IMX25_PINCTRL_PMX_FUNC(jtag),
 	IMX25_PINCTRL_PMX_FUNC(kpp),
 	IMX25_PINCTRL_PMX_FUNC(lcd),
