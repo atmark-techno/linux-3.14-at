@@ -2858,6 +2858,10 @@ struct imx_pin pins_gpio_c__can2_tx[] = {
 	IMX25_PINCTRL_PIN(GPIO_C, CAN2_TX),
 };
 
+struct imx_pin pins_gpio_c__i2c2_clk[] = {
+	IMX25_PINCTRL_PIN(GPIO_C, I2C2_CLK),
+};
+
 /* GPIO_D */
 unsigned int pin_ids_gpio_d[] = {
 	MX25_PAD_GPIO_D,
@@ -2869,6 +2873,10 @@ struct imx_pin pins_gpio_d__gpio_d[] = {
 
 struct imx_pin pins_gpio_d__can2_rx[] = {
 	IMX25_PINCTRL_PIN(GPIO_D, CAN2_RX),
+};
+
+struct imx_pin pins_gpio_d__i2c2_dat[] = {
+	IMX25_PINCTRL_PIN(GPIO_D, I2C2_DAT),
 };
 
 /* GPIO_E */
@@ -3371,9 +3379,11 @@ static struct imx_pin_group imx25_pinctrl_groups[] = {
 	IMX25_PINCTRL_PIN_GROUP(gpio_b, usbotg_oc),
 	IMX25_PINCTRL_PIN_GROUP(gpio_c, gpio_c),
 	IMX25_PINCTRL_PIN_GROUP(gpio_c, can2_tx),
+	IMX25_PINCTRL_PIN_GROUP(gpio_c, i2c2_clk),
 	IMX25_PINCTRL_PIN_GROUP(gpio_d, gpio_d),
 	IMX25_PINCTRL_PIN_GROUP(gpio_e, ld16),
 	IMX25_PINCTRL_PIN_GROUP(gpio_d, can2_rx),
+	IMX25_PINCTRL_PIN_GROUP(gpio_d, i2c2_dat),
 	IMX25_PINCTRL_PIN_GROUP(gpio_e, gpio_e),
 	IMX25_PINCTRL_PIN_GROUP(gpio_f, ld17),
 	IMX25_PINCTRL_PIN_GROUP(gpio_e, aud7_txd),
@@ -3657,6 +3667,11 @@ static const char *i2c1_groups[] = {
 	"i2c1_dat__i2c1_dat",
 };
 
+static const char *i2c2_groups[] = {
+	"gpio_c__i2c2_clk",
+	"gpio_d__i2c2_dat",
+};
+
 static const char *jtag_groups[] = {
 	"rtck__rtck",
 	"tdo__tdo",
@@ -3878,6 +3893,7 @@ static struct imx_pmx_func imx25_pinctrl_functions[] = {
 	IMX25_PINCTRL_PMX_FUNC(gpio3),
 	IMX25_PINCTRL_PMX_FUNC(gpio4),
 	IMX25_PINCTRL_PMX_FUNC(i2c1),
+	IMX25_PINCTRL_PMX_FUNC(i2c2),
 	IMX25_PINCTRL_PMX_FUNC(jtag),
 	IMX25_PINCTRL_PMX_FUNC(kpp),
 	IMX25_PINCTRL_PMX_FUNC(lcd),
