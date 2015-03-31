@@ -2869,6 +2869,10 @@ struct imx_pin pins_gpio_b__i2c3_dat[] = {
 	IMX25_PINCTRL_PIN(GPIO_B, I2C3_DAT),
 };
 
+struct imx_pin pins_gpio_b__pwm3_pwmo[] = {
+	IMX25_PINCTRL_PIN(GPIO_B, PWM3_PWMO),
+};
+
 /* GPIO_C */
 unsigned int pin_ids_gpio_c[] = {
 	MX25_PAD_GPIO_C,
@@ -3411,6 +3415,7 @@ static struct imx_pin_group imx25_pinctrl_groups[] = {
 	IMX25_PINCTRL_PIN_GROUP(gpio_b, can1_rx),
 	IMX25_PINCTRL_PIN_GROUP(gpio_b, usbotg_oc),
 	IMX25_PINCTRL_PIN_GROUP(gpio_b, i2c3_dat),
+	IMX25_PINCTRL_PIN_GROUP(gpio_b, pwm3_pwmo),
 	IMX25_PINCTRL_PIN_GROUP(gpio_c, gpio_c),
 	IMX25_PINCTRL_PIN_GROUP(gpio_c, can2_tx),
 	IMX25_PINCTRL_PIN_GROUP(gpio_c, i2c2_clk),
@@ -3786,6 +3791,10 @@ static const char *pwm2_groups[] = {
 	"gpio_a__pwm2_pwmo",
 };
 
+static const char *pwm3_groups[] = {
+	"gpio_b__pwm3_pwmo",
+};
+
 static const char *pwm4_groups[] = {
 	"contrast__pwm4_pwmo",
 };
@@ -3950,6 +3959,7 @@ static struct imx_pmx_func imx25_pinctrl_functions[] = {
 	IMX25_PINCTRL_PMX_FUNC(owire),
 	IMX25_PINCTRL_PMX_FUNC(pwm1),
 	IMX25_PINCTRL_PMX_FUNC(pwm2),
+	IMX25_PINCTRL_PMX_FUNC(pwm3),
 	IMX25_PINCTRL_PMX_FUNC(pwm4),
 	IMX25_PINCTRL_PMX_FUNC(sd1),
 	IMX25_PINCTRL_PMX_FUNC(sd2),
