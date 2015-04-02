@@ -57,6 +57,9 @@
 #define S35390A_INT2_MODE_ALARM		0x40
 #define S35390A_INT2_MODE_PMIN_EDG	0x20
 
+static int s35390a_get_datetime(struct i2c_client *client, struct rtc_time *tm);
+static int s35390a_set_datetime(struct i2c_client *client, struct rtc_time *tm);
+
 static const struct i2c_device_id s35390a_id[] = {
 	{ "s35390a", 0 },
 	{ }
@@ -104,9 +107,42 @@ static int s35390a_get_reg(struct s35390a *s35390a, int reg, char *buf, int len)
 	return 0;
 }
 
+static int s35390a_init_wday(struct s35390a *s35390a)
+{
+	struct i2c_client *client = s35390a->client[0];
+	struct rtc_time tm;
+	int err;
+
+	err = s35390a_get_datetime(client, &tm);
+	if (err < 0)
+		return err;
+
+	/*
+	 * S35390A sets internal timer to 00:00:00 Jan 1, 2000 at
+	 * reset. and also, the day of the week is set to 0. S35390A
+	 * does not enforce any policy on how the value is used.
+	 *
+	 * However, Linux kernel is using 0 as Sunday. And that
+	 * conflicts with the actual day of Jan 1, 2000, which is
+	 * Saturday or "6" in the Linux way of expression.
+	 *
+	 * Alarm function of S35390A requires to match not only date
+	 * and time but also the days of the week. So, if we do not
+	 * initialize the day of the week to the right value, the
+	 * alarm never goes off.
+	 *
+	 * Initialize the index of the day of the week to the same
+	 * value as linux kernel.
+	 */
+	tm.tm_wday = 6;
+
+	return s35390a_set_datetime(client, &tm);
+}
+
 static int s35390a_reset(struct s35390a *s35390a)
 {
 	char buf[1];
+	int err;
 
 	if (s35390a_get_reg(s35390a, S35390A_CMD_STATUS1, buf, sizeof(buf)) < 0)
 		return -EIO;
@@ -116,7 +152,11 @@ static int s35390a_reset(struct s35390a *s35390a)
 
 	buf[0] |= (S35390A_FLAG_RESET | S35390A_FLAG_24H);
 	buf[0] &= 0xf0;
-	return s35390a_set_reg(s35390a, S35390A_CMD_STATUS1, buf, sizeof(buf));
+	err = s35390a_set_reg(s35390a, S35390A_CMD_STATUS1, buf, sizeof(buf));
+	if (err < 0)
+		return err;
+
+	return s35390a_init_wday(s35390a);
 }
 
 static int s35390a_disable_test_mode(struct s35390a *s35390a)
