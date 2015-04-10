@@ -631,7 +631,7 @@ static inline void esdhc_pltfm_set_clock(struct sdhci_host *host,
 		goto out;
 	}
 
-	if (esdhc_is_usdhc(imx_data) && !imx_data->is_ddr)
+	if (!imx_data->is_ddr)
 		pre_div = 1;
 
 	temp = sdhci_readl(host, ESDHC_SYSTEM_CONTROL);
