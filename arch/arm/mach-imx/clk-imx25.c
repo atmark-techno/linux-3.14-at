@@ -230,6 +230,12 @@ static int __init __mx25_clocks_init(unsigned long osc_rate)
 	clk_register_clkdev(clk[ipg], "ipg", "imx-gpt.0");
 	clk_register_clkdev(clk[gpt_ipg_per], "per", "imx-gpt.0");
 
+	/* The eSDHC clock must be derived from upll 240MHz clock */
+	clk_set_parent(clk[per3], clk[upll]);
+	clk_set_rate(clk[per3], 240000000);
+	clk_set_parent(clk[per4], clk[upll]);
+	clk_set_rate(clk[per4], 240000000);
+
 	return 0;
 }
 
