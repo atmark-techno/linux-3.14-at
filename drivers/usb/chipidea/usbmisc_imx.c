@@ -287,6 +287,34 @@ static const struct of_device_id usbmisc_imx_dt_ids[] = {
 };
 MODULE_DEVICE_TABLE(of, usbmisc_imx_dt_ids);
 
+static struct platform_device_id usbmisc_imx_ids[] = {
+	{
+		.name = "imx25-usbmisc",
+		.driver_data = (kernel_ulong_t)&imx25_usbmisc_ops,
+	},
+	{
+		.name = "imx35-usbmisc",
+		.driver_data = (kernel_ulong_t)&imx25_usbmisc_ops,
+	},
+	{
+		.name = "imx27-usbmisc",
+		.driver_data = (kernel_ulong_t)&imx27_usbmisc_ops,
+	},
+	{
+		.name = "imx51-usbmisc",
+		.driver_data = (kernel_ulong_t)&imx53_usbmisc_ops,
+	},
+	{
+		.name = "imx53-usbmisc",
+		.driver_data = (kernel_ulong_t)&imx53_usbmisc_ops,
+	},
+	{
+		.name = "imx6q-usbmisc",
+		.driver_data = (kernel_ulong_t)&imx6q_usbmisc_ops,
+	},
+};
+MODULE_DEVICE_TABLE(platform, ci_hdrc_imx_ids);
+
 static int usbmisc_imx_probe(struct platform_device *pdev)
 {
 	struct resource	*res;
@@ -324,7 +352,11 @@ static int usbmisc_imx_probe(struct platform_device *pdev)
 
 	tmp_dev = (struct of_device_id *)
 		of_match_device(usbmisc_imx_dt_ids, &pdev->dev);
-	data->ops = (const struct usbmisc_ops *)tmp_dev->data;
+	if (tmp_dev)
+		data->ops = (const struct usbmisc_ops *)tmp_dev->data;
+	else
+		data->ops = (const struct usbmisc_ops *)
+			platform_get_device_id(pdev)->driver_data;
 	usbmisc = data;
 
 	return 0;
@@ -340,6 +372,7 @@ static int usbmisc_imx_remove(struct platform_device *pdev)
 static struct platform_driver usbmisc_imx_driver = {
 	.probe = usbmisc_imx_probe,
 	.remove = usbmisc_imx_remove,
+	.id_table = usbmisc_imx_ids,
 	.driver = {
 		.name = "usbmisc_imx",
 		.owner = THIS_MODULE,

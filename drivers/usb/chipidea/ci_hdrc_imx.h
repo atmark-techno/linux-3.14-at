@@ -12,12 +12,7 @@
 #ifndef __DRIVER_USB_CHIPIDEA_CI_HDRC_IMX_H
 #define __DRIVER_USB_CHIPIDEA_CI_HDRC_IMX_H
 
-struct imx_usbmisc_data {
-	int index;
-
-	unsigned int disable_oc:1; /* over current detect disabled */
-	unsigned int evdo:1; /* set external vbus divider option */
-};
+#include <linux/usb/imx_usb.h>
 
 int imx_usbmisc_init(struct imx_usbmisc_data *);
 int imx_usbmisc_init_post(struct imx_usbmisc_data *);

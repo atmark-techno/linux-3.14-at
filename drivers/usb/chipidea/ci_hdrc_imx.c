@@ -18,6 +18,7 @@
 #include <linux/pm_runtime.h>
 #include <linux/dma-mapping.h>
 #include <linux/usb/chipidea.h>
+#include <linux/usb/imx_usb.h>
 #include <linux/clk.h>
 
 #include "ci.h"
@@ -43,6 +44,17 @@ static const struct of_device_id ci_hdrc_imx_dt_ids[] = {
 };
 MODULE_DEVICE_TABLE(of, ci_hdrc_imx_dt_ids);
 
+static struct platform_device_id ci_hdrc_imx_ids[] = {
+	{
+		.name = "imx28-usb",
+		.driver_data = (kernel_ulong_t)&imx28_usb_data,
+	}, {
+		.name = "imx27-usb",
+		.driver_data = (kernel_ulong_t)&imx27_usb_data,
+	},
+};
+MODULE_DEVICE_TABLE(platform, ci_hdrc_imx_ids);
+
 struct ci_hdrc_imx_data {
 	struct usb_phy *phy;
 	struct platform_device *ci_pdev;
@@ -52,7 +64,7 @@ struct ci_hdrc_imx_data {
 
 /* Common functions shared by usbmisc drivers */
 
-static struct imx_usbmisc_data *usbmisc_get_init_data(struct device *dev)
+static struct imx_usbmisc_data *usbmisc_get_init_data_dt(struct device *dev)
 {
 	struct device_node *np = dev->of_node;
 	struct of_phandle_args args;
@@ -90,6 +102,18 @@ static struct imx_usbmisc_data *usbmisc_get_init_data(struct device *dev)
 	return data;
 }
 
+static struct imx_usbmisc_data *usbmisc_get_init_data_pdata(struct device *dev)
+{
+	struct imx_usb_platform_data *pdata = dev_get_platdata(dev);
+
+	if (!pdata) {
+		dev_err(dev, "Platform data missing\n");
+		return ERR_PTR(-ENODEV);
+	}
+
+	return &pdata->data;
+}
+
 /* End of common functions shared by usbmisc drivers*/
 
 static int ci_hdrc_imx_probe(struct platform_device *pdev)
@@ -104,7 +128,19 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
 	int ret;
 	const struct of_device_id *of_id =
 			of_match_device(ci_hdrc_imx_dt_ids, &pdev->dev);
-	const struct ci_hdrc_imx_platform_flag *imx_platform_flag = of_id->data;
+	const struct ci_hdrc_imx_platform_flag *imx_platform_flag;
+	struct imx_usb_platform_data *imx_pdata;
+	struct device_node *np = pdev->dev.of_node;
+
+	if (of_id)
+		imx_platform_flag = of_id->data;
+	else
+		imx_platform_flag = (struct ci_hdrc_imx_platform_flag *)
+				platform_get_device_id(pdev)->driver_data;
+	if (!imx_platform_flag) {
+		dev_err(&pdev->dev, "Unable to find plaftorm flag\n");
+		return -EINVAL;
+	}
 
 	data = devm_kzalloc(&pdev->dev, sizeof(*data), GFP_KERNEL);
 	if (!data) {
@@ -112,9 +148,15 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
 		return -ENOMEM;
 	}
 
-	data->usbmisc_data = usbmisc_get_init_data(&pdev->dev);
-	if (IS_ERR(data->usbmisc_data))
+	if (np)
+		data->usbmisc_data = usbmisc_get_init_data_dt(&pdev->dev);
+	else
+		data->usbmisc_data = usbmisc_get_init_data_pdata(&pdev->dev);
+	if (IS_ERR(data->usbmisc_data)) {
+		dev_err(&pdev->dev,
+			"Failed to get usbmisc data, err=%ld\n", PTR_ERR(data->clk));
 		return PTR_ERR(data->usbmisc_data);
+	}
 
 	data->clk = devm_clk_get(&pdev->dev, NULL);
 	if (IS_ERR(data->clk)) {
@@ -130,8 +172,12 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
 		return ret;
 	}
 
-	data->phy = devm_usb_get_phy_by_phandle(&pdev->dev, "fsl,usbphy", 0);
+	if (np)
+		data->phy = devm_usb_get_phy_by_phandle(&pdev->dev, "fsl,usbphy", 0);
+	else
+		data->phy = devm_usb_get_phy(&pdev->dev, USB_PHY_TYPE_USB2);
 	if (IS_ERR(data->phy)) {
+		dev_err(&pdev->dev, "No usb2 phy configured\n");
 		ret = PTR_ERR(data->phy);
 		/* Return -EINVAL if no usbphy is available */
 		if (ret == -ENODEV)
@@ -147,6 +193,12 @@ static int ci_hdrc_imx_probe(struct platform_device *pdev)
 	ret = dma_coerce_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(32));
 	if (ret)
 		goto err_clk;
+
+	if (!np) {
+		imx_pdata = dev_get_platdata(&pdev->dev);
+		pdata.phy_mode = imx_pdata->phy_mode;
+		pdata.dr_mode = imx_pdata->dr_mode;
+	}
 
 	if (data->usbmisc_data) {
 		ret = imx_usbmisc_init(data->usbmisc_data);
@@ -205,6 +257,7 @@ static int ci_hdrc_imx_remove(struct platform_device *pdev)
 static struct platform_driver ci_hdrc_imx_driver = {
 	.probe = ci_hdrc_imx_probe,
 	.remove = ci_hdrc_imx_remove,
+	.id_table = ci_hdrc_imx_ids,
 	.driver = {
 		.name = "imx_usb",
 		.owner = THIS_MODULE,
