@@ -263,6 +263,9 @@ int __init mx25_clocks_init(void)
 	clk_register_clkdev(clk[ipg], "ipg", "mxc-ehci.2");
 	clk_register_clkdev(clk[usbotg_ahb], "ahb", "mxc-ehci.2");
 	clk_register_clkdev(clk[usb_div], "per", "mxc-ehci.2");
+	clk_register_clkdev(clk[ipg], NULL, "imx25-usbmisc");
+	clk_register_clkdev(clk[usbotg_ahb], NULL, "imx27-usb.0");
+	clk_register_clkdev(clk[usbotg_ahb], NULL, "imx27-usb.1");
 	clk_register_clkdev(clk[ipg], "ipg", "imx-udc-mx27");
 	clk_register_clkdev(clk[usbotg_ahb], "ahb", "imx-udc-mx27");
 	clk_register_clkdev(clk[usb_div], "per", "imx-udc-mx27");

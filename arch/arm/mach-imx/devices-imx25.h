@@ -69,6 +69,24 @@ extern const struct imx_mxc_ehci_data imx25_mxc_ehci_hs_data;
 #define imx25_add_mxc_ehci_hs(pdata)	\
 	imx_add_mxc_ehci(&imx25_mxc_ehci_hs_data, pdata)
 
+extern const struct imx_usb_phy_gen_xceiv_data imx25_usb_phy_gen_xceiv_otg_data;
+#define imx25_add_usb_phy_gen_xceiv_otg()	\
+	imx_add_usb_phy_gen_xceiv(&imx25_usb_phy_gen_xceiv_otg_data)
+extern const struct imx_usb_phy_gen_xceiv_data imx25_usb_phy_gen_xceiv_hs_data;
+#define imx25_add_usb_phy_gen_xceiv_hs()	\
+	imx_add_usb_phy_gen_xceiv(&imx25_usb_phy_gen_xceiv_hs_data)
+
+extern const struct imx_usbmisc_imx_data imx25_usbmisc_imx_data;
+#define imx25_add_usbmisc_imx()	\
+	imx_add_usbmisc_imx(&imx25_usbmisc_imx_data)
+
+extern const struct imx_imx_usb_data imx25_imx_usb_otg_data;
+#define imx25_add_imx_usb_otg(pdata)	\
+	imx_add_imx_usb(&imx25_imx_usb_otg_data, pdata)
+extern const struct imx_imx_usb_data imx25_imx_usb_hs_data;
+#define imx25_add_imx_usb_hs(pdata)	\
+	imx_add_imx_usb(&imx25_imx_usb_hs_data, pdata)
+
 extern const struct imx_mxc_nand_data imx25_mxc_nand_data;
 #define imx25_add_mxc_nand(pdata)	\
 	imx_add_mxc_nand(&imx25_mxc_nand_data, pdata)

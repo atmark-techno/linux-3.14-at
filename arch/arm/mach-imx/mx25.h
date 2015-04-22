@@ -56,6 +56,7 @@
  * Freescale internal sources confirm only the latter value to work.
  */
 #define MX25_USB_HS_BASE_ADDR			(MX25_USB_BASE_ADDR + 0x0400)
+#define MX25_USB_USBCTRL_BASE_ADDR		(MX25_USB_BASE_ADDR + 0x0600)
 #define MX25_CSI_BASE_ADDR		0x53ff8000
 
 /*
