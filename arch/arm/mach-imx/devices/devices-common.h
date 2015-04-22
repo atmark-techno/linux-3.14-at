@@ -251,6 +251,30 @@ struct platform_device *__init imx_add_mxc_ehci(
 		const struct imx_mxc_ehci_data *data,
 		const struct mxc_usbh_platform_data *pdata);
 
+struct imx_usb_phy_gen_xceiv_data {
+	int id;
+};
+struct platform_device *__init imx_add_usb_phy_gen_xceiv(
+		const struct imx_usb_phy_gen_xceiv_data *data);
+
+struct imx_usbmisc_imx_data {
+	const char *devid;
+	resource_size_t iobase;
+};
+struct platform_device *__init imx_add_usbmisc_imx(
+		const struct imx_usbmisc_imx_data *data);
+
+#include <linux/usb/imx_usb.h>
+struct imx_imx_usb_data {
+	const char *devid;
+	int id;
+	resource_size_t iobase;
+	resource_size_t irq;
+};
+struct platform_device *__init imx_add_imx_usb(
+		const struct imx_imx_usb_data *data,
+		struct imx_usb_platform_data *pdata);
+
 #include <linux/platform_data/mmc-mxcmmc.h>
 struct imx_mxc_mmc_data {
 	const char *devid;
