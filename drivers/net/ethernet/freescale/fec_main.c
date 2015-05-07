@@ -1161,6 +1161,13 @@ static void fec_get_mac(struct net_device *ndev)
 /*
  * Phy section
  */
+static void fec_enet_update_link_led(struct fec_enet_private *fep)
+{
+	if (gpio_is_valid(fep->link_led_gpio))
+		gpio_set_value(fep->link_led_gpio,
+			       fep->link_led_active_low ^ !!fep->link);
+}
+
 static void fec_enet_adjust_link(struct net_device *ndev)
 {
 	struct fec_enet_private *fep = netdev_priv(ndev);
@@ -1198,8 +1205,10 @@ static void fec_enet_adjust_link(struct net_device *ndev)
 		}
 	}
 
-	if (status_change)
+	if (status_change) {
 		phy_print_status(phy_dev);
+		fec_enet_update_link_led(fep);
+	}
 }
 
 static int fec_enet_mdio_read(struct mii_bus *bus, int mii_id, int regnum)
@@ -2089,6 +2098,7 @@ fec_probe(struct platform_device *pdev)
 	struct resource *r;
 	const struct of_device_id *of_id;
 	static int dev_id;
+	enum of_gpio_flags flags;
 
 	of_id = of_match_device(fec_dt_ids, &pdev->dev);
 	if (of_id)
@@ -2134,6 +2144,27 @@ fec_probe(struct platform_device *pdev)
 			fep->phy_interface = PHY_INTERFACE_MODE_MII;
 	} else {
 		fep->phy_interface = ret;
+	}
+
+	ret = of_get_named_gpio_flags(pdev->dev.of_node, "link-led-gpios", 0,
+				      &flags);
+	if (!gpio_is_valid(ret)) {
+		pdata = dev_get_platdata(&pdev->dev);
+		if (pdata) {
+			fep->link_led_gpio = pdata->link_led_gpio;
+			fep->link_led_active_low = pdata->link_led_active_low;
+		}
+	} else {
+		fep->link_led_gpio = ret;
+		fep->link_led_active_low = flags & OF_GPIO_ACTIVE_LOW;
+	}
+	if (gpio_is_valid(fep->link_led_gpio)) {
+		ret = devm_gpio_request_one(&pdev->dev, fep->link_led_gpio,
+					    fep->link_led_active_low ?
+					    GPIOF_OUT_INIT_HIGH :
+					    GPIOF_OUT_INIT_LOW, "link-led");
+		if (ret)
+			goto failed_gpio;
 	}
 
 	fep->clk_ipg = devm_clk_get(&pdev->dev, "ipg");
@@ -2251,6 +2282,7 @@ failed_clk_enet_out:
 failed_clk_ipg:
 	clk_disable_unprepare(fep->clk_ahb);
 failed_clk:
+failed_gpio:
 failed_ioremap:
 	free_netdev(ndev);
 

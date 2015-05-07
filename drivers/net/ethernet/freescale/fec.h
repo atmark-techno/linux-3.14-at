@@ -335,6 +335,9 @@ struct fec_enet_private {
 	struct timer_list time_keep;
 	struct fec_enet_delayed_work delay_work;
 	struct regulator *reg_phy;
+
+	int link_led_gpio;
+	bool link_led_active_low;
 };
 
 void fec_ptp_init(struct platform_device *pdev);

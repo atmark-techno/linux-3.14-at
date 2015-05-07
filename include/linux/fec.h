@@ -19,6 +19,9 @@
 struct fec_platform_data {
 	phy_interface_t phy;
 	unsigned char mac[ETH_ALEN];
+
+	int link_led_gpio;
+	bool link_led_active_low;
 };
 
 #endif
