@@ -2890,6 +2890,10 @@ struct imx_pin pins_gpio_c__i2c2_clk[] = {
 	IMX25_PINCTRL_PIN(GPIO_C, I2C2_CLK),
 };
 
+struct imx_pin pins_gpio_c__pwm4_pwmo[] = {
+	IMX25_PINCTRL_PIN(GPIO_C, PWM4_PWMO),
+};
+
 /* GPIO_D */
 unsigned int pin_ids_gpio_d[] = {
 	MX25_PAD_GPIO_D,
@@ -3419,6 +3423,7 @@ static struct imx_pin_group imx25_pinctrl_groups[] = {
 	IMX25_PINCTRL_PIN_GROUP(gpio_c, gpio_c),
 	IMX25_PINCTRL_PIN_GROUP(gpio_c, can2_tx),
 	IMX25_PINCTRL_PIN_GROUP(gpio_c, i2c2_clk),
+	IMX25_PINCTRL_PIN_GROUP(gpio_c, pwm4_pwmo),
 	IMX25_PINCTRL_PIN_GROUP(gpio_d, gpio_d),
 	IMX25_PINCTRL_PIN_GROUP(gpio_e, ld16),
 	IMX25_PINCTRL_PIN_GROUP(gpio_d, can2_rx),
@@ -3797,6 +3802,7 @@ static const char *pwm3_groups[] = {
 
 static const char *pwm4_groups[] = {
 	"contrast__pwm4_pwmo",
+	"gpio_c__pwm4_pwmo",
 };
 
 static const char *sd1_groups[] = {
