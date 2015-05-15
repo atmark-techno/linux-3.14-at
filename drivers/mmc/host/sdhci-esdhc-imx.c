@@ -71,6 +71,8 @@
 #define ESDHC_PINCTRL_STATE_100MHZ	"state_100mhz"
 #define ESDHC_PINCTRL_STATE_200MHZ	"state_200mhz"
 
+#define ESDHC_PINCTRL_STATE_ENGCM02759_WORKAROUND	"state_engcm02759_workaround"
+
 /*
  * Our interpretation of the SDHCI_HOST_CONTROL register
  */
@@ -512,11 +514,22 @@ static void esdhc_writeb_le(struct sdhci_host *host, u8 val, int reg)
 {
 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
 	struct pltfm_imx_data *imx_data = pltfm_host->priv;
+	struct pinctrl_state *state;
 	u32 new_val;
 	u32 mask;
 
 	switch (reg) {
 	case SDHCI_POWER_CONTROL:
+		/* ENGcm02759: See "Chip Errata for the i.MX25" for details. */
+		if (val == MMC_POWER_OFF)
+			state = pinctrl_lookup_state(imx_data->pinctrl,
+						     ESDHC_PINCTRL_STATE_ENGCM02759_WORKAROUND);
+		else
+			state = pinctrl_lookup_state(imx_data->pinctrl,
+						     PINCTRL_STATE_DEFAULT);
+		if (!IS_ERR(state))
+			pinctrl_select_state(imx_data->pinctrl, state);
+
 		/*
 		 * FSL put some DMA bits here
 		 * If your board has a regulator, code should be here
@@ -1084,6 +1097,29 @@ static int sdhci_esdhc_imx_probe(struct platform_device *pdev)
 
 	case ESDHC_CD_NONE:
 		break;
+	}
+
+	/* ENGcm02759: See "Chip Errata for the i.MX25" for details. */
+	if (gpio_is_valid(boarddata->clk_gpio)) {
+		char *label;
+		size_t len = strlen(dev_name(host->mmc->parent)) + 5;
+
+		label = devm_kzalloc(mmc_dev(host->mmc), len, GFP_KERNEL);
+		if (!label) {
+			err = -ENOMEM;
+			dev_err(mmc_dev(host->mmc),
+				"failed to allocate gpio label!\n");
+			goto disable_clk;
+		}
+
+		snprintf(label, len, "%s clk", dev_name(host->mmc->parent));
+		err = devm_gpio_request_one(mmc_dev(host->mmc), boarddata->clk_gpio,
+					    GPIOF_OUT_INIT_LOW, label);
+		if (err) {
+			dev_err(mmc_dev(host->mmc),
+				"failed to request SD clock gpio!\n");
+			goto disable_clk;
+		}
 	}
 
 	switch (boarddata->max_bus_width) {

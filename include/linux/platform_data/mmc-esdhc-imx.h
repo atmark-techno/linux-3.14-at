@@ -32,14 +32,20 @@ enum cd_types {
  *
  * @wp_gpio:	gpio for write_protect
  * @cd_gpio:	gpio for card_detect interrupt
+ * @clk_gpio:	gpio for ENGcm02759 workaround
  * @wp_type:	type of write_protect method (see wp_types enum above)
  * @cd_type:	type of card_detect method (see cd_types enum above)
  * @support_vsel:  indicate it supports 1.8v switching
+ *
+ * If @clk_gpio is specified, change the IOMUX setting of the
+ * eSDHC_CLK pin to "GPIO" in order to drive the pin to low, when the
+ * eSDHC module is disabled.
  */
 
 struct esdhc_platform_data {
 	unsigned int wp_gpio;
 	unsigned int cd_gpio;
+	unsigned int clk_gpio;
 	enum wp_types wp_type;
 	enum cd_types cd_type;
 	int max_bus_width;
