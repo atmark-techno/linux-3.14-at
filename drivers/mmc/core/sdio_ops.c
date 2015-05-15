@@ -218,6 +218,10 @@ int sdio_reset(struct mmc_host *host)
 		abort |= 0x08;
 
 	ret = mmc_io_rw_direct_host(host, 1, 0, SDIO_CCCR_ABORT, abort, NULL);
+
+	if (IS_ENABLED(CONFIG_MMC_DELAY_AFTER_SDIO_RESET))
+		mmc_delay(100);
+
 	return ret;
 }
 

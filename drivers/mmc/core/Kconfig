@@ -26,3 +26,10 @@ config MMC_CLKGATE
 	  support handling this in order for it to be of any use.
 
 	  If unsure, say N.
+
+config MMC_DELAY_AFTER_SDIO_RESET
+	bool "Additional delay after SDIO reset"
+	default n
+	help
+	  This option adds 100 ms delay after SDIO reset. Choose this
+	  option if your SDIO device requires such a delay.
