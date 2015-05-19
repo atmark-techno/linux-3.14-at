@@ -115,6 +115,9 @@ struct rtc_device
 	struct work_struct irqwork;
 	/* Some hardware can't support UIE mode */
 	int uie_unsupported;
+	/* Support alarm interrupt per minutes. The second field of
+	 * the alarm time is set to 0. */
+	int aie_per_minute;
 
 #ifdef CONFIG_RTC_INTF_DEV_UIE_EMUL
 	struct work_struct uie_task;

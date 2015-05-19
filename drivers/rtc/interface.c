@@ -382,6 +382,11 @@ int rtc_set_alarm(struct rtc_device *rtc, struct rtc_wkalrm *alarm)
 {
 	int err;
 
+	if (rtc->aie_per_minute && alarm->time.tm_sec) {
+		dev_dbg(&rtc->dev, "The alarm has no seconds\n");
+		alarm->time.tm_sec = 0;
+	}
+
 	err = rtc_valid_tm(&alarm->time);
 	if (err != 0)
 		return err;
