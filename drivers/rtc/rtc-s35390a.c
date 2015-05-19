@@ -20,6 +20,7 @@
 #define S35390A_CMD_STATUS2	1
 #define S35390A_CMD_TIME1	2
 #define S35390A_CMD_TIME2	3
+#define S35390A_CMD_INT1_REG1	4
 #define S35390A_CMD_INT2_REG1	5
 
 #define S35390A_BYTE_YEAR	0
@@ -41,6 +42,13 @@
 #define S35390A_FLAG_24H	0x40
 #define S35390A_FLAG_RESET	0x80
 #define S35390A_FLAG_TEST	0x01
+
+#define S35390A_INT1_MODE_MASK		0x0F
+
+#define S35390A_INT1_MODE_NOINTR	0x00
+#define S35390A_INT1_MODE_FREQ		0x01
+#define S35390A_INT1_MODE_ALARM		0x04
+#define S35390A_INT1_MODE_PMIN_EDG	0x02
 
 #define S35390A_INT2_MODE_MASK		0xF0
 
@@ -167,9 +175,9 @@ static int s35390a_alarm_irq_enable(struct i2c_client *client, unsigned enabled)
 		return err;
 
 	if (enabled)
-		sts = S35390A_INT2_MODE_ALARM;
+		sts = S35390A_INT1_MODE_ALARM | S35390A_INT2_MODE_ALARM;
 	else
-		sts = S35390A_INT2_MODE_NOINTR;
+		sts = S35390A_INT1_MODE_NOINTR | S35390A_INT2_MODE_NOINTR;
 
 	/* This chip expects the bits of each byte to be in reverse order */
 	sts = bitrev8(sts);
@@ -266,6 +274,11 @@ static int s35390a_set_alarm(struct i2c_client *client, struct rtc_wkalrm *alm)
 	for (i = 0; i < 3; ++i)
 		buf[i] = bitrev8(buf[i]);
 
+	err = s35390a_set_reg(s35390a, S35390A_CMD_INT1_REG1, buf,
+								sizeof(buf));
+	if (err < 0)
+		return err;
+
 	err = s35390a_set_reg(s35390a, S35390A_CMD_INT2_REG1, buf,
 								sizeof(buf));
 
@@ -282,7 +295,7 @@ static int s35390a_read_alarm(struct i2c_client *client, struct rtc_wkalrm *alm)
 	if (err < 0)
 		return err;
 
-	if (bitrev8(sts) != S35390A_INT2_MODE_ALARM)
+	if (bitrev8(sts) != (S35390A_INT1_MODE_ALARM | S35390A_INT2_MODE_ALARM))
 		return -EINVAL;
 
 	err = s35390a_get_reg(s35390a, S35390A_CMD_INT2_REG1, buf, sizeof(buf));
