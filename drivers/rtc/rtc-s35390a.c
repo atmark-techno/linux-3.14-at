@@ -498,6 +498,7 @@ static int s35390a_probe(struct i2c_client *client,
 		goto exit_dummy;
 	}
 	s35390a->rtc->uie_unsupported = 1;
+	s35390a->rtc->aie_per_minute = 1;
 
 	return 0;
 
