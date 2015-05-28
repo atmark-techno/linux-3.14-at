@@ -72,6 +72,8 @@ struct platform_device *__init imx_add_fsl_usb2_udc(
 #include <linux/gpio_keys.h>
 struct platform_device *__init imx_add_gpio_keys(
 		const struct gpio_keys_platform_data *pdata);
+struct platform_device *__init imx_add_gpio_keys_polled(
+		const struct gpio_keys_platform_data *pdata);
 
 #include <linux/i2c-gpio.h>
 struct platform_device *__init imx_add_i2c_gpio(int id,
