@@ -73,6 +73,10 @@ struct platform_device *__init imx_add_fsl_usb2_udc(
 struct platform_device *__init imx_add_gpio_keys(
 		const struct gpio_keys_platform_data *pdata);
 
+#include <linux/i2c-gpio.h>
+struct platform_device *__init imx_add_i2c_gpio(int id,
+		const struct i2c_gpio_platform_data *pdata);
+
 #include <linux/platform_data/usb-mx2.h>
 struct imx_imx21_hcd_data {
 	resource_size_t iobase;

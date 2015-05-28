@@ -34,3 +34,4 @@ obj-$(CONFIG_IMX_HAVE_PLATFORM_SDHCI_ESDHC_IMX) += platform-sdhci-esdhc-imx.o
 obj-$(CONFIG_IMX_HAVE_PLATFORM_SPI_IMX) +=  platform-spi_imx.o
 obj-$(CONFIG_IMX_HAVE_PLATFORM_MX2_EMMA) += platform-mx2-emma.o
 obj-$(CONFIG_IMX_HAVE_PLATFORM_IMX_PINCTRL) += platform-imx-pinctrl.o
+obj-$(CONFIG_IMX_HAVE_PLATFORM_I2C_GPIO) += platform-i2c-gpio.o
