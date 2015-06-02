@@ -1312,10 +1312,15 @@ imx_set_termios(struct uart_port *port, struct ktermios *termios,
 		} else {
 			termios->c_cflag &= ~CRTSCTS;
 		}
-	} else if (port->rs485.flags & SER_RS485_ENABLED)
-		/* disable transmitter */
-		if (!(port->rs485.flags & SER_RS485_RTS_AFTER_SEND))
+	} else {
+		if (port->rs485.flags & SER_RS485_ENABLED) {
+			/* disable transmitter */
+			if (!(port->rs485.flags & SER_RS485_RTS_AFTER_SEND))
+				ucr2 |= UCR2_CTS;
+		} else {
 			ucr2 |= UCR2_CTS;
+		}
+	}
 
 	if (termios->c_cflag & CSTOPB)
 		ucr2 |= UCR2_STPB;
