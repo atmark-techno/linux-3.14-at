@@ -151,21 +151,6 @@ static void imx2_wdt_set_timeout(int new_timeout)
 	__raw_writew(val, imx2_wdt.base + IMX2_WDT_WCR);
 }
 
-static inline bool imx2_wdt_is_running(void)
-{
-	u16 val = __raw_readw(imx2_wdt.base + IMX2_WDT_WCR);
-
-	return val & IMX2_WDT_WCR_WDE;
-}
-
-static inline void imx2_wdt_ping_if_active(void)
-{
-	if (imx2_wdt_is_running()) {
-		imx2_wdt_set_timeout(imx2_wdt.timeout);
-		imx2_wdt_timer_ping(0);
-	}
-}
-
 static int imx2_wdt_open(struct inode *inode, struct file *file)
 {
 	if (test_and_set_bit(IMX2_WDT_STATUS_OPEN, &imx2_wdt.status))
@@ -292,8 +277,6 @@ static int __init imx2_wdt_probe(struct platform_device *pdev)
 			"Clamped from %u to %u\n", timeout, imx2_wdt.timeout);
 
 	setup_timer(&imx2_wdt.timer, imx2_wdt_timer_ping, 0);
-
-	imx2_wdt_ping_if_active();
 
 	imx2_wdt_miscdev.parent = &pdev->dev;
 	ret = misc_register(&imx2_wdt_miscdev);
