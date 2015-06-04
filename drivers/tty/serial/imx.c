@@ -414,8 +414,10 @@ static void imx_stop_rx(struct uart_port *port)
 		}
 	}
 
-	temp = readl(sport->port.membase + UCR2);
-	writel(temp & ~UCR2_RXEN, sport->port.membase + UCR2);
+	if (!(port->rs485.flags & SER_RS485_ENABLED)) {
+		temp = readl(sport->port.membase + UCR2);
+		writel(temp & ~UCR2_RXEN, sport->port.membase + UCR2);
+	}
 
 	/* disable the `Receiver Ready Interrrupt` */
 	temp = readl(sport->port.membase + UCR1);
@@ -1221,6 +1223,8 @@ static void imx_shutdown(struct uart_port *port)
 	spin_lock_irqsave(&sport->port.lock, flags);
 	temp = readl(sport->port.membase + UCR1);
 	temp &= ~(UCR1_TXMPTYEN | UCR1_RRDYEN | UCR1_RTSDEN | UCR1_UARTEN);
+	if (port->rs485.flags & SER_RS485_ENABLED)
+		temp |= UCR1_UARTEN;
 
 	writel(temp, sport->port.membase + UCR1);
 	spin_unlock_irqrestore(&sport->port.lock, flags);
