@@ -1937,6 +1937,7 @@ static int serial_imx_probe(struct platform_device *pdev)
 	int ret = 0;
 	struct resource *res;
 	int txirq, rxirq, rtsirq;
+	unsigned long temp;
 
 	sport = devm_kzalloc(&pdev->dev, sizeof(*sport), GFP_KERNEL);
 	if (!sport)
@@ -1991,6 +1992,12 @@ static int serial_imx_probe(struct platform_device *pdev)
 	}
 
 	sport->port.uartclk = clk_get_rate(sport->clk_per);
+
+	if (!is_imx1_uart(sport)) {
+		temp = readl(sport->port.membase + UCR3);
+		temp &= ~(UCR3_DCD | UCR3_RI | UCR3_DTREN);
+		writel(temp, sport->port.membase + UCR3);
+	}
 
 	/*
 	 * Allocate the IRQ(s) i.MX1 has three interrupts whereas later
