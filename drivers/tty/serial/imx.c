@@ -40,6 +40,7 @@
 #include <linux/io.h>
 #include <linux/dma-mapping.h>
 #include <linux/gpio.h>
+#include <linux/hrtimer.h>
 
 #include <asm/irq.h>
 #include <linux/platform_data/serial-imx.h>
@@ -227,6 +228,8 @@ struct imx_port {
 	unsigned int rs485_tx_gate_gpio;
 	enum imxuart_rs485_duplex_types rs485_duplex_type;
 	unsigned int rs485_duplex_gpio;
+	struct hrtimer rs485_before_send;
+	struct hrtimer rs485_after_send;
 };
 
 struct imx_port_ucrs {
@@ -413,6 +416,80 @@ static void imx_rs485_set_duplex(struct imx_port *sport, int duplex)
 	}
 }
 
+static void imx_dma_tx(struct imx_port *sport);
+static enum hrtimer_restart imx_rs485_before_send(struct hrtimer *timer)
+{
+	struct imx_port *sport = container_of(timer, struct imx_port,
+					      rs485_before_send);
+	unsigned long temp;
+	unsigned long flags;
+
+	spin_lock_irqsave(&sport->port.lock, flags);
+
+	/* enable shifter empty irq */
+	temp = readl(sport->port.membase + UCR4);
+	temp |= UCR4_TCEN;
+	writel(temp, sport->port.membase + UCR4);
+
+	if (!sport->dma_is_enabled) {
+		temp = readl(sport->port.membase + UCR1);
+		writel(temp | UCR1_TXMPTYEN, sport->port.membase + UCR1);
+	}
+
+	if (sport->dma_is_enabled) {
+		if (sport->port.x_char) {
+			/* We have X-char to send, so enable TX IRQ and
+			 * disable TX DMA to let TX interrupt to send X-char */
+			temp = readl(sport->port.membase + UCR1);
+			temp &= ~UCR1_TDMAEN;
+			temp |= UCR1_TXMPTYEN;
+			writel(temp, sport->port.membase + UCR1);
+			goto out;
+		}
+
+		if (!uart_circ_empty(&sport->port.state->xmit) &&
+		    !uart_tx_stopped(&sport->port))
+			imx_dma_tx(sport);
+	}
+
+out:
+	spin_unlock_irqrestore(&sport->port.lock, flags);
+
+	return HRTIMER_NORESTART;
+}
+
+static enum hrtimer_restart imx_rs485_after_send(struct hrtimer *timer)
+{
+	struct imx_port *sport = container_of(timer, struct imx_port,
+					      rs485_after_send);
+	unsigned long flags;
+
+	spin_lock_irqsave(&sport->port.lock, flags);
+
+	if (hrtimer_active(&sport->rs485_before_send))
+		goto out;
+
+	imx_rs485_tx_gate_ctrl(sport, 0);
+
+	if (!(sport->port.rs485.flags & SER_RS485_RX_DURING_TX))
+		imx_rx_gate_ctrl(sport, 1);
+
+out:
+	spin_unlock_irqrestore(&sport->port.lock, flags);
+
+	return HRTIMER_NORESTART;
+}
+
+static int imx_rs485_hrtimer_start(struct hrtimer *timer, u32 delay_ms)
+{
+	ktime_t time;
+
+	time = ktime_set(delay_ms / MSEC_PER_SEC,
+			 (delay_ms % MSEC_PER_SEC) * NSEC_PER_MSEC);
+
+	return hrtimer_start(timer, time, HRTIMER_MODE_REL);
+}
+
 /*
  * interrupts disabled on entry
  */
@@ -434,14 +511,12 @@ static void imx_stop_tx(struct uart_port *port)
 	/* in rs485 mode disable transmitter if shifter is empty */
 	if (port->rs485.flags & SER_RS485_ENABLED &&
 	    readl(port->membase + USR2) & USR2_TXDC) {
-		imx_rs485_tx_gate_ctrl(sport, 0);
-
 		temp = readl(port->membase + UCR4);
 		temp &= ~UCR4_TCEN;
 		writel(temp, port->membase + UCR4);
 
-		if (!(port->rs485.flags & SER_RS485_RX_DURING_TX))
-			imx_rx_gate_ctrl(sport, 1);
+		imx_rs485_hrtimer_start(&sport->rs485_after_send,
+					port->rs485.delay_rts_after_send);
 	}
 }
 
@@ -482,7 +557,6 @@ static void imx_enable_ms(struct uart_port *port)
 	mod_timer(&sport->timer, jiffies);
 }
 
-static void imx_dma_tx(struct imx_port *sport);
 static inline void imx_transmit_buffer(struct imx_port *sport)
 {
 	struct circ_buf *xmit = &sport->port.state->xmit;
@@ -643,12 +717,12 @@ static void imx_start_tx(struct uart_port *port)
 		if (!(port->rs485.flags & SER_RS485_RX_DURING_TX))
 			imx_rx_gate_ctrl(sport, 0);
 
-		/* enable transmitter and shifter empty irq */
+		/* enable transmitter */
 		imx_rs485_tx_gate_ctrl(sport, 1);
 
-		temp = readl(port->membase + UCR4);
-		temp |= UCR4_TCEN;
-		writel(temp, port->membase + UCR4);
+		imx_rs485_hrtimer_start(&sport->rs485_before_send,
+					port->rs485.delay_rts_before_send);
+		return;
 	}
 
 	if (!sport->dma_is_enabled) {
@@ -1647,10 +1721,6 @@ static int imx_rs485_config(struct uart_port *port,
 {
 	struct imx_port *sport = (struct imx_port *)port;
 
-	/* unimplemented */
-	rs485conf->delay_rts_before_send = 0;
-	rs485conf->delay_rts_after_send = 0;
-
 	if (rs485conf->flags & SER_RS485_ENABLED) {
 		/* set direction */
 		imx_rs485_set_duplex(sport, rs485conf->flags &
@@ -2130,6 +2200,14 @@ static int serial_imx_probe(struct platform_device *pdev)
 			return ret;
 	}
 
+	hrtimer_init(&sport->rs485_before_send, CLOCK_MONOTONIC,
+		     HRTIMER_MODE_REL);
+	sport->rs485_before_send.function = imx_rs485_before_send;
+
+	hrtimer_init(&sport->rs485_after_send, CLOCK_MONOTONIC,
+		     HRTIMER_MODE_REL);
+	sport->rs485_after_send.function = imx_rs485_after_send;
+
 	ret = uart_add_one_port(&imx_reg, &sport->port);
 	if (ret)
 		goto deinit;
@@ -2137,6 +2215,9 @@ static int serial_imx_probe(struct platform_device *pdev)
 
 	return 0;
 deinit:
+	hrtimer_cancel(&sport->rs485_after_send);
+	hrtimer_cancel(&sport->rs485_before_send);
+
 	if (pdata && pdata->exit)
 		pdata->exit(pdev);
 	return ret;
@@ -2150,6 +2231,9 @@ static int serial_imx_remove(struct platform_device *pdev)
 	pdata = dev_get_platdata(&pdev->dev);
 
 	uart_remove_one_port(&imx_reg, &sport->port);
+
+	hrtimer_cancel(&sport->rs485_after_send);
+	hrtimer_cancel(&sport->rs485_before_send);
 
 	if (pdata && pdata->exit)
 		pdata->exit(pdev);
