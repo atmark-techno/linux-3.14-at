@@ -350,6 +350,24 @@ static void imx_timeout(unsigned long data)
 	}
 }
 
+static void imx_rs485_tx_gate_ctrl(struct imx_port *sport, int enable)
+{
+	unsigned long temp;
+	unsigned long flags;
+
+	if (enable)
+		flags = SER_RS485_RTS_ON_SEND;
+	else
+		flags = SER_RS485_RTS_AFTER_SEND;
+
+	temp = readl(sport->port.membase + UCR2);
+	if (sport->port.rs485.flags & flags)
+		temp &= ~UCR2_CTS;
+	else
+		temp |= UCR2_CTS;
+	writel(temp, sport->port.membase + UCR2);
+}
+
 /*
  * interrupts disabled on entry
  */
@@ -371,12 +389,7 @@ static void imx_stop_tx(struct uart_port *port)
 	/* in rs485 mode disable transmitter if shifter is empty */
 	if (port->rs485.flags & SER_RS485_ENABLED &&
 	    readl(port->membase + USR2) & USR2_TXDC) {
-		temp = readl(port->membase + UCR2);
-		if (port->rs485.flags & SER_RS485_RTS_AFTER_SEND)
-			temp &= ~UCR2_CTS;
-		else
-			temp |= UCR2_CTS;
-		writel(temp, port->membase + UCR2);
+		imx_rs485_tx_gate_ctrl(sport, 0);
 
 		temp = readl(port->membase + UCR4);
 		temp &= ~UCR4_TCEN;
@@ -577,12 +590,7 @@ static void imx_start_tx(struct uart_port *port)
 
 	if (port->rs485.flags & SER_RS485_ENABLED) {
 		/* enable transmitter and shifter empty irq */
-		temp = readl(port->membase + UCR2);
-		if (port->rs485.flags & SER_RS485_RTS_ON_SEND)
-			temp &= ~UCR2_CTS;
-		else
-			temp |= UCR2_CTS;
-		writel(temp, port->membase + UCR2);
+		imx_rs485_tx_gate_ctrl(sport, 1);
 
 		temp = readl(port->membase + UCR4);
 		temp |= UCR4_TCEN;
@@ -1588,16 +1596,8 @@ static int imx_rs485_config(struct uart_port *port,
 		rs485conf->flags &= ~SER_RS485_ENABLED;
 
 	if (rs485conf->flags & SER_RS485_ENABLED) {
-		unsigned long temp;
-
 		/* disable transmitter */
-		temp = readl(sport->port.membase + UCR2);
-		temp &= ~UCR2_CTSC;
-		if (rs485conf->flags & SER_RS485_RTS_AFTER_SEND)
-			temp &= ~UCR2_CTS;
-		else
-			temp |= UCR2_CTS;
-		writel(temp, sport->port.membase + UCR2);
+		imx_rs485_tx_gate_ctrl(sport, 0);
 	}
 
 	port->rs485 = *rs485conf;
