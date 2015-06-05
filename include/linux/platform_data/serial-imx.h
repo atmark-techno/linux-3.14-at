@@ -32,6 +32,11 @@ enum imxuart_rs485_tx_gate_types {
 	IMXUART_RS485_TX_GATE_GPIO,
 };
 
+enum imxuart_rs485_duplex_types {
+	IMXUART_RS485_DUPLEX_NONE,
+	IMXUART_RS485_DUPLEX_GPIO,
+};
+
 struct imxuart_platform_data {
 	int (*init)(struct platform_device *pdev);
 	void (*exit)(struct platform_device *pdev);
@@ -43,6 +48,8 @@ struct imxuart_platform_data {
 
 	enum imxuart_rs485_tx_gate_types rs485_tx_gate_type;
 	unsigned int rs485_tx_gate_gpio;
+	enum imxuart_rs485_duplex_types rs485_duplex_type;
+	unsigned int rs485_duplex_gpio; /* 0: half, 1: full */
 };
 
 #endif

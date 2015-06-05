@@ -225,6 +225,8 @@ struct imx_port {
 	/* RS485 fields */
 	enum imxuart_rs485_tx_gate_types rs485_tx_gate_type;
 	unsigned int rs485_tx_gate_gpio;
+	enum imxuart_rs485_duplex_types rs485_duplex_type;
+	unsigned int rs485_duplex_gpio;
 };
 
 struct imx_port_ucrs {
@@ -394,6 +396,17 @@ static void imx_rs485_tx_gate_ctrl(struct imx_port *sport, int enable)
 	case IMXUART_RS485_TX_GATE_GPIO:
 		gpio_direction_output(sport->rs485_tx_gate_gpio,
 				      !!(sport->port.rs485.flags & flags));
+		break;
+	default:
+		break;
+	}
+}
+
+static void imx_rs485_set_duplex(struct imx_port *sport, int duplex)
+{
+	switch (sport->rs485_duplex_type) {
+	case IMXUART_RS485_DUPLEX_GPIO:
+		gpio_direction_output(sport->rs485_duplex_gpio, !!duplex);
 		break;
 	default:
 		break;
@@ -1634,6 +1647,9 @@ static int imx_rs485_config(struct uart_port *port,
 	rs485conf->delay_rts_after_send = 0;
 
 	if (rs485conf->flags & SER_RS485_ENABLED) {
+		/* set direction */
+		imx_rs485_set_duplex(sport, rs485conf->flags &
+				     SER_RS485_RX_DURING_TX);
 		/* disable transmitter */
 		imx_rs485_tx_gate_ctrl(sport, 0);
 	}
@@ -1992,6 +2008,19 @@ static void serial_imx_probe_pdata(struct imx_port *sport,
 			dev_warn(&pdev->dev,
 				 "failed to request tx-gate gpio.\n");
 			sport->rs485_tx_gate_type = IMXUART_RS485_TX_GATE_NONE;
+		}
+	}
+
+	sport->rs485_duplex_type = pdata->rs485_duplex_type;
+	if (pdata->rs485_duplex_type == IMXUART_RS485_DUPLEX_GPIO) {
+		ret = devm_gpio_request(&pdev->dev, pdata->rs485_duplex_gpio,
+					"rs485 duplex");
+		if (!ret) {
+			sport->rs485_duplex_gpio = pdata->rs485_duplex_gpio;
+		} else {
+			dev_warn(&pdev->dev,
+				 "failed to request duplex gpio.\n");
+			sport->rs485_duplex_type = IMXUART_RS485_DUPLEX_NONE;
 		}
 	}
 }
