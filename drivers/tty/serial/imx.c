@@ -39,6 +39,7 @@
 #include <linux/of_device.h>
 #include <linux/io.h>
 #include <linux/dma-mapping.h>
+#include <linux/gpio.h>
 
 #include <asm/irq.h>
 #include <linux/platform_data/serial-imx.h>
@@ -216,6 +217,10 @@ struct imx_port {
 	unsigned int		tx_bytes;
 	unsigned int		dma_tx_nents;
 	wait_queue_head_t	dma_wait;
+
+	/* RS485 fields */
+	enum imxuart_rs485_tx_gate_types rs485_tx_gate_type;
+	unsigned int rs485_tx_gate_gpio;
 };
 
 struct imx_port_ucrs {
@@ -360,12 +365,22 @@ static void imx_rs485_tx_gate_ctrl(struct imx_port *sport, int enable)
 	else
 		flags = SER_RS485_RTS_AFTER_SEND;
 
-	temp = readl(sport->port.membase + UCR2);
-	if (sport->port.rs485.flags & flags)
-		temp &= ~UCR2_CTS;
-	else
-		temp |= UCR2_CTS;
-	writel(temp, sport->port.membase + UCR2);
+	switch (sport->rs485_tx_gate_type) {
+	case IMXUART_RS485_TX_GATE_RTS:
+		temp = readl(sport->port.membase + UCR2);
+		if (sport->port.rs485.flags & flags)
+			temp &= ~UCR2_CTS;
+		else
+			temp |= UCR2_CTS;
+		writel(temp, sport->port.membase + UCR2);
+		break;
+	case IMXUART_RS485_TX_GATE_GPIO:
+		gpio_direction_output(sport->rs485_tx_gate_gpio,
+				      !!(sport->port.rs485.flags & flags));
+		break;
+	default:
+		break;
+	}
 }
 
 /*
@@ -1595,10 +1610,6 @@ static int imx_rs485_config(struct uart_port *port,
 	rs485conf->delay_rts_after_send = 0;
 	rs485conf->flags |= SER_RS485_RX_DURING_TX;
 
-	/* RTS is required to control the transmitter */
-	if (!sport->have_rtscts)
-		rs485conf->flags &= ~SER_RS485_ENABLED;
-
 	if (rs485conf->flags & SER_RS485_ENABLED) {
 		/* disable transmitter */
 		imx_rs485_tx_gate_ctrl(sport, 0);
@@ -1922,6 +1933,7 @@ static void serial_imx_probe_pdata(struct imx_port *sport,
 		struct platform_device *pdev)
 {
 	struct imxuart_platform_data *pdata = dev_get_platdata(&pdev->dev);
+	int ret;
 
 	sport->port.line = pdev->id;
 	sport->devdata = (struct imx_uart_data	*) pdev->id_entry->driver_data;
@@ -1931,6 +1943,19 @@ static void serial_imx_probe_pdata(struct imx_port *sport,
 
 	if (pdata->flags & IMXUART_HAVE_RTSCTS)
 		sport->have_rtscts = 1;
+
+	sport->rs485_tx_gate_type = pdata->rs485_tx_gate_type;
+	if (pdata->rs485_tx_gate_type == IMXUART_RS485_TX_GATE_GPIO) {
+		ret = devm_gpio_request(&pdev->dev, pdata->rs485_tx_gate_gpio,
+					"rs485 tx_gate");
+		if (!ret) {
+			sport->rs485_tx_gate_gpio = pdata->rs485_tx_gate_gpio;
+		} else {
+			dev_warn(&pdev->dev,
+				 "failed to request tx-gate gpio.\n");
+			sport->rs485_tx_gate_type = IMXUART_RS485_TX_GATE_NONE;
+		}
+	}
 }
 
 static int serial_imx_probe(struct platform_device *pdev)

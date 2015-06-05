@@ -21,10 +21,19 @@
 
 #define IMXUART_HAVE_RTSCTS (1<<0)
 
+enum imxuart_rs485_tx_gate_types {
+	IMXUART_RS485_TX_GATE_RTS,
+	IMXUART_RS485_TX_GATE_NONE,
+	IMXUART_RS485_TX_GATE_GPIO,
+};
+
 struct imxuart_platform_data {
 	int (*init)(struct platform_device *pdev);
 	void (*exit)(struct platform_device *pdev);
 	unsigned int flags;
+
+	enum imxuart_rs485_tx_gate_types rs485_tx_gate_type;
+	unsigned int rs485_tx_gate_gpio;
 };
 
 #endif
