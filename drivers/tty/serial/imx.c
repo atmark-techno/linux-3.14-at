@@ -218,6 +218,10 @@ struct imx_port {
 	unsigned int		dma_tx_nents;
 	wait_queue_head_t	dma_wait;
 
+	enum imxuart_rx_gate_types rx_gate_type;
+	unsigned int rx_gate_gpio;
+	bool rx_gate_active_low;
+
 	/* RS485 fields */
 	enum imxuart_rs485_tx_gate_types rs485_tx_gate_type;
 	unsigned int rs485_tx_gate_gpio;
@@ -355,6 +359,19 @@ static void imx_timeout(unsigned long data)
 	}
 }
 
+static void imx_rx_gate_ctrl(struct imx_port *sport, int enable)
+{
+	switch (sport->rx_gate_type) {
+	case IMXUART_RX_GATE_GPIO:
+		if (sport->rx_gate_active_low)
+			enable = !enable;
+		gpio_direction_output(sport->rx_gate_gpio, !!enable);
+		break;
+	default:
+		break;
+	}
+}
+
 static void imx_rs485_tx_gate_ctrl(struct imx_port *sport, int enable)
 {
 	unsigned long temp;
@@ -409,6 +426,9 @@ static void imx_stop_tx(struct uart_port *port)
 		temp = readl(port->membase + UCR4);
 		temp &= ~UCR4_TCEN;
 		writel(temp, port->membase + UCR4);
+
+		if (!(port->rs485.flags & SER_RS485_RX_DURING_TX))
+			imx_rx_gate_ctrl(sport, 1);
 	}
 }
 
@@ -606,6 +626,10 @@ static void imx_start_tx(struct uart_port *port)
 	unsigned long temp;
 
 	if (port->rs485.flags & SER_RS485_ENABLED) {
+		/* disable receiver if half duplex */
+		if (!(port->rs485.flags & SER_RS485_RX_DURING_TX))
+			imx_rx_gate_ctrl(sport, 0);
+
 		/* enable transmitter and shifter empty irq */
 		imx_rs485_tx_gate_ctrl(sport, 1);
 
@@ -1608,7 +1632,6 @@ static int imx_rs485_config(struct uart_port *port,
 	/* unimplemented */
 	rs485conf->delay_rts_before_send = 0;
 	rs485conf->delay_rts_after_send = 0;
-	rs485conf->flags |= SER_RS485_RX_DURING_TX;
 
 	if (rs485conf->flags & SER_RS485_ENABLED) {
 		/* disable transmitter */
@@ -1943,6 +1966,21 @@ static void serial_imx_probe_pdata(struct imx_port *sport,
 
 	if (pdata->flags & IMXUART_HAVE_RTSCTS)
 		sport->have_rtscts = 1;
+
+	sport->rx_gate_type = pdata->rx_gate_type;
+	if (pdata->rx_gate_type == IMXUART_RX_GATE_GPIO) {
+		ret = devm_gpio_request(&pdev->dev, pdata->rx_gate_gpio,
+					"rx_gate");
+		if (!ret) {
+			sport->rx_gate_gpio = pdata->rx_gate_gpio;
+			sport->rx_gate_active_low = pdata->rx_gate_active_low;
+			imx_rx_gate_ctrl(sport, 1);
+		} else {
+			dev_warn(&pdev->dev,
+				 "failed to request rx-gate gpio.\n");
+			sport->rx_gate_type = IMXUART_RX_GATE_NONE;
+		}
+	}
 
 	sport->rs485_tx_gate_type = pdata->rs485_tx_gate_type;
 	if (pdata->rs485_tx_gate_type == IMXUART_RS485_TX_GATE_GPIO) {
