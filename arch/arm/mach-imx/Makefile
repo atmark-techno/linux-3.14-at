@@ -52,7 +52,11 @@ obj-$(CONFIG_MACH_MX21ADS) += mach-mx21ads.o
 obj-$(CONFIG_MACH_MX25_3DS) += mach-mx25_3ds.o
 obj-$(CONFIG_MACH_EUKREA_CPUIMX25SD) += mach-eukrea_cpuimx25.o
 obj-$(CONFIG_MACH_EUKREA_MBIMXSD25_BASEBOARD) += eukrea_mbimxsd25-baseboard.o
+obj-$(CONFIG_MACH_ARMADILLO_IOTG_STD) += mach-armadillo_iotg_std.o
+obj-$(CONFIG_AIOTG_STD_EXTIF_OPTIONS) += armadillo_iotg_std_extif.o
+obj-$(CONFIG_AIOTG_STD_ADDON_AUTO_DETECT) += armadillo_iotg_std_addon/
 obj-$(CONFIG_MACH_IMX25_DT) += imx25-dt.o
+obj-$(CONFIG_MACH_IMX25_USE_NAMED_GPIO) += imx25-named_gpio.o
 
 # i.MX27 based machines
 obj-$(CONFIG_MACH_MX27ADS) += mach-mx27ads.o
