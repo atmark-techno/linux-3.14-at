@@ -954,6 +954,9 @@ static unsigned int imx_get_mctrl(struct uart_port *port)
 	struct imx_port *sport = (struct imx_port *)port;
 	unsigned int tmp = TIOCM_DSR | TIOCM_CAR;
 
+	if (sport->port.rs485.flags & SER_RS485_ENABLED)
+		tmp |= TIOCM_CTS;
+
 	if (readl(sport->port.membase + USR1) & USR1_RTSS)
 		tmp |= TIOCM_CTS;
 
@@ -1452,8 +1455,6 @@ imx_set_termios(struct uart_port *port, struct ktermios *termios,
 
 	if (termios->c_cflag & CRTSCTS) {
 		if (sport->have_rtscts) {
-			ucr2 &= ~UCR2_IRTS;
-
 			if (port->rs485.flags & SER_RS485_ENABLED) {
 				/*
 				 * RTS is mandatory for rs485 operation, so keep
@@ -1464,6 +1465,7 @@ imx_set_termios(struct uart_port *port, struct ktermios *termios,
 				      SER_RS485_RTS_AFTER_SEND))
 					ucr2 |= UCR2_CTS;
 			} else {
+				ucr2 &= ~UCR2_IRTS;
 				ucr2 |= UCR2_CTSC;
 			}
 		} else {
