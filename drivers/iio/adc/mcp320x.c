@@ -35,7 +35,11 @@
 #include <linux/delay.h>
 #include <linux/spi/spi.h>
 #include <linux/module.h>
+#include <linux/iio/buffer.h>
 #include <linux/iio/iio.h>
+#include <linux/iio/buffer.h>
+#include <linux/iio/trigger_consumer.h>
+#include <linux/iio/triggered_buffer.h>
 #include <linux/regulator/consumer.h>
 
 enum {
@@ -66,6 +70,8 @@ struct mcp320x {
 
 	u8 tx_buf ____cacheline_aligned;
 	u8 rx_buf[2];
+
+	u16 *buffer;
 };
 
 static int mcp320x_channel_to_tx_data(int device_index,
@@ -144,6 +150,11 @@ static int mcp320x_read_raw(struct iio_dev *indio_dev,
 
 	switch (mask) {
 	case IIO_CHAN_INFO_RAW:
+		if (iio_buffer_enabled(indio_dev)) {
+			ret = -EBUSY;
+			goto out;
+		}
+
 		ret = mcp320x_adc_conversion(adc, channel->address,
 			channel->differential, device_index);
 
@@ -172,17 +183,38 @@ out:
 	return ret;
 }
 
-#define MCP320X_VOLTAGE_CHANNEL(num)				\
+static int mcp320x_update_scan_mode(struct iio_dev *indio_dev,
+				    const unsigned long *scan_mask)
+{
+	struct mcp320x *adc = iio_priv(indio_dev);
+
+	if (adc->buffer)
+		devm_kfree(&indio_dev->dev, adc->buffer);
+	adc->buffer = devm_kzalloc(&indio_dev->dev,
+				indio_dev->scan_bytes, GFP_KERNEL);
+	if (!adc->buffer)
+		return -ENOMEM;
+
+	return 0;
+}
+
+#define MCP320X_VOLTAGE_CHANNEL(idx, num, res)			\
 	{							\
 		.type = IIO_VOLTAGE,				\
 		.indexed = 1,					\
 		.channel = (num),				\
 		.address = (num),				\
 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),	\
-		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) \
+		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE), \
+		.scan_index = idx,				\
+		.scan_type = {					\
+			.sign = 'u',				\
+			.realbits = (res),			\
+			.storagebits = 16,			\
+		},						\
 	}
 
-#define MCP320X_VOLTAGE_CHANNEL_DIFF(num)			\
+#define MCP320X_VOLTAGE_CHANNEL_DIFF(idx, num, res)		\
 	{							\
 		.type = IIO_VOLTAGE,				\
 		.indexed = 1,					\
@@ -191,67 +223,116 @@ out:
 		.address = (num * 2),				\
 		.differential = 1,				\
 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),	\
-		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) \
+		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE), \
+		.scan_index = idx,				\
+		.scan_type = {					\
+			.sign = 'u',				\
+			.realbits = (res),			\
+			.storagebits = 16,			\
+		},						\
 	}
 
+static const struct iio_chan_spec mcp3001_channels[] = {
+	MCP320X_VOLTAGE_CHANNEL_DIFF(0, 0, 10),
+	IIO_CHAN_SOFT_TIMESTAMP(1),
+};
+
+static const struct iio_chan_spec mcp3002_channels[] = {
+	MCP320X_VOLTAGE_CHANNEL(0, 0, 10),
+	MCP320X_VOLTAGE_CHANNEL(1, 1, 10),
+	MCP320X_VOLTAGE_CHANNEL_DIFF(2, 0, 10),
+	IIO_CHAN_SOFT_TIMESTAMP(3),
+};
+
+static const struct iio_chan_spec mcp3004_channels[] = {
+	MCP320X_VOLTAGE_CHANNEL(0, 0, 10),
+	MCP320X_VOLTAGE_CHANNEL(1, 1, 10),
+	MCP320X_VOLTAGE_CHANNEL(2, 2, 10),
+	MCP320X_VOLTAGE_CHANNEL(3, 3, 10),
+	MCP320X_VOLTAGE_CHANNEL_DIFF(4, 0, 10),
+	MCP320X_VOLTAGE_CHANNEL_DIFF(5, 1, 10),
+	IIO_CHAN_SOFT_TIMESTAMP(6),
+};
+
+static const struct iio_chan_spec mcp3008_channels[] = {
+	MCP320X_VOLTAGE_CHANNEL(0, 0, 10),
+	MCP320X_VOLTAGE_CHANNEL(1, 1, 10),
+	MCP320X_VOLTAGE_CHANNEL(2, 2, 10),
+	MCP320X_VOLTAGE_CHANNEL(3, 3, 10),
+	MCP320X_VOLTAGE_CHANNEL(4, 4, 10),
+	MCP320X_VOLTAGE_CHANNEL(5, 5, 10),
+	MCP320X_VOLTAGE_CHANNEL(6, 6, 10),
+	MCP320X_VOLTAGE_CHANNEL(7, 7, 10),
+	MCP320X_VOLTAGE_CHANNEL_DIFF(8, 0, 10),
+	MCP320X_VOLTAGE_CHANNEL_DIFF(9, 1, 10),
+	MCP320X_VOLTAGE_CHANNEL_DIFF(10, 2, 10),
+	MCP320X_VOLTAGE_CHANNEL_DIFF(11, 3, 10),
+	IIO_CHAN_SOFT_TIMESTAMP(12),
+};
+
 static const struct iio_chan_spec mcp3201_channels[] = {
-	MCP320X_VOLTAGE_CHANNEL_DIFF(0),
+	MCP320X_VOLTAGE_CHANNEL_DIFF(0, 0, 12),
+	IIO_CHAN_SOFT_TIMESTAMP(1),
 };
 
 static const struct iio_chan_spec mcp3202_channels[] = {
-	MCP320X_VOLTAGE_CHANNEL(0),
-	MCP320X_VOLTAGE_CHANNEL(1),
-	MCP320X_VOLTAGE_CHANNEL_DIFF(0),
+	MCP320X_VOLTAGE_CHANNEL(0, 0, 12),
+	MCP320X_VOLTAGE_CHANNEL(1, 1, 12),
+	MCP320X_VOLTAGE_CHANNEL_DIFF(2, 0, 12),
+	IIO_CHAN_SOFT_TIMESTAMP(3),
 };
 
 static const struct iio_chan_spec mcp3204_channels[] = {
-	MCP320X_VOLTAGE_CHANNEL(0),
-	MCP320X_VOLTAGE_CHANNEL(1),
-	MCP320X_VOLTAGE_CHANNEL(2),
-	MCP320X_VOLTAGE_CHANNEL(3),
-	MCP320X_VOLTAGE_CHANNEL_DIFF(0),
-	MCP320X_VOLTAGE_CHANNEL_DIFF(1),
+	MCP320X_VOLTAGE_CHANNEL(0, 0, 12),
+	MCP320X_VOLTAGE_CHANNEL(1, 1, 12),
+	MCP320X_VOLTAGE_CHANNEL(2, 2, 12),
+	MCP320X_VOLTAGE_CHANNEL(3, 3, 12),
+	MCP320X_VOLTAGE_CHANNEL_DIFF(4, 0, 12),
+	MCP320X_VOLTAGE_CHANNEL_DIFF(5, 1, 12),
+	IIO_CHAN_SOFT_TIMESTAMP(6),
 };
 
 static const struct iio_chan_spec mcp3208_channels[] = {
-	MCP320X_VOLTAGE_CHANNEL(0),
-	MCP320X_VOLTAGE_CHANNEL(1),
-	MCP320X_VOLTAGE_CHANNEL(2),
-	MCP320X_VOLTAGE_CHANNEL(3),
-	MCP320X_VOLTAGE_CHANNEL(4),
-	MCP320X_VOLTAGE_CHANNEL(5),
-	MCP320X_VOLTAGE_CHANNEL(6),
-	MCP320X_VOLTAGE_CHANNEL(7),
-	MCP320X_VOLTAGE_CHANNEL_DIFF(0),
-	MCP320X_VOLTAGE_CHANNEL_DIFF(1),
-	MCP320X_VOLTAGE_CHANNEL_DIFF(2),
-	MCP320X_VOLTAGE_CHANNEL_DIFF(3),
+	MCP320X_VOLTAGE_CHANNEL(0, 0, 12),
+	MCP320X_VOLTAGE_CHANNEL(1, 1, 12),
+	MCP320X_VOLTAGE_CHANNEL(2, 2, 12),
+	MCP320X_VOLTAGE_CHANNEL(3, 3, 12),
+	MCP320X_VOLTAGE_CHANNEL(4, 4, 12),
+	MCP320X_VOLTAGE_CHANNEL(5, 5, 12),
+	MCP320X_VOLTAGE_CHANNEL(6, 6, 12),
+	MCP320X_VOLTAGE_CHANNEL(7, 7, 12),
+	MCP320X_VOLTAGE_CHANNEL_DIFF(8, 0, 12),
+	MCP320X_VOLTAGE_CHANNEL_DIFF(9, 1, 12),
+	MCP320X_VOLTAGE_CHANNEL_DIFF(10, 2, 12),
+	MCP320X_VOLTAGE_CHANNEL_DIFF(11, 3, 12),
+	IIO_CHAN_SOFT_TIMESTAMP(12),
 };
 
 static const struct iio_info mcp320x_info = {
 	.read_raw = mcp320x_read_raw,
+	.update_scan_mode = mcp320x_update_scan_mode,
 	.driver_module = THIS_MODULE,
 };
 
 static const struct mcp320x_chip_info mcp320x_chip_infos[] = {
 	[mcp3001] = {
-		.channels = mcp3201_channels,
-		.num_channels = ARRAY_SIZE(mcp3201_channels),
+		.channels = mcp3001_channels,
+		.num_channels = ARRAY_SIZE(mcp3001_channels),
 		.resolution = 10
 	},
 	[mcp3002] = {
-		.channels = mcp3202_channels,
-		.num_channels = ARRAY_SIZE(mcp3202_channels),
+		.channels = mcp3002_channels,
+		.num_channels = ARRAY_SIZE(mcp3002_channels),
 		.resolution = 10
 	},
 	[mcp3004] = {
-		.channels = mcp3204_channels,
-		.num_channels = ARRAY_SIZE(mcp3204_channels),
+		.channels = mcp3004_channels,
+		.num_channels = ARRAY_SIZE(mcp3004_channels),
 		.resolution = 10
 	},
 	[mcp3008] = {
-		.channels = mcp3208_channels,
-		.num_channels = ARRAY_SIZE(mcp3208_channels),
+		.channels = mcp3008_channels,
+		.num_channels = ARRAY_SIZE(mcp3008_channels),
 		.resolution = 10
 	},
 	[mcp3201] = {
@@ -275,6 +356,32 @@ static const struct mcp320x_chip_info mcp320x_chip_infos[] = {
 		.resolution = 12
 	},
 };
+
+static irqreturn_t mcp320x_trigger_handler(int irq, void *p)
+{
+	struct iio_poll_func *pf = p;
+	struct iio_dev *indio_dev = pf->indio_dev;
+	struct mcp320x *adc = iio_priv(indio_dev);
+	struct iio_chan_spec const *channels = indio_dev->channels;
+	int device_index;
+	int i;
+
+	for_each_set_bit(i, indio_dev->buffer->scan_mask,
+			 indio_dev->masklength) {
+		if (!test_bit(i, indio_dev->active_scan_mask))
+			continue;
+		device_index = spi_get_device_id(adc->spi)->driver_data;
+		adc->buffer[i] = mcp320x_adc_conversion(adc, channels[i].address,
+							channels[i].differential,
+							device_index);
+	}
+
+	iio_push_to_buffers_with_timestamp(indio_dev, adc->buffer, pf->timestamp);
+
+	iio_trigger_notify_done(indio_dev->trig);
+
+	return IRQ_HANDLED;
+}
 
 static int mcp320x_probe(struct spi_device *spi)
 {
@@ -319,6 +426,11 @@ static int mcp320x_probe(struct spi_device *spi)
 
 	mutex_init(&adc->lock);
 
+	ret = iio_triggered_buffer_setup(indio_dev, &iio_pollfunc_store_time,
+					&mcp320x_trigger_handler, NULL);
+	if (ret)
+		goto reg_disable;
+
 	ret = iio_device_register(indio_dev);
 	if (ret < 0)
 		goto reg_disable;
@@ -337,6 +449,7 @@ static int mcp320x_remove(struct spi_device *spi)
 	struct mcp320x *adc = iio_priv(indio_dev);
 
 	iio_device_unregister(indio_dev);
+	iio_triggered_buffer_cleanup(indio_dev);
 	regulator_disable(adc->reg);
 
 	return 0;
