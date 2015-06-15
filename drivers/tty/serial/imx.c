@@ -408,7 +408,12 @@ static void imx_rs485_tx_gate_ctrl(struct imx_port *sport, int enable)
 
 	switch (sport->rs485_tx_gate_type) {
 	case IMXUART_RS485_TX_GATE_RTS:
+		temp = readl(sport->port.membase + UCR1);
+		temp |= UCR1_UARTEN;
+		writel(temp, sport->port.membase + UCR1);
+
 		temp = readl(sport->port.membase + UCR2);
+		temp |= UCR2_RXEN;
 		if (sport->port.rs485.flags & flags)
 			temp &= ~UCR2_CTS;
 		else
@@ -1742,6 +1747,8 @@ static int imx_rs485_config(struct uart_port *port,
 {
 	struct imx_port *sport = (struct imx_port *)port;
 
+	port->rs485 = *rs485conf;
+
 	if (rs485conf->flags & SER_RS485_ENABLED) {
 		/* set direction */
 		imx_rs485_set_duplex(sport, rs485conf->flags &
@@ -1749,8 +1756,6 @@ static int imx_rs485_config(struct uart_port *port,
 		/* disable transmitter */
 		imx_rs485_tx_gate_ctrl(sport, 0);
 	}
-
-	port->rs485 = *rs485conf;
 
 	return 0;
 }
