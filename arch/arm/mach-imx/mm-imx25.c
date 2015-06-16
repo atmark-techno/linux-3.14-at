@@ -62,7 +62,11 @@ void __init mx25_init_irq(void)
 }
 
 static struct sdma_platform_data imx25_sdma_pdata __initdata = {
+#ifdef CONFIG_FIRMWARE_IN_KERNEL
+	.fw_name = "imx/sdma/sdma-imx25.bin",
+#else
 	.fw_name = "sdma-imx25.bin",
+#endif
 };
 
 static const struct resource imx25_audmux_res[] __initconst = {
