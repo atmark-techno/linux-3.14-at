@@ -19,6 +19,8 @@
 #ifndef ASMARM_ARCH_UART_H
 #define ASMARM_ARCH_UART_H
 
+#include <linux/serial.h>
+
 #define IMXUART_HAVE_RTSCTS (1<<0)
 
 enum imxuart_rx_gate_types {
@@ -41,6 +43,8 @@ struct imxuart_platform_data {
 	int (*init)(struct platform_device *pdev);
 	void (*exit)(struct platform_device *pdev);
 	unsigned int flags;
+
+	struct serial_rs485 rs485;
 
 	enum imxuart_rx_gate_types rx_gate_type;
 	unsigned int rx_gate_gpio;

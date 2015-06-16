@@ -2086,6 +2086,9 @@ static void serial_imx_probe_pdata(struct imx_port *sport,
 	if (pdata->flags & IMXUART_HAVE_RTSCTS)
 		sport->have_rtscts = 1;
 
+	if (pdata->rs485.flags & SER_RS485_ENABLED)
+		sport->port.rs485 = pdata->rs485;
+
 	sport->rx_gate_type = pdata->rx_gate_type;
 	if (pdata->rx_gate_type == IMXUART_RX_GATE_GPIO) {
 		ret = devm_gpio_request(&pdev->dev, pdata->rx_gate_gpio,
@@ -2169,8 +2172,10 @@ static int serial_imx_probe(struct platform_device *pdev)
 	sport->port.fifosize = 32;
 	sport->port.ops = &imx_pops;
 	sport->port.rs485_config = imx_rs485_config;
-	sport->port.rs485.flags =
-		SER_RS485_RTS_ON_SEND | SER_RS485_RX_DURING_TX;
+	if (!(sport->port.rs485.flags & SER_RS485_ENABLED)) {
+		sport->port.rs485.flags =
+			SER_RS485_RTS_ON_SEND | SER_RS485_RX_DURING_TX;
+	}
 	sport->port.flags = UPF_BOOT_AUTOCONF;
 	init_timer(&sport->timer);
 	sport->timer.function = imx_timeout;
