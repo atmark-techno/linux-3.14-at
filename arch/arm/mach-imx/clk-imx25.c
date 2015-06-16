@@ -309,9 +309,8 @@ int __init mx25_clocks_init(void)
 	clk_register_clkdev(clk[dummy], "audmux", NULL);
 	clk_register_clkdev(clk[can1_ipg], NULL, "flexcan.0");
 	clk_register_clkdev(clk[can2_ipg], NULL, "flexcan.1");
-	/* i.mx25 has the i.mx35 type sdma */
-	clk_register_clkdev(clk[sdma_ipg], "ipg", "imx35-sdma");
-	clk_register_clkdev(clk[sdma_ahb], "ahb", "imx35-sdma");
+	clk_register_clkdev(clk[sdma_ipg], "ipg", "imx25-sdma");
+	clk_register_clkdev(clk[sdma_ahb], "ahb", "imx25-sdma");
 	clk_register_clkdev(clk[iim_ipg], "iim", NULL);
 
 	mxc_timer_init(MX25_IO_ADDRESS(MX25_GPT1_BASE_ADDR), MX25_INT_GPT1);

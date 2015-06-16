@@ -85,8 +85,7 @@ void __init imx25_soc_init(void)
 	mxc_register_gpio("imx35-gpio", 3, MX25_GPIO4_BASE_ADDR, SZ_16K, MX25_INT_GPIO4, 0);
 
 	pinctrl_provide_dummies();
-	/* i.mx25 has the i.mx35 type sdma */
-	imx_add_imx_sdma("imx35-sdma", MX25_SDMA_BASE_ADDR, MX25_INT_SDMA, &imx25_sdma_pdata);
+	imx_add_imx_sdma("imx25-sdma", MX25_SDMA_BASE_ADDR, MX25_INT_SDMA, &imx25_sdma_pdata);
 
 	imx_set_aips(MX25_IO_ADDRESS(MX25_AIPS1_BASE_ADDR));
 	imx_set_aips(MX25_IO_ADDRESS(MX25_AIPS2_BASE_ADDR));
