@@ -862,3 +862,18 @@ Licence:
 Found in hex form in kernel source.
 
 --------------------------------------------------------------------------
+Driver: imx-sdma - i.MX SDMA driver
+
+File: imx/sdma/sdma-imx25.bin.ihex
+File: imx/sdma/sdma-imx31-to1.bin.ihex
+File: imx/sdma/sdma-imx31-to2.bin.ihex
+File: imx/sdma/sdma-imx35-to1.bin.ihex
+File: imx/sdma/sdma-imx35-to2.bin.ihex
+File: imx/sdma/sdma-imx51.bin.ihex
+File: imx/sdma/sdma-imx53.bin.ihex
+
+Licence: GPLv2 or later
+
+Source code available at http://git.pengutronix.de/?p=imx/sdma-firmware.git
+
+--------------------------------------------------------------------------
