@@ -75,10 +75,6 @@ static unsigned long pin_cfgs_100kdown_sre_fast[] = {
 	PAD_CTL_PUS_100K_DOWN | PAD_CTL_SRE_FAST,
 };
 
-static unsigned long pin_cfgs_100kup_sre_fast[] = {
-	PAD_CTL_PUS_100K_UP | PAD_CTL_SRE_FAST,
-};
-
 static unsigned long pin_cfgs_100kup_hys[] = {
 	PAD_CTL_PUS_100K_UP | PAD_CTL_HYS,
 };
@@ -140,22 +136,22 @@ static const struct pinctrl_map armadillo_iotg_std_pinctrl_map[] = {
 
 	PIN_MAP_CONFIGS_PIN_DEFAULT("sdhci-esdhc-imx25.0", "imx25-pinctrl.0",
 				    "MX25_PAD_SD1_CMD",
-				    pin_cfgs_100kup_sre_fast),
+				    pin_cfgs_sre_fast),
 	PIN_MAP_CONFIGS_PIN_DEFAULT("sdhci-esdhc-imx25.0", "imx25-pinctrl.0",
 				    "MX25_PAD_SD1_CLK",
-				    pin_cfgs_100kup_sre_fast),
+				    pin_cfgs_sre_fast),
 	PIN_MAP_CONFIGS_PIN_DEFAULT("sdhci-esdhc-imx25.0", "imx25-pinctrl.0",
 				    "MX25_PAD_SD1_DATA0",
-				    pin_cfgs_100kup_sre_fast),
+				    pin_cfgs_sre_fast),
 	PIN_MAP_CONFIGS_PIN_DEFAULT("sdhci-esdhc-imx25.0", "imx25-pinctrl.0",
 				    "MX25_PAD_SD1_DATA1",
-				    pin_cfgs_100kup_sre_fast),
+				    pin_cfgs_sre_fast),
 	PIN_MAP_CONFIGS_PIN_DEFAULT("sdhci-esdhc-imx25.0", "imx25-pinctrl.0",
 				    "MX25_PAD_SD1_DATA2",
-				    pin_cfgs_100kup_sre_fast),
+				    pin_cfgs_sre_fast),
 	PIN_MAP_CONFIGS_PIN_DEFAULT("sdhci-esdhc-imx25.0", "imx25-pinctrl.0",
 				    "MX25_PAD_SD1_DATA3",
-				    pin_cfgs_100kup_sre_fast),
+				    pin_cfgs_sre_fast),
 
 	PIN_MAP_CONFIGS_PIN_DEFAULT("sdhci-esdhc-imx25.0", "imx25-pinctrl.0",
 				    "MX25_PAD_GRP_DSE_SDHC1", pin_cfgs_dse_low),
