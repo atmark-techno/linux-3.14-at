@@ -122,6 +122,16 @@ static const struct pinctrl_map armadillo_iotg_std_pinctrl_map[] = {
 	PIN_MAP_MUX_GROUP_DEFAULT("imx25-fec.0", "imx25-pinctrl.0",
 				  "upll_bypclk__gpio_3_16", "gpio3"),
 
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx25-fec.0", "imx25-pinctrl.0",
+				    "MX25_PAD_FEC_TDATA0",
+				    pin_cfgs_sre_fast),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx25-fec.0", "imx25-pinctrl.0",
+				    "MX25_PAD_FEC_TDATA1",
+				    pin_cfgs_sre_fast),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx25-fec.0", "imx25-pinctrl.0",
+				    "MX25_PAD_FEC_TX_EN",
+				    pin_cfgs_sre_fast),
+
 	/* eSDHC1 */
 	PIN_MAP_MUX_GROUP_DEFAULT("sdhci-esdhc-imx25.0", "imx25-pinctrl.0",
 				  "sd1_cmd__sd1_cmd", "sd1"),
