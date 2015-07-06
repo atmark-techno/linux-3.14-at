@@ -625,7 +625,9 @@ static void __init armadillo_iotg_std_usb_select_port(void)
 #define AIOTG_STD_TEMP_SENSOR_OS_GPIO	IMX_GPIO_NR(2, 22)
 static void __init armadillo_iotg_std_temp_sensor_init(void)
 {
-	mxc_iomux_v3_setup_pad(MX25_PAD_CSPI1_RDY__GPIO_2_22);
+	iomux_v3_cfg_t temp_sensor_os_pad = NEW_PAD_CTRL(MX25_PAD_CSPI1_RDY__GPIO_2_22, 0);
+
+	mxc_iomux_v3_setup_pad(temp_sensor_os_pad);
 
 	imx25_named_gpio_request(AIOTG_STD_TEMP_SENSOR_OS_GPIO, "TEMP_ALERT_N");
 	gpio_direction_input(AIOTG_STD_TEMP_SENSOR_OS_GPIO);
