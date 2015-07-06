@@ -95,6 +95,10 @@ static unsigned long pin_cfgs_dse_low[] = {
 	PAD_CTL_DSE_LOW,
 };
 
+static unsigned long pin_cfgs_none[] = {
+	NO_PAD_CTRL,
+};
+
 static const struct pinctrl_map armadillo_iotg_std_pinctrl_map[] = {
 	/* FEC */
 	PIN_MAP_MUX_GROUP_DEFAULT("imx25-fec.0", "imx25-pinctrl.0",
@@ -152,6 +156,8 @@ static const struct pinctrl_map armadillo_iotg_std_pinctrl_map[] = {
 	PIN_MAP_CONFIGS_PIN_DEFAULT("sdhci-esdhc-imx25.0", "imx25-pinctrl.0",
 				    "MX25_PAD_SD1_DATA3",
 				    pin_cfgs_sre_fast),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("sdhci-esdhc-imx25.0", "imx25-pinctrl.0",
+				    "MX25_PAD_NFRB", pin_cfgs_none),
 
 	PIN_MAP_CONFIGS_PIN_DEFAULT("sdhci-esdhc-imx25.0", "imx25-pinctrl.0",
 				    "MX25_PAD_GRP_DSE_SDHC1", pin_cfgs_dse_low),
