@@ -270,6 +270,8 @@ static const struct pinctrl_map armadillo_iotg_std_pinctrl_map[] = {
 	/* ADC081C021 */
 	PIN_MAP_MUX_GROUP_DEFAULT("3-0054", "imx25-pinctrl.0",
 				  "vstby_req__gpio_3_17", "gpio3"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("3-0054", "imx25-pinctrl.0",
+				    "MX25_PAD_VSTBY_REQ", pin_cfgs_none),
 };
 
 static const struct fec_platform_data mx25_fec_pdata __initconst = {
