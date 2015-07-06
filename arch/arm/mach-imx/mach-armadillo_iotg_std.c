@@ -79,10 +79,6 @@ static unsigned long pin_cfgs_100kup_hys[] = {
 	PAD_CTL_PUS_100K_UP | PAD_CTL_HYS,
 };
 
-static unsigned long pin_cfgs_100kup_ode[] = {
-	PAD_CTL_PUS_100K_UP | PAD_CTL_ODE,
-};
-
 static unsigned long pin_cfgs_sre_fast[] = {
 	PAD_CTL_SRE_FAST,
 };
@@ -93,6 +89,10 @@ static unsigned long pin_cfgs_sre_fast_hys[] = {
 
 static unsigned long pin_cfgs_dse_low[] = {
 	PAD_CTL_DSE_LOW,
+};
+
+static unsigned long pin_cfgs_ode[] = {
+	PAD_CTL_ODE,
 };
 
 static unsigned long pin_cfgs_none[] = {
@@ -239,9 +239,9 @@ static const struct pinctrl_map armadillo_iotg_std_pinctrl_map[] = {
 	PIN_MAP_MUX_GROUP_DEFAULT("imx21-i2c.0", "imx25-pinctrl.0",
 				  "i2c1_dat__i2c1_dat", "i2c1"),
 	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-i2c.0", "imx25-pinctrl.0",
-				    "MX25_PAD_I2C1_CLK", pin_cfgs_100kup_ode),
+				    "MX25_PAD_I2C1_CLK", pin_cfgs_ode),
 	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-i2c.0", "imx25-pinctrl.0",
-				    "MX25_PAD_I2C1_DAT", pin_cfgs_100kup_ode),
+				    "MX25_PAD_I2C1_DAT", pin_cfgs_ode),
 
 	/* I2C-GPIO3 */
 	PIN_MAP_MUX_GROUP_DEFAULT("i2c-gpio.3", "imx25-pinctrl.0",
