@@ -2209,6 +2209,10 @@ struct imx_pin pins_cspi1_mosi__cspi1_mosi[] = {
 	IMX25_PINCTRL_PIN(CSPI1_MOSI, CSPI1_MOSI),
 };
 
+struct imx_pin pins_cspi1_mosi__uart3_rxd_mux[] = {
+	IMX25_PINCTRL_PIN(CSPI1_MOSI, UART3_RXD_MUX),
+};
+
 struct imx_pin pins_cspi1_mosi__gpio_1_14[] = {
 	IMX25_PINCTRL_PIN(CSPI1_MOSI, GPIO_1_14),
 };
@@ -2220,6 +2224,10 @@ unsigned int pin_ids_cspi1_miso[] = {
 
 struct imx_pin pins_cspi1_miso__cspi1_miso[] = {
 	IMX25_PINCTRL_PIN(CSPI1_MISO, CSPI1_MISO),
+};
+
+struct imx_pin pins_cspi1_miso__uart3_txd_mux[] = {
+	IMX25_PINCTRL_PIN(CSPI1_MISO, UART3_TXD_MUX),
 };
 
 struct imx_pin pins_cspi1_miso__gpio_1_15[] = {
@@ -2248,6 +2256,10 @@ struct imx_pin pins_cspi1_ss1__cspi1_ss1[] = {
 	IMX25_PINCTRL_PIN(CSPI1_SS1, CSPI1_SS1),
 };
 
+struct imx_pin pins_cspi1_ss1__uart3_rts[] = {
+	IMX25_PINCTRL_PIN(CSPI1_SS1, UART3_RTS),
+};
+
 struct imx_pin pins_cspi1_ss1__gpio_1_17[] = {
 	IMX25_PINCTRL_PIN(CSPI1_SS1, GPIO_1_17),
 };
@@ -2263,6 +2275,10 @@ unsigned int pin_ids_cspi1_sclk[] = {
 
 struct imx_pin pins_cspi1_sclk__cspi1_sclk[] = {
 	IMX25_PINCTRL_PIN(CSPI1_SCLK, CSPI1_SCLK),
+};
+
+struct imx_pin pins_cspi1_sclk__uart3_cts[] = {
+	IMX25_PINCTRL_PIN(CSPI1_SCLK, UART3_CTS),
 };
 
 struct imx_pin pins_cspi1_sclk__gpio_1_18[] = {
@@ -3303,15 +3319,19 @@ static struct imx_pin_group imx25_pinctrl_groups[] = {
 	IMX25_PINCTRL_PIN_GROUP(i2c1_dat, i2c1_dat),
 	IMX25_PINCTRL_PIN_GROUP(i2c1_dat, gpio_1_13),
 	IMX25_PINCTRL_PIN_GROUP(cspi1_mosi, cspi1_mosi),
+	IMX25_PINCTRL_PIN_GROUP(cspi1_mosi, uart3_rxd_mux),
 	IMX25_PINCTRL_PIN_GROUP(cspi1_mosi, gpio_1_14),
 	IMX25_PINCTRL_PIN_GROUP(cspi1_miso, cspi1_miso),
+	IMX25_PINCTRL_PIN_GROUP(cspi1_miso, uart3_txd_mux),
 	IMX25_PINCTRL_PIN_GROUP(cspi1_miso, gpio_1_15),
 	IMX25_PINCTRL_PIN_GROUP(cspi1_ss0, cspi1_ss0),
 	IMX25_PINCTRL_PIN_GROUP(cspi1_ss0, gpio_1_16),
 	IMX25_PINCTRL_PIN_GROUP(cspi1_ss1, cspi1_ss1),
+	IMX25_PINCTRL_PIN_GROUP(cspi1_ss1, uart3_rts),
 	IMX25_PINCTRL_PIN_GROUP(cspi1_ss1, gpio_1_17),
 	IMX25_PINCTRL_PIN_GROUP(cspi1_ss1, i2c3_dat),
 	IMX25_PINCTRL_PIN_GROUP(cspi1_sclk, cspi1_sclk),
+	IMX25_PINCTRL_PIN_GROUP(cspi1_sclk, uart3_cts),
 	IMX25_PINCTRL_PIN_GROUP(cspi1_sclk, gpio_1_18),
 	IMX25_PINCTRL_PIN_GROUP(cspi1_rdy, cspi1_rdy),
 	IMX25_PINCTRL_PIN_GROUP(cspi1_rdy, gpio_2_22),
@@ -3842,6 +3862,10 @@ static const char *uart3_groups[] = {
 	"kpp_row1__uart3_txd",
 	"kpp_row2__uart3_rts",
 	"kpp_row3__uart3_cts",
+	"cspi1_mosi__uart3_rxd_mux",
+	"cspi1_miso__uart3_txd_mux",
+	"cspi1_ss1__uart3_rts",
+	"cspi1_sclk__uart3_cts",
 };
 
 static const char *uart4_groups[] = {
