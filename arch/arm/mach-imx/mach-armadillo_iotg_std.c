@@ -75,16 +75,8 @@ static unsigned long pin_cfgs_100kdown_sre_fast[] = {
 	PAD_CTL_PUS_100K_DOWN | PAD_CTL_SRE_FAST,
 };
 
-static unsigned long pin_cfgs_100kup_sre_fast[] = {
-	PAD_CTL_PUS_100K_UP | PAD_CTL_SRE_FAST,
-};
-
 static unsigned long pin_cfgs_100kup_hys[] = {
 	PAD_CTL_PUS_100K_UP | PAD_CTL_HYS,
-};
-
-static unsigned long pin_cfgs_100kup_ode[] = {
-	PAD_CTL_PUS_100K_UP | PAD_CTL_ODE,
 };
 
 static unsigned long pin_cfgs_sre_fast[] = {
@@ -97,6 +89,14 @@ static unsigned long pin_cfgs_sre_fast_hys[] = {
 
 static unsigned long pin_cfgs_dse_low[] = {
 	PAD_CTL_DSE_LOW,
+};
+
+static unsigned long pin_cfgs_ode[] = {
+	PAD_CTL_ODE,
+};
+
+static unsigned long pin_cfgs_none[] = {
+	NO_PAD_CTRL,
 };
 
 static const struct pinctrl_map armadillo_iotg_std_pinctrl_map[] = {
@@ -122,6 +122,16 @@ static const struct pinctrl_map armadillo_iotg_std_pinctrl_map[] = {
 	PIN_MAP_MUX_GROUP_DEFAULT("imx25-fec.0", "imx25-pinctrl.0",
 				  "upll_bypclk__gpio_3_16", "gpio3"),
 
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx25-fec.0", "imx25-pinctrl.0",
+				    "MX25_PAD_FEC_TDATA0",
+				    pin_cfgs_sre_fast),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx25-fec.0", "imx25-pinctrl.0",
+				    "MX25_PAD_FEC_TDATA1",
+				    pin_cfgs_sre_fast),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx25-fec.0", "imx25-pinctrl.0",
+				    "MX25_PAD_FEC_TX_EN",
+				    pin_cfgs_sre_fast),
+
 	/* eSDHC1 */
 	PIN_MAP_MUX_GROUP_DEFAULT("sdhci-esdhc-imx25.0", "imx25-pinctrl.0",
 				  "sd1_cmd__sd1_cmd", "sd1"),
@@ -140,22 +150,24 @@ static const struct pinctrl_map armadillo_iotg_std_pinctrl_map[] = {
 
 	PIN_MAP_CONFIGS_PIN_DEFAULT("sdhci-esdhc-imx25.0", "imx25-pinctrl.0",
 				    "MX25_PAD_SD1_CMD",
-				    pin_cfgs_100kup_sre_fast),
+				    pin_cfgs_sre_fast),
 	PIN_MAP_CONFIGS_PIN_DEFAULT("sdhci-esdhc-imx25.0", "imx25-pinctrl.0",
 				    "MX25_PAD_SD1_CLK",
-				    pin_cfgs_100kup_sre_fast),
+				    pin_cfgs_sre_fast),
 	PIN_MAP_CONFIGS_PIN_DEFAULT("sdhci-esdhc-imx25.0", "imx25-pinctrl.0",
 				    "MX25_PAD_SD1_DATA0",
-				    pin_cfgs_100kup_sre_fast),
+				    pin_cfgs_sre_fast),
 	PIN_MAP_CONFIGS_PIN_DEFAULT("sdhci-esdhc-imx25.0", "imx25-pinctrl.0",
 				    "MX25_PAD_SD1_DATA1",
-				    pin_cfgs_100kup_sre_fast),
+				    pin_cfgs_sre_fast),
 	PIN_MAP_CONFIGS_PIN_DEFAULT("sdhci-esdhc-imx25.0", "imx25-pinctrl.0",
 				    "MX25_PAD_SD1_DATA2",
-				    pin_cfgs_100kup_sre_fast),
+				    pin_cfgs_sre_fast),
 	PIN_MAP_CONFIGS_PIN_DEFAULT("sdhci-esdhc-imx25.0", "imx25-pinctrl.0",
 				    "MX25_PAD_SD1_DATA3",
-				    pin_cfgs_100kup_sre_fast),
+				    pin_cfgs_sre_fast),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("sdhci-esdhc-imx25.0", "imx25-pinctrl.0",
+				    "MX25_PAD_NFRB", pin_cfgs_none),
 
 	PIN_MAP_CONFIGS_PIN_DEFAULT("sdhci-esdhc-imx25.0", "imx25-pinctrl.0",
 				    "MX25_PAD_GRP_DSE_SDHC1", pin_cfgs_dse_low),
@@ -227,9 +239,9 @@ static const struct pinctrl_map armadillo_iotg_std_pinctrl_map[] = {
 	PIN_MAP_MUX_GROUP_DEFAULT("imx21-i2c.0", "imx25-pinctrl.0",
 				  "i2c1_dat__i2c1_dat", "i2c1"),
 	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-i2c.0", "imx25-pinctrl.0",
-				    "MX25_PAD_I2C1_CLK", pin_cfgs_100kup_ode),
+				    "MX25_PAD_I2C1_CLK", pin_cfgs_ode),
 	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-i2c.0", "imx25-pinctrl.0",
-				    "MX25_PAD_I2C1_DAT", pin_cfgs_100kup_ode),
+				    "MX25_PAD_I2C1_DAT", pin_cfgs_ode),
 
 	/* I2C-GPIO3 */
 	PIN_MAP_MUX_GROUP_DEFAULT("i2c-gpio.3", "imx25-pinctrl.0",
@@ -258,6 +270,8 @@ static const struct pinctrl_map armadillo_iotg_std_pinctrl_map[] = {
 	/* ADC081C021 */
 	PIN_MAP_MUX_GROUP_DEFAULT("3-0054", "imx25-pinctrl.0",
 				  "vstby_req__gpio_3_17", "gpio3"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("3-0054", "imx25-pinctrl.0",
+				    "MX25_PAD_VSTBY_REQ", pin_cfgs_none),
 };
 
 static const struct fec_platform_data mx25_fec_pdata __initconst = {
@@ -613,7 +627,9 @@ static void __init armadillo_iotg_std_usb_select_port(void)
 #define AIOTG_STD_TEMP_SENSOR_OS_GPIO	IMX_GPIO_NR(2, 22)
 static void __init armadillo_iotg_std_temp_sensor_init(void)
 {
-	mxc_iomux_v3_setup_pad(MX25_PAD_CSPI1_RDY__GPIO_2_22);
+	iomux_v3_cfg_t temp_sensor_os_pad = NEW_PAD_CTRL(MX25_PAD_CSPI1_RDY__GPIO_2_22, 0);
+
+	mxc_iomux_v3_setup_pad(temp_sensor_os_pad);
 
 	imx25_named_gpio_request(AIOTG_STD_TEMP_SENSOR_OS_GPIO, "TEMP_ALERT_N");
 	gpio_direction_input(AIOTG_STD_TEMP_SENSOR_OS_GPIO);
