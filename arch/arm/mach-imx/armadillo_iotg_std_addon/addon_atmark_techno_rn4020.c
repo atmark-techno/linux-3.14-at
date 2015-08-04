@@ -92,7 +92,7 @@ static const struct imxuart_platform_data addon_uart_pdata __initconst = {
 #define RN4020_WAKE_HW_DEASSERT	(0)
 
 int __init
-addon_setup_atmark_techno_ble(struct addon_device_descriptor *desc,
+addon_setup_atmark_techno_rn4020(struct addon_device_descriptor *desc,
 			      enum addon_interface intf)
 {
 	mxc_iomux_v3_setup_multiple_pads(addon_data[intf].pads,

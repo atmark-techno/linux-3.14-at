@@ -38,7 +38,7 @@ struct addon_device_descriptor {
 #define ADDON_PRODUCT_ID_ATMARK_TECHNO_EN_OCEAN	(0x0002)
 #define ADDON_PRODUCT_ID_ATMARK_TECHNO_SERIAL	(0x0003)
 #define ADDON_PRODUCT_ID_ATMARK_TECHNO_DIDOAD	(0x0004)
-#define ADDON_PRODUCT_ID_ATMARK_TECHNO_BLE	(0x0005)
+#define ADDON_PRODUCT_ID_ATMARK_TECHNO_RN4020	(0x0005)
 #define ADDON_PRODUCT_ID_ATMARK_TECHNO_CAN	(0x0006)
 #define ADDON_PRODUCT_ID_ATMARK_TECHNO_ZIGBEE	(0x0007)
 #define ADDON_PRODUCT_ID_ATMARK_TECHNO_RS232C	(0x0008)
@@ -78,7 +78,7 @@ int __init addon_setup_atmark_techno_serial(struct addon_device_descriptor *desc
 					    enum addon_interface intf);
 int __init addon_setup_atmark_techno_didoad(struct addon_device_descriptor *desc,
 					    enum addon_interface intf);
-int __init addon_setup_atmark_techno_ble(struct addon_device_descriptor *desc,
+int __init addon_setup_atmark_techno_rn4020(struct addon_device_descriptor *desc,
 					 enum addon_interface intf);
 int __init addon_setup_atmark_techno_rs232c(struct addon_device_descriptor *desc,
 					    enum addon_interface intf);

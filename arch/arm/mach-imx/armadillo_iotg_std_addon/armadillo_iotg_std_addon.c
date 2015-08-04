@@ -53,7 +53,7 @@ static struct addon_product_name product_names[] = {
 	PRODUCT_NAME(ATMARK_TECHNO, EN_OCEAN, "EnOcean"),
 	PRODUCT_NAME(ATMARK_TECHNO, SERIAL, "RS485/RS422/RS232C"),
 	PRODUCT_NAME(ATMARK_TECHNO, DIDOAD, "DI/DO/AD"),
-	PRODUCT_NAME(ATMARK_TECHNO, BLE, "Bluetooth Low Energy"),
+	PRODUCT_NAME(ATMARK_TECHNO, RN4020, "RN4020"),
 	PRODUCT_NAME(ATMARK_TECHNO, CAN, "Can"),
 	PRODUCT_NAME(ATMARK_TECHNO, ZIGBEE, "ZigBee"),
 	PRODUCT_NAME(ATMARK_TECHNO, RS232C, "RS232C"),
@@ -219,8 +219,8 @@ static void __init addon_setup(struct addon_device_descriptor *desc,
 		case ADDON_PRODUCT_ID_ATMARK_TECHNO_DIDOAD:
 			ret = addon_setup_atmark_techno_didoad(desc, intf);
 			break;
-		case ADDON_PRODUCT_ID_ATMARK_TECHNO_BLE:
-			ret = addon_setup_atmark_techno_ble(desc, intf);
+		case ADDON_PRODUCT_ID_ATMARK_TECHNO_RN4020:
+			ret = addon_setup_atmark_techno_rn4020(desc, intf);
 			break;
 		case ADDON_PRODUCT_ID_ATMARK_TECHNO_CAN:
 			break;
