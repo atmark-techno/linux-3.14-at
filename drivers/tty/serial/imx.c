@@ -141,6 +141,7 @@
 #define USR1_ESCF	(1<<11) /* Escape seq interrupt flag */
 #define USR1_FRAMERR	(1<<10) /* Frame error interrupt flag */
 #define USR1_RRDY	(1<<9)	 /* Receiver ready interrupt/dma flag */
+#define USR1_AGTIM	(1<<8)	 /* Ageing Timer Interrupt Flag */
 #define USR1_TIMEOUT	(1<<7)	 /* Receive timeout interrupt status */
 #define USR1_RXDS	 (1<<6)	 /* Receiver idle interrupt flag */
 #define USR1_AIRINT	 (1<<5)	 /* Async IR wake interrupt flag */
@@ -908,7 +909,9 @@ static irqreturn_t imx_int(int irq, void *dev_id)
 	sts = readl(sport->port.membase + USR1);
 	sts2 = readl(sport->port.membase + USR2);
 
-	if (sts & USR1_RRDY) {
+	if (sts & (USR1_RRDY | USR1_AGTIM)) {
+		if (sts & USR1_AGTIM)
+			writel(USR1_AGTIM, sport->port.membase + USR1);
 		if (sport->dma_is_enabled)
 			imx_dma_rxint(sport);
 		else
@@ -1016,7 +1019,7 @@ static void imx_break_ctl(struct uart_port *port, int break_state)
 }
 
 #define TXTL 2 /* reset default */
-#define RXTL 1 /* reset default */
+#define RXTL 16 /* reset default */
 
 static int imx_setup_ufcr(struct imx_port *sport, unsigned int mode)
 {
@@ -1314,7 +1317,7 @@ static int imx_startup(struct uart_port *port)
 	writel(temp, sport->port.membase + UCR4);
 
 	temp = readl(sport->port.membase + UCR2);
-	temp |= (UCR2_RXEN | UCR2_TXEN);
+	temp |= (UCR2_RXEN | UCR2_TXEN | UCR2_ATEN);
 	if (!sport->have_rtscts)
 		temp |= UCR2_IRTS;
 	writel(temp, sport->port.membase + UCR2);
@@ -1495,6 +1498,8 @@ imx_set_termios(struct uart_port *port, struct ktermios *termios,
 		if (termios->c_cflag & PARODD)
 			ucr2 |= UCR2_PROE;
 	}
+
+	ucr2 |= UCR2_ATEN;
 
 	del_timer_sync(&sport->timer);
 
