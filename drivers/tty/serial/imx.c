@@ -811,6 +811,9 @@ static irqreturn_t imx_rxint(int irq, void *dev_id)
 	unsigned long flags, temp;
 	unsigned long ucr1;
 	int room;
+	unsigned char chars_buf[sport->port.fifosize];
+	char flags_buf[sport->port.fifosize];
+	unsigned int rx_count = 0;
 
 	room = tty_buffer_request_room(port, sport->port.fifosize);
 
@@ -883,11 +886,15 @@ static irqreturn_t imx_rxint(int irq, void *dev_id)
 		if (sport->port.ignore_status_mask & URXD_DUMMY_READ)
 			goto out;
 
-		tty_insert_flip_char(port, rx, flg);
+		chars_buf[rx_count] = rx;
+		flags_buf[rx_count] = flg;
+		rx_count++;
 		room--;
 	}
 
 out:
+	if (likely(rx_count))
+		tty_insert_flip_string_flags(port, chars_buf, flags_buf, rx_count);
 	spin_unlock_irqrestore(&sport->port.lock, flags);
 	tty_flip_buffer_push(port);
 	return IRQ_HANDLED;
