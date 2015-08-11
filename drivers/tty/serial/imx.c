@@ -814,6 +814,7 @@ static irqreturn_t imx_rxint(int irq, void *dev_id)
 	unsigned char chars_buf[sport->port.fifosize];
 	char flags_buf[sport->port.fifosize];
 	unsigned int rx_count = 0;
+	int inserted;
 
 	room = tty_buffer_request_room(port, sport->port.fifosize);
 
@@ -893,8 +894,12 @@ static irqreturn_t imx_rxint(int irq, void *dev_id)
 	}
 
 out:
-	if (likely(rx_count))
-		tty_insert_flip_string_flags(port, chars_buf, flags_buf, rx_count);
+	if (likely(rx_count)) {
+		inserted = tty_insert_flip_string_flags(port, chars_buf, flags_buf, rx_count);
+		if (unlikely(inserted < rx_count))
+			dev_warn(sport->port.dev, "%s - dropping data, %d bytes lost\n",
+				 __func__, rx_count - inserted);
+	}
 	spin_unlock_irqrestore(&sport->port.lock, flags);
 	tty_flip_buffer_push(port);
 	return IRQ_HANDLED;
