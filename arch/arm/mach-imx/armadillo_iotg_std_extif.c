@@ -58,6 +58,10 @@ static unsigned long pin_cfgs_100kup_ode[] = {
 	PAD_CTL_PUS_100K_UP | PAD_CTL_ODE,
 };
 
+static unsigned long pin_cfgs_22kup[] = {
+	PAD_CTL_PUS_22K_UP,
+};
+
 static const struct pinctrl_map armadillo_iotg_std_extif_uart_map[] = {
 	/* uart1 */
 	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.0", "imx25-pinctrl.0",
@@ -354,6 +358,13 @@ static struct spi_board_info armadillo_iotg_std_spi1_board_info[] __initdata = {
 };
 
 static struct spi_board_info armadillo_iotg_std_spi2_board_info[] __initdata = {
+};
+
+static const struct pinctrl_map armadillo_iotg_std_extif_w1_map[] = {
+	PIN_MAP_MUX_GROUP_DEFAULT("mxc_w1.0", "imx25-pinctrl.0",
+				  "rtck__owire", "owire"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("mxc_w1.0", "imx25-pinctrl.0",
+				    "MX25_PAD_RTCK", pin_cfgs_22kup),
 };
 
 static const struct pinctrl_map armadillo_iotg_std_extif_gpio_map[] = {
@@ -879,6 +890,9 @@ void __init armadillo_iotg_std_extif_init(void)
 	pinctrl_register_mappings(armadillo_iotg_std_extif_can_map,
 				  ARRAY_SIZE(armadillo_iotg_std_extif_can_map));
 
+	pinctrl_register_mappings(armadillo_iotg_std_extif_w1_map,
+				  ARRAY_SIZE(armadillo_iotg_std_extif_w1_map));
+
 	pinctrl_register_mappings(armadillo_iotg_std_extif_gpio_map,
 				  ARRAY_SIZE(armadillo_iotg_std_extif_gpio_map));
 
@@ -937,6 +951,9 @@ void __init armadillo_iotg_std_extif_init(void)
 
 	if (IS_ENABLED(CONFIG_AIOTG_STD_CAN2))
 		imx25_add_flexcan1();
+
+	if (IS_ENABLED(CONFIG_AIOTG_STD_W1))
+		imx25_add_mxc_w1();
 
 	armadillo_iotg_std_exitif_set_gpio();
 }

@@ -280,6 +280,11 @@ config AIOTG_STD_CAN2
 	select AIOTG_STD_CON1_3_CON2_24_CAN2_TXCAN
 	select AIOTG_STD_CON1_4_CON2_25_CAN2_RXCAN
 
+config AIOTG_STD_W1
+	bool "Enable one wire at CON1_6/CON2_32"
+	default n
+	select AIOTG_STD_CON1_6_CON2_32_W1
+
 config AIOTG_STD_PWM1
 	bool "Enable PWM1 at CON1_5/CON2_33"
 	default n
@@ -347,9 +352,13 @@ config AIOTG_STD_CON1_5_CON2_33_GPIO1_26
 	bool
 	default y if !AIOTG_STD_CON1_5_CON2_33_PWMO1
 
+config AIOTG_STD_CON1_6_CON2_32_W1
+	bool
+	default n
+
 config AIOTG_STD_CON1_6_CON2_32_GPIO3_14
 	bool
-	default y
+	default y if !AIOTG_STD_CON1_6_CON2_32_W1
 
 config AIOTG_STD_CON1_7_CON2_41_UART1_RXD
 	bool
