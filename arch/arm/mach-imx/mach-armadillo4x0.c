@@ -51,8 +51,16 @@
 #include "imx25-named_gpio.h"
 #include "armadillo4x0_extif.h"
 
+static const struct imxuart_platform_data uart0_pdata __initconst = {
+#if defined(CONFIG_SERIAL_MXC_HW_FLOW_ENABLED1)
+	.flags = IMXUART_HAVE_RTSCTS,
+#endif
+};
+
 static const struct imxuart_platform_data uart1_pdata __initconst = {
-	/* .flags = IMXUART_HAVE_RTSCTS, */
+#if defined(CONFIG_SERIAL_MXC_HW_FLOW_ENABLED2)
+	.flags = IMXUART_HAVE_RTSCTS,
+#endif
 };
 
 static unsigned long pin_cfgs_none[] = {
@@ -338,7 +346,11 @@ static void __init armadillo4x0_init(void)
 	pinctrl_register_mappings(armadillo4x0_pinctrl_map,
 				  ARRAY_SIZE(armadillo4x0_pinctrl_map));
 
-	imx25_add_imx_uart1(&uart1_pdata);
+	if (IS_ENABLED(CONFIG_SERIAL_MXC_SELECT1))
+		imx25_add_imx_uart0(&uart0_pdata);
+
+	if (IS_ENABLED(CONFIG_SERIAL_MXC_SELECT2))
+		imx25_add_imx_uart1(&uart1_pdata);
 
 	imx25_add_usbmisc_imx();
 	imx25_add_usb_phy_gen_xceiv_otg();

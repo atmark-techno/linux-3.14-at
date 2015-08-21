@@ -40,8 +40,24 @@
 #include "imx25-named_gpio.h"
 #include "armadillo4x0_extif.h"
 
+static const struct imxuart_platform_data uart2_pdata __initconst = {
+#if defined(CONFIG_SERIAL_MXC_HW_FLOW_ENABLED3)
+	.flags = IMXUART_HAVE_RTSCTS,
+#endif
+};
+
+static const struct imxuart_platform_data uart4_pdata __initconst = {
+#if defined(CONFIG_SERIAL_MXC_HW_FLOW_ENABLED5)
+	.flags = IMXUART_HAVE_RTSCTS,
+#endif
+};
+
 static unsigned long __maybe_unused pin_cfgs_100kup[] = {
 	PAD_CTL_PUS_100K_UP,
+};
+
+static unsigned long __maybe_unused pin_cfgs_none[] = {
+	NO_PAD_CTRL,
 };
 
 static unsigned long __maybe_unused pin_cfgs_sre_fast[] = {
@@ -49,6 +65,50 @@ static unsigned long __maybe_unused pin_cfgs_sre_fast[] = {
 };
 
 static const struct pinctrl_map armadillo4x0_extif_pinctrl_map[] = {
+	/* uart3 */
+#if defined(CONFIG_ARMADILLO4X0_UART3_CON9)
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.2", "imx25-pinctrl.0",
+				  "cspi1_mosi__uart3_rxd_mux", "uart3"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.2", "imx25-pinctrl.0",
+				  "cspi1_miso__uart3_txd_mux", "uart3"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-uart.2", "imx25-pinctrl.0",
+				    "MX25_PAD_CSPI1_MOSI", pin_cfgs_100kup),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-uart.2", "imx25-pinctrl.0",
+				    "MX25_PAD_CSPI1_MISO", pin_cfgs_none),
+#endif
+#if defined(CONFIG_ARMADILLO4X0_UART3_HW_FLOW_CON9)
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.2", "imx25-pinctrl.0",
+				  "cspi1_ss1__uart3_rts", "uart3"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.2", "imx25-pinctrl.0",
+				  "cspi1_sclk__uart3_cts", "uart3"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-uart.2", "imx25-pinctrl.0",
+				    "MX25_PAD_CSPI1_SS1", pin_cfgs_100kup),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-uart.2", "imx25-pinctrl.0",
+				    "MX25_PAD_CSPI1_SCLK", pin_cfgs_none),
+#endif
+
+	/* uart5 */
+#if defined(CONFIG_ARMADILLO4X0_UART5_CON9)
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.4", "imx25-pinctrl.0",
+				  "csi_d2__uart5_rxd_mux", "uart5"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.4", "imx25-pinctrl.0",
+				  "csi_d3__uart5_txd_mux", "uart5"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-uart.4", "imx25-pinctrl.0",
+				    "MX25_PAD_CSI_D2", pin_cfgs_100kup),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-uart.4", "imx25-pinctrl.0",
+				    "MX25_PAD_CSI_D3", pin_cfgs_none),
+#endif
+#if defined(CONFIG_ARMADILLO4X0_UART5_HW_FLOW_CON9)
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.4", "imx25-pinctrl.0",
+				  "csi_d4__uart5_rts", "uart5"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.4", "imx25-pinctrl.0",
+				  "csi_d5__uart5_cts", "uart5"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-uart.4", "imx25-pinctrl.0",
+				    "MX25_PAD_CSI_D4", pin_cfgs_100kup),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-uart.4", "imx25-pinctrl.0",
+				    "MX25_PAD_CSI_D5", pin_cfgs_none),
+#endif
+
 	/* CON9 GPIO */
 #if defined(CONFIG_ARMADILLO4X0_CON9_1_GPIO3_17)
 	PIN_MAP_MUX_GROUP_HOG_DEFAULT("imx25-pinctrl.0",
@@ -329,6 +389,11 @@ void __init armadillo4x0_extif_init(void)
 	pinctrl_register_mappings(armadillo4x0_extif_pinctrl_map,
 				  ARRAY_SIZE(armadillo4x0_extif_pinctrl_map));
 
+	if (IS_ENABLED(CONFIG_SERIAL_MXC_SELECT3))
+		imx25_add_imx_uart2(&uart2_pdata);
+
+	if (IS_ENABLED(CONFIG_SERIAL_MXC_SELECT5))
+		imx25_add_imx_uart4(&uart4_pdata);
 
 	armadillo4x0_set_extif_gpio();
 }
