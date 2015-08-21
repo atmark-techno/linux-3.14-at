@@ -448,7 +448,11 @@ static int mxc_gpio_probe(struct platform_device *pdev)
 	}
 
 	err = bgpio_init(&port->bgc, &pdev->dev, 4,
+#if defined(CONFIG_GPIO_MXC_DAT_USE_DR)
+			 port->base + GPIO_DR,
+#else /* CONFIG_GPIO_MXC_DAT_USE_DR */
 			 port->base + GPIO_PSR,
+#endif /* CONFIG_GPIO_MXC_DAT_USE_DR */
 			 port->base + GPIO_DR, NULL,
 			 port->base + GPIO_GDIR, NULL, 0);
 	if (err)

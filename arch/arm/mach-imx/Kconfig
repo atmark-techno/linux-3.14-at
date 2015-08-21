@@ -227,6 +227,15 @@ config MACH_EUKREA_MBIMXSD25_BASEBOARD
 
 endchoice
 
+config IOMUX_MX25_GPIO_SION
+        bool "MX25 GPIO pads configuration with SION"
+        default n if MACH_ARMADILLO_IOTG_STD || MACH_ARMADILLO_BOX_WS1
+        help
+          Enable SION bit and pullup DATA4-7 pads as GPIO or SDHC-2 card
+          interrupt wouldn't occur.  It strange behaviour must be the
+          errarum. But it isn't in a official erratum list. We need to disable
+          SION bit in pad configuration as workaround.
+
 config MACH_ARMADILLO_IOTG_STD
 	bool "Support Armadillo-IoTG Std Base board"
 	select IMX_HAVE_PLATFORM_FLEXCAN
