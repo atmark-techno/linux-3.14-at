@@ -157,6 +157,18 @@ static const struct pinctrl_map armadillo4x0_extif_pinctrl_map[] = {
 				    "MX25_PAD_GPIO_C", pin_cfgs_100kup),
 #endif
 
+	/* can2 */
+#if defined(CONFIG_ARMADILLO4X0_CAN2_CON14)
+	PIN_MAP_MUX_GROUP_DEFAULT("flexcan.1", "imx25-pinctrl.0",
+				  "gpio_c__can2_tx", "can2"),
+	PIN_MAP_MUX_GROUP_DEFAULT("flexcan.1", "imx25-pinctrl.0",
+				  "gpio_d__can2_rx", "can2"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("flexcan.1", "imx25-pinctrl.0",
+				    "MX25_PAD_GPIO_C", pin_cfgs_none),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("flexcan.1", "imx25-pinctrl.0",
+				    "MX25_PAD_GPIO_D", pin_cfgs_100kup),
+#endif
+
 	/* eSDHC2 */
 #if defined(CONFIG_ARMADILLO4X0_SDHC2_CON9)
 	PIN_MAP_MUX_GROUP_DEFAULT("sdhci-esdhc-imx25.1", "imx25-pinctrl.0",
@@ -561,6 +573,9 @@ void __init armadillo4x0_extif_init(void)
 
 	if (IS_ENABLED(CONFIG_MXC_PWM_SELECT4))
 		imx25_add_mxc_pwm(3);
+
+	if (IS_ENABLED(CONFIG_FLEXCAN_SELECT2))
+		imx25_add_flexcan1();
 
 	armadillo4x0_set_extif_gpio();
 }
