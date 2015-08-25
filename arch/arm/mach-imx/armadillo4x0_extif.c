@@ -26,6 +26,7 @@
 #include <linux/platform_device.h>
 #include <linux/regulator/machine.h>
 #include <linux/regulator/fixed.h>
+#include <linux/spi/spi.h>
 
 #include <asm/mach-types.h>
 #include <asm/mach/arch.h>
@@ -155,6 +156,83 @@ static const struct pinctrl_map armadillo4x0_extif_pinctrl_map[] = {
 				  "gpio_c__pwm4_pwmo", "pwm4"),
 	PIN_MAP_CONFIGS_PIN_DEFAULT("imx27-pwm.3", "imx25-pinctrl.0",
 				    "MX25_PAD_GPIO_C", pin_cfgs_100kup),
+#endif
+
+	/* cspi1 */
+#if defined(CONFIG_ARMADILLO4X0_SPI1_CON9)
+	PIN_MAP_MUX_GROUP_DEFAULT("imx35-cspi.0", "imx25-pinctrl.0",
+				  "cspi1_mosi__cspi1_mosi", "cspi1"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx35-cspi.0", "imx25-pinctrl.0",
+				  "cspi1_miso__cspi1_miso", "cspi1"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx35-cspi.0", "imx25-pinctrl.0",
+				  "cspi1_sclk__cspi1_sclk", "cspi1"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx35-cspi.0", "imx25-pinctrl.0",
+				  "cspi1_rdy__cspi1_rdy", "cspi1"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx35-cspi.0", "imx25-pinctrl.0",
+				    "MX25_PAD_CSPI1_MOSI", pin_cfgs_100kup),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx35-cspi.0", "imx25-pinctrl.0",
+				    "MX25_PAD_CSPI1_MISO", pin_cfgs_100kup),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx35-cspi.0", "imx25-pinctrl.0",
+				    "MX25_PAD_CSPI1_SCLK", pin_cfgs_100kup),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx35-cspi.0", "imx25-pinctrl.0",
+				    "MX25_PAD_CSPI1_RDY", pin_cfgs_100kup),
+#endif
+#if defined(CONFIG_ARMADILLO4X0_SPI1_SS0_CON9_25)
+	PIN_MAP_MUX_GROUP_DEFAULT("imx35-cspi.0", "imx25-pinctrl.0",
+				  "cspi1_ss0__gpio_1_16", "gpio1"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx35-cspi.0", "imx25-pinctrl.0",
+				    "MX25_PAD_CSPI1_SS0", pin_cfgs_100kup),
+#endif
+#if defined(CONFIG_ARMADILLO4X0_SPI1_SS1_CON9_11)
+	PIN_MAP_MUX_GROUP_DEFAULT("imx35-cspi.0", "imx25-pinctrl.0",
+				  "cspi1_ss1__gpio_1_17", "gpio1"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx35-cspi.0", "imx25-pinctrl.0",
+				    "MX25_PAD_CSPI1_SS1", pin_cfgs_100kup),
+#endif
+
+	/* cspi3 */
+#if defined(CONFIG_ARMADILLO4X0_SPI3_CON9)
+	PIN_MAP_MUX_GROUP_DEFAULT("imx35-cspi.2", "imx25-pinctrl.0",
+				  "csi_d2__cspi3_mosi", "cspi3"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx35-cspi.2", "imx25-pinctrl.0",
+				  "csi_d3__cspi3_miso", "cspi3"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx35-cspi.2", "imx25-pinctrl.0",
+				  "csi_d4__cspi3_sclk", "cspi3"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx35-cspi.2", "imx25-pinctrl.0",
+				  "csi_d5__cspi3_rdy", "cspi3"),
+
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx35-cspi.2", "imx25-pinctrl.0",
+				    "MX25_PAD_D2", pin_cfgs_100kup),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx35-cspi.2", "imx25-pinctrl.0",
+				    "MX25_PAD_D3", pin_cfgs_100kup),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx35-cspi.2", "imx25-pinctrl.0",
+				    "MX25_PAD_D4", pin_cfgs_100kup),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx35-cspi.2", "imx25-pinctrl.0",
+				    "MX25_PAD_D5", pin_cfgs_100kup),
+#endif
+#if defined(CONFIG_ARMADILLO4X0_SPI3_SS0_CON9_16)
+	PIN_MAP_MUX_GROUP_DEFAULT("imx35-cspi.2", "imx25-pinctrl.0",
+				  "csi_d6__gpio_1_31", "gpio1"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx35-cspi.2", "imx25-pinctrl.0",
+				    "MX25_PAD_CSI_D6", pin_cfgs_100kup),
+#endif
+#if defined(CONFIG_ARMADILLO4X0_SPI3_SS1_CON9_18)
+	PIN_MAP_MUX_GROUP_DEFAULT("imx35-cspi.2", "imx25-pinctrl.0",
+				  "csi_d7__gpio_1_6", "gpio1"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx35-cspi.2", "imx25-pinctrl.0",
+				    "MX25_PAD_CSI_D7", pin_cfgs_100kup),
+#endif
+#if defined(CONFIG_ARMADILLO4X0_SPI3_SS2_CON9_15)
+	PIN_MAP_MUX_GROUP_DEFAULT("imx35-cspi.2", "imx25-pinctrl.0",
+				  "csi_d8__gpio_1_7", "gpio1"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx35-cspi.2", "imx25-pinctrl.0",
+				    "MX25_PAD_CSI_D8", pin_cfgs_100kup),
+#endif
+#if defined(CONFIG_ARMADILLO4X0_SPI3_SS3_CON9_17)
+	PIN_MAP_MUX_GROUP_DEFAULT("imx35-cspi.2", "imx25-pinctrl.0",
+				  "csi_d9__gpio_4_21", "gpio4"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx35-cspi.2", "imx25-pinctrl.0",
+				    "MX25_PAD_CSI_D9", pin_cfgs_100kup),
 #endif
 
 	/* can2 */
@@ -378,6 +456,46 @@ static const struct imxi2c_platform_data mx25_i2c1_data __initconst = {
 static struct i2c_board_info armadillo4x0_i2c1[] = {
 };
 
+static int spi0_cs[] = {
+#if defined(CONFIG_ARMADILLO4X0_SPI1_SS0_CON9_25)
+	IMX_GPIO_NR(1, 16),	/* SS0 */
+#endif
+#if defined(CONFIG_ARMADILLO4X0_SPI1_SS1_CON9_11)
+	IMX_GPIO_NR(1, 17),	/* SS1 */
+#endif
+};
+
+static int spi2_cs[] = {
+#if defined(CONFIG_ARMADILLO4X0_SPI3_SS0_CON9_16)
+	IMX_GPIO_NR(1, 31),	/* SS0 */
+#endif
+#if defined(CONFIG_ARMADILLO4X0_SPI3_SS1_CON9_18)
+	IMX_GPIO_NR(1, 6),	/* SS1 */
+#endif
+#if defined(CONFIG_ARMADILLO4X0_SPI3_SS2_CON9_15)
+	IMX_GPIO_NR(1, 7),	/* SS2 */
+#endif
+#if defined(CONFIG_ARMADILLO4X0_SPI3_SS3_CON9_17)
+	IMX_GPIO_NR(4, 21),	/* SS3 */
+#endif
+};
+
+static const struct spi_imx_master spi0_pdata __initconst = {
+	.chipselect	= spi0_cs,
+	.num_chipselect	= ARRAY_SIZE(spi0_cs),
+};
+
+static const struct spi_imx_master spi2_pdata __initconst = {
+	.chipselect	= spi2_cs,
+	.num_chipselect	= ARRAY_SIZE(spi2_cs),
+};
+
+static struct spi_board_info armadillo4x0_spi0_board_info[] __initdata = {
+};
+
+static struct spi_board_info armadillo4x0_spi2_board_info[] __initdata = {
+};
+
 static const struct esdhc_platform_data __maybe_unused
 armadillo4x0_esdhc2_pdata __initconst = {
 	.wp_gpio = IMX_GPIO_NR(1, 7),
@@ -567,6 +685,18 @@ void __init armadillo4x0_extif_init(void)
 
 	if (IS_ENABLED(CONFIG_MMC_MXC_SELECT2))
 		imx25_add_sdhci_esdhc_imx(1, &armadillo4x0_esdhc2_pdata);
+
+	if (IS_ENABLED(CONFIG_SPI_MXC_SELECT1)) {
+		imx25_add_spi_imx0(&spi0_pdata);
+		spi_register_board_info(armadillo4x0_spi0_board_info,
+				ARRAY_SIZE(armadillo4x0_spi0_board_info));
+	}
+
+	if (IS_ENABLED(CONFIG_SPI_MXC_SELECT3)) {
+		imx25_add_spi_imx2(&spi2_pdata);
+		spi_register_board_info(armadillo4x0_spi2_board_info,
+				ARRAY_SIZE(armadillo4x0_spi2_board_info));
+	}
 
 	if (IS_ENABLED(CONFIG_MXC_PWM_SELECT2))
 		imx25_add_mxc_pwm(1);
