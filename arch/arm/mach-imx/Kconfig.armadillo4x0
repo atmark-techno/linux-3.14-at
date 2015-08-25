@@ -306,7 +306,7 @@ config ARMADILLO4X0_W1_CON9_26
 config ARMADILLO4X0_RTC_ALM_INT_CON9_2
 	bool "Enable RTC alarm interrupt at CON9_2"
 	default n
-	depends on RTC_DRV_S35390A && !ARMADILLO4X0_CON9_2_W1
+	depends on RTC_DRV_S35390A && ARMADILLO4X0_I2C2_CON14_S35390A && !ARMADILLO4X0_CON9_2_W1
 	help
 	  Enable RTC alarm interrupt at CON9_2
 

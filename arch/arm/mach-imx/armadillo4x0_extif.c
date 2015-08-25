@@ -454,7 +454,23 @@ static const struct imxi2c_platform_data mx25_i2c1_data __initconst = {
 };
 
 static struct i2c_board_info armadillo4x0_i2c1[] = {
+#if defined(CONFIG_ARMADILLO4X0_I2C2_CON14_S35390A)
+	{
+		I2C_BOARD_INFO("s35390a", 0x30),
+		/* irq number is run-time assigned */
+	},
+#endif
 };
+
+#define RTC_ALM_INT	IMX_GPIO_NR(3, 14)
+static void __init armadillo4x0_rtc_init(void)
+{
+	mxc_iomux_v3_setup_pad(MX25_PAD_RTCK__GPIO_3_14);
+
+	gpio_request(RTC_ALM_INT, "RTC_ALM_INT");
+	gpio_direction_input(RTC_ALM_INT);
+	armadillo4x0_i2c1[0].irq = gpio_to_irq(RTC_ALM_INT);
+}
 
 static int spi0_cs[] = {
 #if defined(CONFIG_ARMADILLO4X0_SPI1_SS0_CON9_25)
@@ -673,6 +689,9 @@ void __init armadillo4x0_extif_init(void)
 		imx25_add_imx_uart4(&uart4_pdata);
 
 	if (IS_ENABLED(CONFIG_I2C_MXC_SELECT2)) {
+		if (IS_ENABLED(CONFIG_ARMADILLO4X0_CON9_2_RTC_ALM_INT))
+			armadillo4x0_rtc_init();
+
 		imx25_add_imx_i2c1(&mx25_i2c1_data);
 		i2c_register_board_info(1, armadillo4x0_i2c1,
 					ARRAY_SIZE(armadillo4x0_i2c1));
