@@ -60,6 +60,10 @@ static unsigned long __maybe_unused pin_cfgs_none[] = {
 	NO_PAD_CTRL,
 };
 
+static unsigned long __maybe_unused pin_cfgs_22kup_ode[] = {
+	PAD_CTL_PUS_22K_UP | PAD_CTL_ODE,
+};
+
 static unsigned long __maybe_unused pin_cfgs_sre_fast[] = {
 	PAD_CTL_SRE_FAST,
 };
@@ -107,6 +111,18 @@ static const struct pinctrl_map armadillo4x0_extif_pinctrl_map[] = {
 				    "MX25_PAD_CSI_D4", pin_cfgs_100kup),
 	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-uart.4", "imx25-pinctrl.0",
 				    "MX25_PAD_CSI_D5", pin_cfgs_none),
+#endif
+
+	/* i2c2 */
+#if defined(CONFIG_ARMADILLO4X0_I2C2_CON14)
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-i2c.1", "imx25-pinctrl.0",
+				  "gpio_c__i2c2_clk", "i2c2"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-i2c.1", "imx25-pinctrl.0",
+				  "gpio_d__i2c2_dat", "i2c2"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-i2c.1", "imx25-pinctrl.0",
+				    "MX25_PAD_GPIO_C", pin_cfgs_22kup_ode),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-i2c.1", "imx25-pinctrl.0",
+				    "MX25_PAD_GPIO_D", pin_cfgs_22kup_ode),
 #endif
 
 	/* CON9 GPIO */
@@ -257,6 +273,13 @@ static const struct pinctrl_map armadillo4x0_extif_pinctrl_map[] = {
 
 };
 
+static const struct imxi2c_platform_data mx25_i2c1_data __initconst = {
+	.bitrate = 40000,
+};
+
+static struct i2c_board_info armadillo4x0_i2c1[] = {
+};
+
 enum armadillo4x0_extif_gpio_direction {
 	EXTIF_GPIO_DIRECTION_OUTPUT,
 	EXTIF_GPIO_DIRECTION_INPUT,
@@ -394,6 +417,12 @@ void __init armadillo4x0_extif_init(void)
 
 	if (IS_ENABLED(CONFIG_SERIAL_MXC_SELECT5))
 		imx25_add_imx_uart4(&uart4_pdata);
+
+	if (IS_ENABLED(CONFIG_I2C_MXC_SELECT2)) {
+		imx25_add_imx_i2c1(&mx25_i2c1_data);
+		i2c_register_board_info(1, armadillo4x0_i2c1,
+					ARRAY_SIZE(armadillo4x0_i2c1));
+	}
 
 	armadillo4x0_set_extif_gpio();
 }
