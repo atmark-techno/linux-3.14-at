@@ -24,6 +24,8 @@
 #include <linux/gpio.h>
 #include <linux/pinctrl/machine.h>
 #include <linux/platform_device.h>
+#include <linux/regulator/machine.h>
+#include <linux/regulator/fixed.h>
 
 #include <asm/mach-types.h>
 #include <asm/mach/arch.h>
@@ -64,8 +66,24 @@ static unsigned long __maybe_unused pin_cfgs_22kup_ode[] = {
 	PAD_CTL_PUS_22K_UP | PAD_CTL_ODE,
 };
 
+static unsigned long __maybe_unused pin_cfgs_100kdown_sre_fast[] = {
+	PAD_CTL_PUS_100K_DOWN | PAD_CTL_SRE_FAST,
+};
+
+static unsigned long  __maybe_unused pin_cfgs_100kup_hys[] = {
+	PAD_CTL_PUS_100K_UP | PAD_CTL_HYS,
+};
+
 static unsigned long __maybe_unused pin_cfgs_sre_fast[] = {
 	PAD_CTL_SRE_FAST,
+};
+
+static unsigned long  __maybe_unused pin_cfgs_sre_fast_hys[] = {
+	PAD_CTL_SRE_FAST | PAD_CTL_HYS,
+};
+
+static unsigned long __maybe_unused pin_cfgs_dse_low[] = {
+	PAD_CTL_DSE_LOW,
 };
 
 static const struct pinctrl_map armadillo4x0_extif_pinctrl_map[] = {
@@ -123,6 +141,60 @@ static const struct pinctrl_map armadillo4x0_extif_pinctrl_map[] = {
 				    "MX25_PAD_GPIO_C", pin_cfgs_22kup_ode),
 	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-i2c.1", "imx25-pinctrl.0",
 				    "MX25_PAD_GPIO_D", pin_cfgs_22kup_ode),
+#endif
+
+	/* eSDHC2 */
+#if defined(CONFIG_ARMADILLO4X0_SDHC2_CON9)
+	PIN_MAP_MUX_GROUP_DEFAULT("sdhci-esdhc-imx25.1", "imx25-pinctrl.0",
+				  "csi_d6__sd2_cmd", "sd2"),
+	PIN_MAP_MUX_GROUP_DEFAULT("sdhci-esdhc-imx25.1", "imx25-pinctrl.0",
+				  "csi_d7__sd2_clk", "sd2"),
+	PIN_MAP_MUX_GROUP_DEFAULT("sdhci-esdhc-imx25.1", "imx25-pinctrl.0",
+				  "csi_mclk__sd2_data0", "sd2"),
+	PIN_MAP_MUX_GROUP_DEFAULT("sdhci-esdhc-imx25.1", "imx25-pinctrl.0",
+				  "csi_vsync__sd2_data1", "sd2"),
+	PIN_MAP_MUX_GROUP_DEFAULT("sdhci-esdhc-imx25.1", "imx25-pinctrl.0",
+				  "csi_hsync__sd2_data2", "sd2"),
+	PIN_MAP_MUX_GROUP_DEFAULT("sdhci-esdhc-imx25.1", "imx25-pinctrl.0",
+				  "csi_pixclk__sd2_data3", "sd2"),
+	PIN_MAP_MUX_GROUP_DEFAULT("sdhci-esdhc-imx25.1", "imx25-pinctrl.0",
+				  "csi_d8__gpio_1_7", "gpio1"),
+	PIN_MAP_MUX_GROUP_DEFAULT("sdhci-esdhc-imx25.1", "imx25-pinctrl.0",
+				  "csi_d9__gpio_4_21", "gpio4"),
+
+	PIN_MAP_CONFIGS_PIN_DEFAULT("sdhci-esdhc-imx25.1", "imx25-pinctrl.0",
+				    "MX25_PAD_CSI_D6", pin_cfgs_sre_fast),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("sdhci-esdhc-imx25.1", "imx25-pinctrl.0",
+				    "MX25_PAD_CSI_D7", pin_cfgs_sre_fast),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("sdhci-esdhc-imx25.1", "imx25-pinctrl.0",
+				    "MX25_PAD_CSI_MCLK", pin_cfgs_sre_fast),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("sdhci-esdhc-imx25.1", "imx25-pinctrl.0",
+				    "MX25_PAD_CSI_VSYNC", pin_cfgs_sre_fast),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("sdhci-esdhc-imx25.1", "imx25-pinctrl.0",
+				    "MX25_PAD_CSI_HSYNC", pin_cfgs_sre_fast),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("sdhci-esdhc-imx25.1", "imx25-pinctrl.0",
+				    "MX25_PAD_CSI_PIXCLK",
+				    pin_cfgs_sre_fast_hys),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("sdhci-esdhc-imx25.1", "imx25-pinctrl.0",
+				    "MX25_PAD_CSI_D8", pin_cfgs_100kup_hys),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("sdhci-esdhc-imx25.1", "imx25-pinctrl.0",
+				    "MX25_PAD_CSI_D9", pin_cfgs_100kup_hys),
+
+	PIN_MAP_CONFIGS_PIN_DEFAULT("sdhci-esdhc-imx25.1", "imx25-pinctrl.0",
+				    "MX25_PAD_GRP_DSE_CSI", pin_cfgs_dse_low),
+
+	PIN_MAP_MUX_GROUP("sdhci-esdhc-imx25.1",
+			  "state_engcm02759_workaround",
+			  "imx25-pinctrl.0", "csi_d7__gpio_1_6", "gpio1"),
+	PIN_MAP_CONFIGS_PIN("sdhci-esdhc-imx25.1",
+			    "state_engcm02759_workaround",
+			    "imx25-pinctrl.0", "MX25_PAD_CSI_D7",
+			    pin_cfgs_100kdown_sre_fast),
+#endif
+	/* Fixed voltage regulator */
+#if defined(CONFIG_ARMADILLO4X0_CON9_1_SDHC2_PWREN)
+	PIN_MAP_MUX_GROUP_DEFAULT("reg-fixed-voltage.3", "imx25-pinctrl.0",
+				  "vstby_req__gpio_3_17", "gpio3"),
 #endif
 
 	/* CON9 GPIO */
@@ -280,6 +352,18 @@ static const struct imxi2c_platform_data mx25_i2c1_data __initconst = {
 static struct i2c_board_info armadillo4x0_i2c1[] = {
 };
 
+static const struct esdhc_platform_data __maybe_unused
+armadillo4x0_esdhc2_pdata __initconst = {
+	.wp_gpio = IMX_GPIO_NR(1, 7),
+	.cd_gpio = IMX_GPIO_NR(4, 21),
+	.clk_gpio = IMX_GPIO_NR(1, 6),
+	.wp_type = ESDHC_WP_GPIO,
+	.cd_type = ESDHC_CD_GPIO,
+	.max_bus_width = 4,
+	.f_max = 52000000,
+	.support_vsel = false,
+};
+
 enum armadillo4x0_extif_gpio_direction {
 	EXTIF_GPIO_DIRECTION_OUTPUT,
 	EXTIF_GPIO_DIRECTION_INPUT,
@@ -407,6 +491,32 @@ static void armadillo4x0_set_extif_gpio(void)
 	}
 }
 
+/*
+ * Regulator
+ */
+static struct regulator_consumer_supply esdhc2_consumers[] = {
+	REGULATOR_SUPPLY("vmmc", "sdhci-esdhc-imx25.1"),
+};
+
+static struct regulator_init_data armadillo4x0_esdhc2_regulator_data = {
+	.constraints	= {
+		.valid_ops_mask	= REGULATOR_CHANGE_STATUS,
+	},
+	.num_consumer_supplies	= ARRAY_SIZE(esdhc2_consumers),
+	.consumer_supplies	= esdhc2_consumers,
+};
+
+static struct fixed_voltage_config __maybe_unused
+armadillo4x0_esdhc2_regulator_config = {
+	.supply_name		= "eSDHC2 Vcc",
+	.microvolts		= 3300000,
+	.gpio			= IMX_GPIO_NR(3, 17),
+	.startup_delay		= 11500, /* for AWL13(10ms + 1.5ms) */
+	.enable_high		= 0,
+	.enabled_at_boot	= 0,
+	.init_data		= &armadillo4x0_esdhc2_regulator_data,
+};
+
 void __init armadillo4x0_extif_init(void)
 {
 	pinctrl_register_mappings(armadillo4x0_extif_pinctrl_map,
@@ -423,6 +533,14 @@ void __init armadillo4x0_extif_init(void)
 		i2c_register_board_info(1, armadillo4x0_i2c1,
 					ARRAY_SIZE(armadillo4x0_i2c1));
 	}
+
+	if (IS_ENABLED(CONFIG_ARMADILLO4X0_CON9_1_SDHC2_PWREN))
+		platform_device_register_data(NULL, "reg-fixed-voltage", 3,
+				&armadillo4x0_esdhc2_regulator_config,
+				sizeof(armadillo4x0_esdhc2_regulator_config));
+
+	if (IS_ENABLED(CONFIG_MMC_MXC_SELECT2))
+		imx25_add_sdhci_esdhc_imx(1, &armadillo4x0_esdhc2_pdata);
 
 	armadillo4x0_set_extif_gpio();
 }
