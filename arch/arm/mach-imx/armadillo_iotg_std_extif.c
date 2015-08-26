@@ -301,6 +301,27 @@ static const struct pinctrl_map armadillo_iotg_std_extif_spi_map[] = {
 #endif
 };
 
+static const struct pinctrl_map armadillo_iotg_std_extif_can_map[] = {
+	/* can1 */
+	PIN_MAP_MUX_GROUP_DEFAULT("flexcan.0", "imx25-pinctrl.0",
+				  "gpio_a__can1_tx", "can1"),
+	PIN_MAP_MUX_GROUP_DEFAULT("flexcan.0", "imx25-pinctrl.0",
+				  "gpio_b__can1_rx", "can1"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("flexcan.0", "imx25-pinctrl.0",
+				    "MX25_PAD_GPIO_A", pin_cfgs_none),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("flexcan.0", "imx25-pinctrl.0",
+				    "MX25_PAD_GPIO_B", pin_cfgs_100kup),
+	/* can2 */
+	PIN_MAP_MUX_GROUP_DEFAULT("flexcan.1", "imx25-pinctrl.0",
+				  "gpio_c__can2_tx", "can2"),
+	PIN_MAP_MUX_GROUP_DEFAULT("flexcan.1", "imx25-pinctrl.0",
+				  "gpio_d__can2_rx", "can2"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("flexcan.1", "imx25-pinctrl.0",
+				    "MX25_PAD_GPIO_C", pin_cfgs_none),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("flexcan.1", "imx25-pinctrl.0",
+				    "MX25_PAD_GPIO_D", pin_cfgs_100kup),
+};
+
 static int spi1_cs[] = {
 #if defined(CONFIG_AIOTG_STD_SPI2_SS0)
 	IMX_GPIO_NR(1, 25), /* SS0 */
@@ -855,6 +876,9 @@ void __init armadillo_iotg_std_extif_init(void)
 	pinctrl_register_mappings(armadillo_iotg_std_extif_pwm_map,
 				  ARRAY_SIZE(armadillo_iotg_std_extif_pwm_map));
 
+	pinctrl_register_mappings(armadillo_iotg_std_extif_can_map,
+				  ARRAY_SIZE(armadillo_iotg_std_extif_can_map));
+
 	pinctrl_register_mappings(armadillo_iotg_std_extif_gpio_map,
 				  ARRAY_SIZE(armadillo_iotg_std_extif_gpio_map));
 
@@ -907,6 +931,12 @@ void __init armadillo_iotg_std_extif_init(void)
 
 	if (IS_ENABLED(CONFIG_AIOTG_STD_PWM4))
 		imx25_add_mxc_pwm(3);
+
+	if (IS_ENABLED(CONFIG_AIOTG_STD_CAN1))
+		imx25_add_flexcan0();
+
+	if (IS_ENABLED(CONFIG_AIOTG_STD_CAN2))
+		imx25_add_flexcan1();
 
 	armadillo_iotg_std_exitif_set_gpio();
 }
