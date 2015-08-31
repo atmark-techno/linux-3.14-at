@@ -142,6 +142,20 @@ static const struct pinctrl_map armadillo4x0_extif_pinctrl_map[] = {
 	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-i2c.1", "imx25-pinctrl.0",
 				    "MX25_PAD_GPIO_D", pin_cfgs_22kup_ode),
 #endif
+	/* pwmo2 */
+#if defined(CONFIG_ARMADILLO4X0_PWM2_CON9_25)
+	PIN_MAP_MUX_GROUP_DEFAULT("imx27-pwm.1", "imx25-pinctrl.0",
+				  "cspi1_ss0__pwm2_pwmo", "pwm2"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx27-pwm.1", "imx25-pinctrl.0",
+				    "MX25_PAD_CSPI1_SS0", pin_cfgs_100kup),
+#endif
+	/* pwmo4 */
+#if defined(CONFIG_ARMADILLO4X0_PWM4_CON14_3)
+	PIN_MAP_MUX_GROUP_DEFAULT("imx27-pwm.3", "imx25-pinctrl.0",
+				  "gpio_c__pwm4_pwmo", "pwm4"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx27-pwm.3", "imx25-pinctrl.0",
+				    "MX25_PAD_GPIO_C", pin_cfgs_100kup),
+#endif
 
 	/* eSDHC2 */
 #if defined(CONFIG_ARMADILLO4X0_SDHC2_CON9)
@@ -541,6 +555,12 @@ void __init armadillo4x0_extif_init(void)
 
 	if (IS_ENABLED(CONFIG_MMC_MXC_SELECT2))
 		imx25_add_sdhci_esdhc_imx(1, &armadillo4x0_esdhc2_pdata);
+
+	if (IS_ENABLED(CONFIG_MXC_PWM_SELECT2))
+		imx25_add_mxc_pwm(1);
+
+	if (IS_ENABLED(CONFIG_MXC_PWM_SELECT4))
+		imx25_add_mxc_pwm(3);
 
 	armadillo4x0_set_extif_gpio();
 }
