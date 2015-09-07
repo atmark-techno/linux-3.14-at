@@ -138,6 +138,18 @@ config FLEXCAN_SELECT2
 	help
 	  Enable MX25 FlexCAN2 module.
 
+config W1_MXC_SELECT1
+	bool "Enable MX25 1-Wire module"
+	default n
+	help
+	  Enable MX25 1-Wire1 module.
+
+config W1_GPIO_SELECT1
+	bool "Enable GPIO 1-Wire module"
+	default n
+	help
+	  Enable GPIO 1-Wire module.
+
 endmenu
 
 menu "Armadillo-400 Board options"
@@ -296,12 +308,14 @@ config ARMADILLO4X0_W1_CON9_2
 	bool "Enable one wire at CON9_2"
 	default n
 	select ARMADILLO4X0_CON9_2_W1
+	select W1_MXC_SELECT1
 
 config ARMADILLO4X0_W1_CON9_26
 	bool "Enable one wire at CON9_26"
 	default n
 	depends on !ARMADILLO4X0_SPI1_CON9
 	select ARMADILLO4X0_CON9_26_W1
+	select W1_GPIO_SELECT1
 
 config ARMADILLO4X0_RTC_ALM_INT_CON9_2
 	bool "Enable RTC alarm interrupt at CON9_2"

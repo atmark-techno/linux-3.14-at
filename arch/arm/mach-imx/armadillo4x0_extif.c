@@ -67,6 +67,10 @@ static unsigned long __maybe_unused pin_cfgs_22kup_ode[] = {
 	PAD_CTL_PUS_22K_UP | PAD_CTL_ODE,
 };
 
+static unsigned long __maybe_unused pin_cfgs_22kup[] = {
+	PAD_CTL_PUS_22K_UP,
+};
+
 static unsigned long __maybe_unused pin_cfgs_100kdown_sre_fast[] = {
 	PAD_CTL_PUS_100K_DOWN | PAD_CTL_SRE_FAST,
 };
@@ -233,6 +237,21 @@ static const struct pinctrl_map armadillo4x0_extif_pinctrl_map[] = {
 				  "csi_d9__gpio_4_21", "gpio4"),
 	PIN_MAP_CONFIGS_PIN_DEFAULT("imx35-cspi.2", "imx25-pinctrl.0",
 				    "MX25_PAD_CSI_D9", pin_cfgs_100kup),
+#endif
+
+	/* mxc_w1 */
+#if defined(CONFIG_ARMADILLO4X0_W1_CON9_2)
+	PIN_MAP_MUX_GROUP_DEFAULT("mxc_w1.0", "imx25-pinctrl.0",
+				  "rtck__owire", "owire"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("mxc_w1.0", "imx25-pinctrl.0",
+				    "MX25_PAD_RTCK", pin_cfgs_22kup),
+#endif
+	/* w1-gpio */
+#if defined(CONFIG_ARMADILLO4X0_W1_CON9_26)
+	PIN_MAP_MUX_GROUP_DEFAULT("w1-gpio", "imx25-pinctrl.0",
+				  "cspi1_rdy__gpio_2_22", "gpio2"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("w1-gpio", "imx25-pinctrl.0",
+				    "MX25_PAD_CSPI1_RDY", pin_cfgs_22kup),
 #endif
 
 	/* can2 */
@@ -512,6 +531,11 @@ static struct spi_board_info armadillo4x0_spi0_board_info[] __initdata = {
 static struct spi_board_info armadillo4x0_spi2_board_info[] __initdata = {
 };
 
+static const struct w1_gpio_platform_data gpio_w1_pdata __initconst = {
+	.pin		= IMX_GPIO_NR(2, 22),
+	.is_open_drain	= 0,
+};
+
 static const struct esdhc_platform_data __maybe_unused
 armadillo4x0_esdhc2_pdata __initconst = {
 	.wp_gpio = IMX_GPIO_NR(1, 7),
@@ -725,6 +749,12 @@ void __init armadillo4x0_extif_init(void)
 
 	if (IS_ENABLED(CONFIG_FLEXCAN_SELECT2))
 		imx25_add_flexcan1();
+
+	if (IS_ENABLED(CONFIG_W1_MXC_SELECT1))
+		imx25_add_mxc_w1();
+
+	if (IS_ENABLED(CONFIG_W1_GPIO_SELECT1))
+		imx_add_w1_gpio(-1, &gpio_w1_pdata);
 
 	armadillo4x0_set_extif_gpio();
 }
