@@ -353,10 +353,10 @@ static void __init armadillo4x0_init(void)
 		imx25_add_imx_uart1(&uart1_pdata);
 
 	imx25_add_usbmisc_imx();
-	imx25_add_usb_phy_gen_xceiv_otg();
 	imx25_add_usb_phy_gen_xceiv_hs();
-	imx25_add_imx_usb_otg(&otg_pdata);
+	imx25_add_usb_phy_gen_xceiv_otg();
 	imx25_add_imx_usb_hs(&usbh2_pdata);
+	imx25_add_imx_usb_otg(&otg_pdata);
 	imx25_add_imx2_wdt();
 
 	platform_device_register_resndata(NULL, "physmap-flash", -1,
