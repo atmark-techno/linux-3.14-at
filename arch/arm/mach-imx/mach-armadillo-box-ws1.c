@@ -62,6 +62,10 @@ static unsigned long pin_cfgs_100kup[] = {
 	PAD_CTL_PUS_100K_UP,
 };
 
+static unsigned long pin_cfgs_22kup_ode[] = {
+	PAD_CTL_PUS_22K_UP | PAD_CTL_ODE,
+};
+
 static unsigned long pin_cfgs_none[] = {
 	NO_PAD_CTRL,
 };
@@ -189,6 +193,16 @@ static const struct pinctrl_map armadillo_box_ws1_pinctrl_map[] = {
 	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-i2c.0", "imx25-pinctrl.0",
 				    "MX25_PAD_I2C1_DAT", pin_cfgs_ode),
 
+	/* I2C2 */
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-i2c.1", "imx25-pinctrl.0",
+				  "gpio_c__i2c2_clk", "i2c2"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-i2c.1", "imx25-pinctrl.0",
+				  "gpio_d__i2c2_dat", "i2c2"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-i2c.1", "imx25-pinctrl.0",
+				    "MX25_PAD_GPIO_C", pin_cfgs_22kup_ode),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-i2c.1", "imx25-pinctrl.0",
+				    "MX25_PAD_GPIO_D", pin_cfgs_22kup_ode),
+
 	/* GPIO_KEY */
 	PIN_MAP_MUX_GROUP_DEFAULT("gpio-keys", "imx25-pinctrl.0",
 				  "nfwp_b__gpio_3_30", "gpio3"),
@@ -225,6 +239,16 @@ static struct imx_usb_platform_data otg_pdata __initdata = {
 
 static const struct imxi2c_platform_data mx25_i2c0_data __initconst = {
 	.bitrate = 100000,
+};
+
+static const struct imxi2c_platform_data mx25_i2c1_data __initconst = {
+	.bitrate = 40000,
+};
+
+static struct i2c_board_info armadillo_box_ws1_i2c1[] = {
+	{
+		I2C_BOARD_INFO("s35390a", 0x30),
+	},
 };
 
 static const struct esdhc_platform_data
@@ -399,6 +423,10 @@ static void __init armadillo_box_ws1_init(void)
 	armadillo_box_ws1_bp35a1_init();
 
 	imx25_add_imx_i2c0(&mx25_i2c0_data);
+
+	imx25_add_imx_i2c1(&mx25_i2c1_data);
+	i2c_register_board_info(1, armadillo_box_ws1_i2c1,
+				ARRAY_SIZE(armadillo_box_ws1_i2c1));
 
 	platform_device_register_data(NULL, "reg-fixed-voltage", 1,
 				      &armadillo_box_ws1_esdhc1_regulator_config,
