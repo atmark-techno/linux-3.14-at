@@ -697,7 +697,7 @@ armadillo4x0_esdhc2_regulator_config = {
 	.gpio			= IMX_GPIO_NR(3, 17),
 	.startup_delay		= 11500, /* for AWL13(10ms + 1.5ms) */
 	.enable_high		= 0,
-	.enabled_at_boot	= 0,
+	.enabled_at_boot	= 1,
 	.init_data		= &armadillo4x0_esdhc2_regulator_data,
 };
 
