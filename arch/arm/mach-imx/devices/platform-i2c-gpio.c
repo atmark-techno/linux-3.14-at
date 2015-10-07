@@ -1,5 +1,5 @@
 /*
- * Copyright (C) Atmark Techno, Inc. All Rights Reserved.
+ * Copyright (C) 2015 Atmark Techno, Inc. All Rights Reserved.
  *
  * Based on:
  * Copyright (C) 2010 Freescale Semiconductor, Inc.
