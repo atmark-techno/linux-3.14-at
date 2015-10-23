@@ -155,6 +155,17 @@ config MTD_BCM47XX_PARTS
 	  This provides partitions parser for devices based on BCM47xx
 	  boards.
 
+config MTD_RO_IF
+	bool "Read-only switching user interface support"
+	depends on SYSFS
+	default n
+	help
+	  MTD subsystem does not have sysfs interface to manage partition
+	  read-only/writeable flag interface. This patch implements the feature
+	  which modeled based on the block layer's "ro" file.
+
+	  This interface is available via sysfs under "/sys/class/mtd/mtdX/ro".
+
 comment "User Modules And Translation Layers"
 
 #

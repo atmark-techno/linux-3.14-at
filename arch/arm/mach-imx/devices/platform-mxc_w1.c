@@ -19,6 +19,11 @@ const struct imx_mxc_w1_data imx21_mxc_w1_data __initconst =
 	imx_mxc_w1_data_entry_single(MX21);
 #endif /* ifdef CONFIG_SOC_IMX21 */
 
+#ifdef CONFIG_SOC_IMX25
+const struct imx_mxc_w1_data imx25_mxc_w1_data __initconst =
+	imx_mxc_w1_data_entry_single(MX25);
+#endif /* ifdef CONFIG_SOC_IMX25 */
+
 #ifdef CONFIG_SOC_IMX27
 const struct imx_mxc_w1_data imx27_mxc_w1_data __initconst =
 	imx_mxc_w1_data_entry_single(MX27);

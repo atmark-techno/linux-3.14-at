@@ -312,6 +312,7 @@ int __init mx25_clocks_init(void)
 	clk_register_clkdev(clk[sdma_ipg], "ipg", "imx25-sdma");
 	clk_register_clkdev(clk[sdma_ahb], "ahb", "imx25-sdma");
 	clk_register_clkdev(clk[iim_ipg], "iim", NULL);
+	clk_register_clkdev(clk[owire_ipg_per], NULL, "mxc_w1.0");
 
 	mxc_timer_init(MX25_IO_ADDRESS(MX25_GPT1_BASE_ADDR), MX25_INT_GPT1);
 
