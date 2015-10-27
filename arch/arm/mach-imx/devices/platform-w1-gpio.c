@@ -13,9 +13,9 @@
 #include "../hardware.h"
 #include "devices-common.h"
 
-struct platform_device *__init imx_add_i2c_gpio(int id,
-		const struct i2c_gpio_platform_data *pdata)
+struct platform_device *__init imx_add_w1_gpio(int id,
+		const struct w1_gpio_platform_data *pdata)
 {
-	return imx_add_platform_device("i2c-gpio", id, NULL,
+	return imx_add_platform_device("w1-gpio", id, NULL,
 		 0, pdata, sizeof(*pdata));
 }

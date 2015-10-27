@@ -49,21 +49,18 @@
 #include "iomux-mx25.h"
 #include "mx25.h"
 #include "imx25-named_gpio.h"
+#include "armadillo4x0_extif.h"
+
+static const struct imxuart_platform_data uart0_pdata __initconst = {
+#if defined(CONFIG_SERIAL_MXC_HW_FLOW_ENABLED1)
+	.flags = IMXUART_HAVE_RTSCTS,
+#endif
+};
 
 static const struct imxuart_platform_data uart1_pdata __initconst = {
-	/* .flags = IMXUART_HAVE_RTSCTS, */
-};
-
-static const struct imxuart_platform_data uart2_pdata __initconst = {
-	/* .flags = IMXUART_HAVE_RTSCTS, */
-};
-
-static unsigned long pin_cfgs_100kup[] = {
-	PAD_CTL_PUS_100K_UP,
-};
-
-static unsigned long pin_cfgs_22kup_ode[] = {
-	PAD_CTL_PUS_22K_UP | PAD_CTL_ODE,
+#if defined(CONFIG_SERIAL_MXC_HW_FLOW_ENABLED2)
+	.flags = IMXUART_HAVE_RTSCTS,
+#endif
 };
 
 static unsigned long pin_cfgs_none[] = {
@@ -86,17 +83,7 @@ static unsigned long pin_cfgs_dse_low[] = {
 	PAD_CTL_DSE_LOW,
 };
 
-static const struct pinctrl_map armadillo_box_ws1_pinctrl_map[] = {
-	/* uart3 */
-	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.2", "imx25-pinctrl.0",
-				  "cspi1_mosi__uart3_rxd_mux", "uart3"),
-	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.2", "imx25-pinctrl.0",
-				  "cspi1_miso__uart3_txd_mux", "uart3"),
-	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-uart.2", "imx25-pinctrl.0",
-				    "MX25_PAD_CSPI1_MOSI", pin_cfgs_100kup),
-	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-uart.2", "imx25-pinctrl.0",
-				    "MX25_PAD_CSPI1_MISO", pin_cfgs_none),
-
+static const struct pinctrl_map armadillo4x0_pinctrl_map[] = {
 	/* FEC */
 	PIN_MAP_MUX_GROUP_DEFAULT("imx25-fec.0", "imx25-pinctrl.0",
 				  "fec_mdc__fec_mdc", "fec"),
@@ -193,16 +180,6 @@ static const struct pinctrl_map armadillo_box_ws1_pinctrl_map[] = {
 	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-i2c.0", "imx25-pinctrl.0",
 				    "MX25_PAD_I2C1_DAT", pin_cfgs_ode),
 
-	/* I2C2 */
-	PIN_MAP_MUX_GROUP_DEFAULT("imx21-i2c.1", "imx25-pinctrl.0",
-				  "gpio_c__i2c2_clk", "i2c2"),
-	PIN_MAP_MUX_GROUP_DEFAULT("imx21-i2c.1", "imx25-pinctrl.0",
-				  "gpio_d__i2c2_dat", "i2c2"),
-	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-i2c.1", "imx25-pinctrl.0",
-				    "MX25_PAD_GPIO_C", pin_cfgs_22kup_ode),
-	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-i2c.1", "imx25-pinctrl.0",
-				    "MX25_PAD_GPIO_D", pin_cfgs_22kup_ode),
-
 	/* GPIO_KEY */
 	PIN_MAP_MUX_GROUP_DEFAULT("gpio-keys", "imx25-pinctrl.0",
 				  "nfwp_b__gpio_3_30", "gpio3"),
@@ -215,7 +192,7 @@ static const struct fec_platform_data mx25_fec_pdata __initconst = {
 };
 
 #define FEC_PHY_RST		IMX_GPIO_NR(3, 18)
-static void __init armadillo_box_ws1_fec_reset(void)
+static void __init armadillo4x0_fec_reset(void)
 {
 	mxc_iomux_v3_setup_pad(MX25_PAD_VSTBY_ACK__GPIO_3_18);
 
@@ -241,18 +218,8 @@ static const struct imxi2c_platform_data mx25_i2c0_data __initconst = {
 	.bitrate = 100000,
 };
 
-static const struct imxi2c_platform_data mx25_i2c1_data __initconst = {
-	.bitrate = 40000,
-};
-
-static struct i2c_board_info armadillo_box_ws1_i2c1[] = {
-	{
-		I2C_BOARD_INFO("s35390a", 0x30),
-	},
-};
-
 static const struct esdhc_platform_data
-armadillo_box_ws1_esdhc1_pdata __initconst = {
+armadillo4x0_esdhc1_pdata __initconst = {
 	.cd_gpio = IMX_GPIO_NR(3, 31),
 	.clk_gpio = IMX_GPIO_NR(2, 24),
 	.wp_type = ESDHC_WP_NONE,
@@ -262,30 +229,30 @@ armadillo_box_ws1_esdhc1_pdata __initconst = {
 	.support_vsel = false,
 };
 
-static struct gpio_keys_button armadillo_box_ws1_gpio_key_buttons[] = {
-	{KEY_1, IMX_GPIO_NR(3, 30), 1, "SW1", EV_KEY, 0},
+static struct gpio_keys_button armadillo4x0_gpio_key_buttons[] = {
+	{KEY_ENTER, IMX_GPIO_NR(3, 30), 1, "SW1", EV_KEY, 0},
 };
 
-static struct gpio_keys_platform_data armadillo_box_ws1_gpio_key_data = {
-	.buttons = armadillo_box_ws1_gpio_key_buttons,
-	.nbuttons = ARRAY_SIZE(armadillo_box_ws1_gpio_key_buttons),
+static struct gpio_keys_platform_data armadillo4x0_gpio_key_data = {
+	.buttons = armadillo4x0_gpio_key_buttons,
+	.nbuttons = ARRAY_SIZE(armadillo4x0_gpio_key_buttons),
 };
 
-static struct gpio_led armadillo_box_ws1_led_pins[] = {
+static struct gpio_led armadillo4x0_led_pins[] = {
 	{"green",  "default-on", IMX_GPIO_NR(3, 29), 0},
 	{"red",  "default-on", IMX_GPIO_NR(3, 28), 0},
 	{"yellow", NULL,         IMX_GPIO_NR(4, 30), 0},
 };
 
-static struct gpio_led_platform_data armadillo_box_ws1_led_data = {
-	.leds = armadillo_box_ws1_led_pins,
-	.num_leds = ARRAY_SIZE(armadillo_box_ws1_led_pins),
+static struct gpio_led_platform_data armadillo4x0_led_data = {
+	.leds = armadillo4x0_led_pins,
+	.num_leds = ARRAY_SIZE(armadillo4x0_led_pins),
 };
 
 /*
  * MTD NOR Flash
  */
-static struct mtd_partition armadillo_box_ws1_nor_flash_partitions[] = {
+static struct mtd_partition armadillo4x0_nor_flash_partitions[] = {
 	{
 		.name		= "nor.bootloader",
 		.offset		= 0x00000000,
@@ -299,7 +266,7 @@ static struct mtd_partition armadillo_box_ws1_nor_flash_partitions[] = {
 	}, {
 		.name		= "nor.userland",
 		.offset		= MTDPART_OFS_APPEND,
-		.size		= 215 * SZ_128K,
+		.size		= 87 * SZ_128K,
 		.mask_flags	= 0,
 	}, {
 		.name		= "nor.config",
@@ -310,14 +277,14 @@ static struct mtd_partition armadillo_box_ws1_nor_flash_partitions[] = {
 };
 
 static const struct physmap_flash_data
-		armadillo_box_ws1_nor_flash_pdata __initconst = {
+		armadillo4x0_nor_flash_pdata __initconst = {
 	.width		= 2,
-	.parts		= armadillo_box_ws1_nor_flash_partitions,
-	.nr_parts	= ARRAY_SIZE(armadillo_box_ws1_nor_flash_partitions),
+	.parts		= armadillo4x0_nor_flash_partitions,
+	.nr_parts	= ARRAY_SIZE(armadillo4x0_nor_flash_partitions),
 };
 
 static const struct resource
-armadillo_box_ws1_nor_flash_resource __initconst = {
+armadillo4x0_nor_flash_resource __initconst = {
 	.flags		= IORESOURCE_MEM,
 	.start		= MX25_CS0_BASE_ADDR,
 	.end		= MX25_CS0_BASE_ADDR + SZ_32M - 1,
@@ -330,7 +297,7 @@ static struct regulator_consumer_supply esdhc1_consumers[] = {
 	REGULATOR_SUPPLY("vmmc", "sdhci-esdhc-imx25.0"),
 };
 
-static struct regulator_init_data armadillo_box_ws1_esdhc1_regulator_data = {
+static struct regulator_init_data armadillo4x0_esdhc1_regulator_data = {
 	.constraints	= {
 		.valid_ops_mask	= REGULATOR_CHANGE_STATUS,
 	},
@@ -339,13 +306,13 @@ static struct regulator_init_data armadillo_box_ws1_esdhc1_regulator_data = {
 };
 
 static struct fixed_voltage_config
-armadillo_box_ws1_esdhc1_regulator_config = {
+armadillo4x0_esdhc1_regulator_config = {
 	.supply_name		= "eSDHC1 Vcc",
 	.microvolts		= 3300000,
 	.gpio			= IMX_GPIO_NR(3, 27),
 	.enable_high		= 0,
 	.enabled_at_boot	= 0,
-	.init_data		= &armadillo_box_ws1_esdhc1_regulator_data,
+	.init_data		= &armadillo4x0_esdhc1_regulator_data,
 };
 
 static struct regulator_consumer_supply usb_consumers[] = {
@@ -353,7 +320,7 @@ static struct regulator_consumer_supply usb_consumers[] = {
 	REGULATOR_SUPPLY("vbus", "imx27-usb.1"),
 };
 
-static struct regulator_init_data armadillo_box_ws1_usb_regulator_data = {
+static struct regulator_init_data armadillo4x0_usb_regulator_data = {
 	.constraints	= {
 		.valid_ops_mask	= REGULATOR_CHANGE_STATUS,
 	},
@@ -362,99 +329,77 @@ static struct regulator_init_data armadillo_box_ws1_usb_regulator_data = {
 };
 
 static struct fixed_voltage_config
-armadillo_box_ws1_usb_regulator_config = {
+armadillo4x0_usb_regulator_config = {
 	.supply_name		= "USB VBUS",
 	.microvolts		= 5000000,
 	.gpio			= IMX_GPIO_NR(3, 26),
 	.enable_high		= 0,
 	.enabled_at_boot	= 1,
-	.init_data		= &armadillo_box_ws1_usb_regulator_data,
+	.init_data		= &armadillo4x0_usb_regulator_data,
 };
 
-#define BP35A1_RESET_ASSERT	(0)
-#define BP35A1_RESET_DEASSERT	(1)
-#define BP35A1_RESET		IMX_GPIO_NR(3, 14)
-#define UART3_RTS_ASSERT	(0)
-#define UART3_RTS		IMX_GPIO_NR(1, 28)
-static void __init armadillo_box_ws1_bp35a1_init(void)
-{
-	mxc_iomux_v3_setup_pad(MX25_PAD_CSI_D3__GPIO_1_28);
-	mxc_iomux_v3_setup_pad(MX25_PAD_RTCK__GPIO_3_14);
-
-	gpio_request(UART3_RTS, "UART3_RTS");
-	gpio_request(BP35A1_RESET, "BP35A1_RESET");
-
-	gpio_direction_output(UART3_RTS, UART3_RTS_ASSERT);
-
-	/* reset */
-	gpio_direction_output(BP35A1_RESET, BP35A1_RESET_ASSERT);
-	ndelay(500);
-	gpio_direction_output(BP35A1_RESET, BP35A1_RESET_DEASSERT);
-}
-
-static void __init armadillo_box_ws1_init(void)
+static void __init armadillo4x0_init(void)
 {
 	imx25_soc_init();
 
 	imx25_add_imx_pinctrl("imx25-pinctrl");
-	pinctrl_register_mappings(armadillo_box_ws1_pinctrl_map,
-				  ARRAY_SIZE(armadillo_box_ws1_pinctrl_map));
+	pinctrl_register_mappings(armadillo4x0_pinctrl_map,
+				  ARRAY_SIZE(armadillo4x0_pinctrl_map));
 
-	imx25_add_imx_uart1(&uart1_pdata);
-	imx25_add_imx_uart2(&uart2_pdata);
+	if (IS_ENABLED(CONFIG_SERIAL_MXC_SELECT1))
+		imx25_add_imx_uart0(&uart0_pdata);
+
+	if (IS_ENABLED(CONFIG_SERIAL_MXC_SELECT2))
+		imx25_add_imx_uart1(&uart1_pdata);
 
 	imx25_add_usbmisc_imx();
-	imx25_add_usb_phy_gen_xceiv_otg();
 	imx25_add_usb_phy_gen_xceiv_hs();
-	imx25_add_imx_usb_otg(&otg_pdata);
+	imx25_add_usb_phy_gen_xceiv_otg();
 	imx25_add_imx_usb_hs(&usbh2_pdata);
+	imx25_add_imx_usb_otg(&otg_pdata);
 	imx25_add_imx2_wdt();
 
 	platform_device_register_resndata(NULL, "physmap-flash", -1,
-			&armadillo_box_ws1_nor_flash_resource, 1,
-			&armadillo_box_ws1_nor_flash_pdata,
-			sizeof(armadillo_box_ws1_nor_flash_pdata));
+			&armadillo4x0_nor_flash_resource, 1,
+			&armadillo4x0_nor_flash_pdata,
+			sizeof(armadillo4x0_nor_flash_pdata));
 
 	imx25_named_gpio_init();
 
-	armadillo_box_ws1_fec_reset();
+	armadillo4x0_fec_reset();
 	imx25_add_fec(&mx25_fec_pdata);
-
-	armadillo_box_ws1_bp35a1_init();
 
 	imx25_add_imx_i2c0(&mx25_i2c0_data);
 
-	imx25_add_imx_i2c1(&mx25_i2c1_data);
-	i2c_register_board_info(1, armadillo_box_ws1_i2c1,
-				ARRAY_SIZE(armadillo_box_ws1_i2c1));
-
 	platform_device_register_data(NULL, "reg-fixed-voltage", 1,
-				      &armadillo_box_ws1_esdhc1_regulator_config,
-				      sizeof(armadillo_box_ws1_esdhc1_regulator_config));
+				&armadillo4x0_esdhc1_regulator_config,
+				sizeof(armadillo4x0_esdhc1_regulator_config));
 	platform_device_register_data(NULL, "reg-fixed-voltage", 2,
-				      &armadillo_box_ws1_usb_regulator_config,
-				      sizeof(armadillo_box_ws1_usb_regulator_config));
+				&armadillo4x0_usb_regulator_config,
+				sizeof(armadillo4x0_usb_regulator_config));
 
-	imx25_add_sdhci_esdhc_imx(0, &armadillo_box_ws1_esdhc1_pdata);
+	imx25_add_sdhci_esdhc_imx(0, &armadillo4x0_esdhc1_pdata);
 
-	imx_add_gpio_keys(&armadillo_box_ws1_gpio_key_data);
+	imx_add_gpio_keys(&armadillo4x0_gpio_key_data);
 
-	gpio_led_register_device(-1, &armadillo_box_ws1_led_data);
+	gpio_led_register_device(-1, &armadillo4x0_led_data);
+
+	armadillo4x0_extif_init();
 }
 
-static void __init armadillo_box_ws1_timer_init(void)
+static void __init armadillo4x0_timer_init(void)
 {
 	mx25_clocks_init();
 }
 
-MACHINE_START(ARMADILLO440, "Armadillo-440")
+MACHINE_START(ARMADILLO420, "Armadillo-420")
 	/* Maintainer: Atmark Techno, Inc.  */
 	.atag_offset	= 0x100,
 	.map_io		= mx25_map_io,
 	.init_early	= imx25_init_early,
 	.init_irq	= mx25_init_irq,
 	.handle_irq	= imx25_handle_irq,
-	.init_time	= armadillo_box_ws1_timer_init,
-	.init_machine	= armadillo_box_ws1_init,
+	.init_time	= armadillo4x0_timer_init,
+	.init_machine	= armadillo4x0_init,
 	.restart	= mxc_restart,
 MACHINE_END

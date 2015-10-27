@@ -229,7 +229,7 @@ endchoice
 
 config IOMUX_MX25_GPIO_SION
         bool "MX25 GPIO pads configuration with SION"
-        default n if MACH_ARMADILLO_IOTG_STD || MACH_ARMADILLO_BOX_WS1
+        default n if MACH_ARMADILLO_IOTG_STD || MACH_ARMADILLO_BOX_WS1 || MACH_ARMADILLO420
         help
           Enable SION bit and pullup DATA4-7 pads as GPIO or SDHC-2 card
           interrupt wouldn't occur.  It strange behaviour must be the
@@ -257,6 +257,8 @@ config MACH_ARMADILLO_IOTG_STD
 	select IMX_HAVE_PLATFORM_GPIO_KEYS_POLLED
 	select IMX_HAVE_PLATFORM_MXC_PWM
 	select IMX_HAVE_PLATFORM_SPI_IMX
+	select IMX_HAVE_PLATFORM_FLEXCAN
+	select IMX_HAVE_PLATFORM_MXC_W1
 	select LEDS_GPIO_REGISTER
 	select WIRELESS_EXT if WIRELESS
 	select WEXT_PRIV if WIRELESS
@@ -286,6 +288,41 @@ config MACH_ARMADILLO_BOX_WS1
 	select LEDS_GPIO_REGISTER
 	select MACH_IMX25_USE_NAMED_GPIO
 	select SOC_IMX25
+
+config MACH_ARMADILLO420
+	bool "Support Armadillo-420 platform"
+	select I2C_MXC_SELECT1
+	select MMC_MXC_SELECT1
+	select SERIAL_MXC_SELECT2
+	select SERIAL_MXC_HW_FLOW2
+	select IMX_HAVE_PLATFORM_W1_GPIO
+	select IMX_HAVE_PLATFORM_MXC_W1
+	select IMX_HAVE_PLATFORM_SPI_IMX
+	select IMX_HAVE_PLATFORM_FLEXCAN
+	select IMX_HAVE_PLATFORM_MXC_PWM
+	select IMX_HAVE_PLATFORM_FSL_USB2_UDC
+	select IMX_HAVE_PLATFORM_IMX2_WDT
+	select IMX_HAVE_PLATFORM_IMXDI_RTC
+	select IMX_HAVE_PLATFORM_IMX_I2C
+	select IMX_HAVE_PLATFORM_IMX_KEYPAD
+	select IMX_HAVE_PLATFORM_IMX_UART
+	select IMX_HAVE_PLATFORM_USB_PHY_GEN_XCEIV
+	select IMX_HAVE_PLATFORM_USBMISC_IMX
+	select IMX_HAVE_PLATFORM_IMX_USB
+	select IMX_HAVE_PLATFORM_SDHCI_ESDHC_IMX
+	select IMX_HAVE_PLATFORM_IMX_PINCTRL
+	select IMX_HAVE_PLATFORM_GPIO_KEYS
+	select LEDS_GPIO_REGISTER
+	select WIRELESS_EXT if WIRELESS
+	select WEXT_PRIV if WIRELESS
+	select MACH_IMX25_USE_NAMED_GPIO
+	select SOC_IMX25
+
+if MACH_ARMADILLO420
+
+source "arch/arm/mach-imx/Kconfig.armadillo4x0"
+
+endif
 
 config MACH_IMX25_DT
 	bool "Support i.MX25 platforms from device tree"

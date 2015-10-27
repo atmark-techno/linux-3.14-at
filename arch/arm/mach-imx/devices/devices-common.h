@@ -346,6 +346,11 @@ struct imx_mxc_w1_data {
 struct platform_device *__init imx_add_mxc_w1(
 		const struct imx_mxc_w1_data *data);
 
+/* w1_gpio */
+#include <linux/w1-gpio.h>
+struct platform_device *__init imx_add_w1_gpio(int id,
+		const struct w1_gpio_platform_data *pdata);
+
 #include <linux/platform_data/mmc-esdhc-imx.h>
 struct imx_sdhci_esdhc_imx_data {
 	const char *devid;

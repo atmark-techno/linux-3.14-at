@@ -135,7 +135,10 @@ static void spi_imx_buf_tx_##type(struct spi_imx_data *spi_imx)		\
 		spi_imx->tx_buf += sizeof(type);			\
 	}								\
 									\
-	spi_imx->count -= sizeof(type);					\
+	if (spi_imx->count > sizeof(type))				\
+		spi_imx->count -= sizeof(type);				\
+	else								\
+		spi_imx->count = 0;					\
 									\
 	writel(val, spi_imx->base + MXC_CSPITXDATA);			\
 }

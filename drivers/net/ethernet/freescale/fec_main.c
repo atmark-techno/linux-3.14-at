@@ -1790,13 +1790,6 @@ fec_enet_open(struct net_device *ndev)
 	if (ret)
 		return ret;
 
-	/* Probe and connect to PHY when open the interface */
-	ret = fec_enet_mii_probe(ndev);
-	if (ret) {
-		fec_enet_free_buffers(ndev);
-		return ret;
-	}
-
 	napi_enable(&fep->napi);
 	phy_start(fep->phy_dev);
 	netif_start_queue(ndev);
@@ -1817,7 +1810,6 @@ fec_enet_close(struct net_device *ndev)
 
 	if (fep->phy_dev) {
 		phy_stop(fep->phy_dev);
-		phy_disconnect(fep->phy_dev);
 	}
 
 	fec_enet_free_buffers(ndev);
@@ -2261,9 +2253,15 @@ fec_probe(struct platform_device *pdev)
 	if (fep->bufdesc_ex && fep->ptp_clock)
 		netdev_info(ndev, "registered PHC device %d\n", fep->dev_id);
 
+	ret = fec_enet_mii_probe(ndev);
+	if (ret)
+		goto failed_mii_probe;
+
 	INIT_DELAYED_WORK(&(fep->delay_work.delay_work), fec_enet_work);
 	return 0;
 
+failed_mii_probe:
+	unregister_netdev(ndev);
 failed_register:
 	fec_enet_mii_remove(fep);
 failed_mii_init:
@@ -2296,6 +2294,7 @@ fec_drv_remove(struct platform_device *pdev)
 	struct fec_enet_private *fep = netdev_priv(ndev);
 
 	cancel_delayed_work_sync(&(fep->delay_work.delay_work));
+	phy_disconnect(fep->phy_dev);
 	unregister_netdev(ndev);
 	fec_enet_mii_remove(fep);
 	del_timer_sync(&fep->time_keep);

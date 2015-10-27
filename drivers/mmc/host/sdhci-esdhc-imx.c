@@ -38,6 +38,8 @@
 #define  ESDHC_VENDOR_SPEC_VSELECT	(1 << 1)
 #define  ESDHC_VENDOR_SPEC_FRC_SDCLK_ON	(1 << 8)
 #define ESDHC_WTMK_LVL			0x44
+#define  ESDHC_WTMK_LVL_WR_WML		128
+#define  ESDHC_WTMK_LVL_RD_WML		16
 #define ESDHC_MIX_CTRL			0x48
 #define  ESDHC_MIX_CTRL_DDREN		(1 << 3)
 #define  ESDHC_MIX_CTRL_AC23EN		(1 << 7)
@@ -899,6 +901,17 @@ static int esdhc_set_uhs_signaling(struct sdhci_host *host, unsigned int uhs)
 	return esdhc_change_pinstate(host, uhs);
 }
 
+static void esdhc_pltfm_reset_exit(struct sdhci_host *host, u8 mask)
+{
+	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+	struct pltfm_imx_data *imx_data = pltfm_host->priv;
+
+	if (is_imx25_esdhc(imx_data))
+		writel((ESDHC_WTMK_LVL_WR_WML << 16) |
+		       ESDHC_WTMK_LVL_RD_WML,
+		       host->ioaddr + ESDHC_WTMK_LVL);
+}
+
 static struct sdhci_ops sdhci_esdhc_ops = {
 	.read_l = esdhc_readl_le,
 	.read_w = esdhc_readw_le,
@@ -911,6 +924,7 @@ static struct sdhci_ops sdhci_esdhc_ops = {
 	.get_ro = esdhc_pltfm_get_ro,
 	.platform_bus_width = esdhc_pltfm_bus_width,
 	.set_uhs_signaling = esdhc_set_uhs_signaling,
+	.platform_reset_exit = esdhc_pltfm_reset_exit,
 };
 
 static const struct sdhci_pltfm_data sdhci_esdhc_imx_pdata = {

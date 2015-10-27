@@ -51,7 +51,8 @@
 #define IMX2_WDT_WMCR		0x08		/* Misc Register */
 
 #define IMX2_WDT_MAX_TIME	128
-#define IMX2_WDT_DEFAULT_TIME	60		/* in seconds */
+#define IMX2_WDT_DEFAULT_TIME	10		/* in seconds */
+#define IMX2_WDT_PING_FREQ	10 /* Number of times to ping within timeout period */
 
 #define WDOG_SEC_TO_COUNT(s)	((s * 2 - 1) << 8)
 
@@ -126,9 +127,11 @@ static void imx2_wdt_timer_ping(unsigned long arg)
 	struct watchdog_device *wdog = (struct watchdog_device *)arg;
 	struct imx2_wdt_device *wdev = watchdog_get_drvdata(wdog);
 
-	/* ping it every wdog->timeout / 2 seconds to prevent reboot */
+	/* ping it every wdog->timeout / IMX2_WDT_PING_FREQ seconds  */
+	/* to prevent reboot */
 	imx2_wdt_ping(wdog);
-	mod_timer(&wdev->timer, jiffies + wdog->timeout * HZ / 2);
+	mod_timer(&wdev->timer,
+		  jiffies + wdog->timeout * HZ / IMX2_WDT_PING_FREQ);
 }
 
 static int imx2_wdt_set_timeout(struct watchdog_device *wdog,
