@@ -6,3 +6,4 @@ obj-y += addon_atmark_techno_didoad.o
 obj-y += addon_atmark_techno_rn4020.o
 obj-y += addon_atmark_techno_rs232c.o
 obj-y += addon_atmark_techno_rs485.o
+obj-y += addon_satori_wireless.o
