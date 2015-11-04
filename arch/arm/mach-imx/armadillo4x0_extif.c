@@ -157,6 +157,7 @@ static const struct pinctrl_map armadillo4x0_con9_con14_pinctrl_map[] = {
 	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-i2c.1", "imx25-pinctrl.0",
 				    "MX25_PAD_GPIO_D", pin_cfgs_22kup_ode),
 #endif
+
 	/* pwmo2 */
 #if defined(CONFIG_ARMADILLO4X0_PWM2_CON9_25)
 	PIN_MAP_MUX_GROUP_DEFAULT("imx27-pwm.1", "imx25-pinctrl.0",
@@ -523,6 +524,19 @@ static const struct pinctrl_map armadillo4x0_con11_pinctrl_map[] = {
 	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-uart.3", "imx25-pinctrl.0",
 				    "MX25_PAD_KPP_COL3", pin_cfgs_none),
 #endif
+
+	/* i2c3 */
+#if defined(CONFIG_ARMADILLO4X0_I2C3_CON11)
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-i2c.2", "imx25-pinctrl.0",
+				  "gpio_a__i2c3_clk", "i2c3"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-i2c.2", "imx25-pinctrl.0",
+				  "gpio_b__i2c3_dat", "i2c3"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-i2c.2", "imx25-pinctrl.0",
+				    "MX25_PAD_GPIO_A", pin_cfgs_22kup_ode),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-i2c.2", "imx25-pinctrl.0",
+				    "MX25_PAD_GPIO_B", pin_cfgs_22kup_ode),
+#endif
+
 	/* CON11_42 */
 #if defined(CONFIG_ARMADILLO4X0_CON11_42_GPIO_2_31)
 	PIN_MAP_MUX_GROUP_HOG_DEFAULT("imx25-pinctrl.0",
@@ -603,6 +617,13 @@ static void __init armadillo4x0_rtc_init(void)
 	gpio_direction_input(RTC_ALM_INT);
 	armadillo4x0_i2c1[0].irq = gpio_to_irq(RTC_ALM_INT);
 }
+
+static const struct imxi2c_platform_data mx25_i2c2_data __initconst = {
+	.bitrate = 40000,
+};
+
+static struct i2c_board_info armadillo4x0_i2c2[] = {
+};
 
 static int spi0_cs[] = {
 #if defined(CONFIG_ARMADILLO4X0_SPI1_SS0_CON9_25)
@@ -943,6 +964,12 @@ void __init armadillo4x0_con11_init(void)
 
 	if (IS_ENABLED(CONFIG_SERIAL_MXC_SELECT4))
 		imx25_add_imx_uart3(&uart3_pdata);
+
+	if (IS_ENABLED(CONFIG_I2C_MXC_SELECT3)) {
+		imx25_add_imx_i2c2(&mx25_i2c2_data);
+		i2c_register_board_info(2, armadillo4x0_i2c2,
+					ARRAY_SIZE(armadillo4x0_i2c2));
+	}
 
 	armadillo4x0_lcd_init();
 	armadillo4x0_touchscreen_init();
