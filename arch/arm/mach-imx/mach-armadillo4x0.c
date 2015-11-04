@@ -57,10 +57,29 @@ static const struct imxuart_platform_data uart0_pdata __initconst = {
 #endif
 };
 
+#define UART2_FORCEOFF_GPIO	IMX_GPIO_NR(4, 31)
+static int armadillo4x0_uart1_activate(struct platform_device *pdev)
+{
+	int ret = 0;
+
+	/* uart2 rs-232c transceiver power on */
+	ret = imx25_named_gpio_request(UART2_FORCEOFF_GPIO, "UART2_FORCEOFF");
+	if (ret)
+		return ret;
+	ret = gpio_direction_output(UART2_FORCEOFF_GPIO, 1);
+
+	return ret;
+}
+
 static const struct imxuart_platform_data uart1_pdata __initconst = {
+	.init = armadillo4x0_uart1_activate,
 #if defined(CONFIG_SERIAL_MXC_HW_FLOW_ENABLED2)
 	.flags = IMXUART_HAVE_RTSCTS,
 #endif
+};
+
+static unsigned long __maybe_unused pin_cfgs_100kup[] = {
+	PAD_CTL_PUS_100K_UP,
 };
 
 static unsigned long pin_cfgs_none[] = {
@@ -84,6 +103,48 @@ static unsigned long pin_cfgs_dse_low[] = {
 };
 
 static const struct pinctrl_map armadillo4x0_pinctrl_map[] = {
+	/* uart2 */
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.1", "imx25-pinctrl.0",
+				  "uart2_rxd__uart2_rxd", "uart2"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.1", "imx25-pinctrl.0",
+				  "uart2_txd__uart2_txd", "uart2"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-uart.1", "imx25-pinctrl.0",
+				    "MX25_PAD_UART2_RXD", pin_cfgs_100kup),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-uart.1", "imx25-pinctrl.0",
+				    "MX25_PAD_UART2_TXD", pin_cfgs_none),
+
+	/* uart2 hardware flow control */
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.1", "imx25-pinctrl.0",
+				  "uart2_rts__uart2_rts", "uart2"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.1", "imx25-pinctrl.0",
+				  "uart2_cts__uart2_cts", "uart2"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-uart.1", "imx25-pinctrl.0",
+				    "MX25_PAD_UART2_RTS", pin_cfgs_100kup),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-uart.1", "imx25-pinctrl.0",
+				    "MX25_PAD_UART2_CTS", pin_cfgs_none),
+
+	/* uart2 modem control */
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.1", "imx25-pinctrl.0",
+				  "uart1_rxd__uart2_dtr", "uart2"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.1", "imx25-pinctrl.0",
+				  "uart1_txd__uart2_dsr", "uart2"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.1", "imx25-pinctrl.0",
+				  "uart1_rts__uart2_dcd", "uart2"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.1", "imx25-pinctrl.0",
+				  "uart1_cts__uart2_ri", "uart2"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-uart.1", "imx25-pinctrl.0",
+				    "MX25_PAD_UART1_RXD", pin_cfgs_none),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-uart.1", "imx25-pinctrl.0",
+				    "MX25_PAD_UART1_TXD", pin_cfgs_100kup),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-uart.1", "imx25-pinctrl.0",
+				    "MX25_PAD_UART1_RTS", pin_cfgs_100kup),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-uart.1", "imx25-pinctrl.0",
+				    "MX25_PAD_UART1_CTS", pin_cfgs_100kup),
+
+	/* uart2 rs-232c transceiver forceoff  */
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.1", "imx25-pinctrl.0",
+				  "boot_mode1__gpio_4_31", "gpio4"),
+
 	/* FEC */
 	PIN_MAP_MUX_GROUP_DEFAULT("imx25-fec.0", "imx25-pinctrl.0",
 				  "fec_mdc__fec_mdc", "fec"),
