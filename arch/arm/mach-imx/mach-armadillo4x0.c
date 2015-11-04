@@ -64,7 +64,7 @@ static const struct imxuart_platform_data uart1_pdata __initconst = {
 };
 
 static unsigned long pin_cfgs_none[] = {
-	NO_PAD_CTRL,
+	0,
 };
 
 static unsigned long pin_cfgs_100kdown_sre_fast[] = {

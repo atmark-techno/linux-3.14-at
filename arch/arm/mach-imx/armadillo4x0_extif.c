@@ -60,7 +60,7 @@ static unsigned long __maybe_unused pin_cfgs_100kup[] = {
 };
 
 static unsigned long __maybe_unused pin_cfgs_none[] = {
-	NO_PAD_CTRL,
+	0,
 };
 
 static unsigned long __maybe_unused pin_cfgs_22kup_ode[] = {
@@ -445,7 +445,7 @@ static const struct pinctrl_map armadillo4x0_extif_pinctrl_map[] = {
 	PIN_MAP_MUX_GROUP_HOG_DEFAULT("imx25-pinctrl.0",
 				      "clko__gpio_2_21", "gpio2"),
 	PIN_MAP_CONFIGS_PIN_HOG_DEFAULT("imx25-pinctrl.0",
-					"MX25_PAD_CLKO", pin_cfgs_sre_fast),
+					"MX25_PAD_CLKO", pin_cfgs_none),
 #endif
 #if defined(CONFIG_ARMADILLO4X0_CON9_28_GPIO3_15)
 	PIN_MAP_MUX_GROUP_HOG_DEFAULT("imx25-pinctrl.0",
