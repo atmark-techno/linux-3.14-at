@@ -110,6 +110,10 @@ static unsigned long  __maybe_unused pin_cfgs_100kup_hys[] = {
 	PAD_CTL_PUS_100K_UP | PAD_CTL_HYS,
 };
 
+static unsigned long __maybe_unused pin_cfgs_47kup[] = {
+	PAD_CTL_PUS_47K_UP,
+};
+
 static const struct pinctrl_map armadillo4x0_pinctrl_map[] = {
 	/* uart all */
 	PIN_MAP_CONFIGS_PIN_HOG_DEFAULT("imx25-pinctrl.0",
@@ -265,6 +269,21 @@ static const struct pinctrl_map armadillo4x0_pinctrl_map[] = {
 	/* GPIO_KEY */
 	PIN_MAP_MUX_GROUP_DEFAULT("gpio-keys", "imx25-pinctrl.0",
 				  "nfwp_b__gpio_3_30", "gpio3"),
+#if defined(CONFIG_ARMADILLO4X0_GPIOKEYS_CON11)
+	PIN_MAP_MUX_GROUP_DEFAULT("gpio-keys", "imx25-pinctrl.0",
+				  "de_b__gpio_2_20", "gpio2"),
+	PIN_MAP_MUX_GROUP_DEFAULT("gpio-keys", "imx25-pinctrl.0",
+				  "kpp_row0__gpio_2_29", "gpio2"),
+	PIN_MAP_MUX_GROUP_DEFAULT("gpio-keys", "imx25-pinctrl.0",
+				  "kpp_row1__gpio_2_30", "gpio2"),
+
+	PIN_MAP_CONFIGS_PIN_DEFAULT("gpio-keys", "imx25-pinctrl.0",
+				    "MX25_PAD_DE_B", pin_cfgs_none),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("gpio-keys", "imx25-pinctrl.0",
+				    "MX25_PAD_KPP_ROW0", pin_cfgs_47kup),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("gpio-keys", "imx25-pinctrl.0",
+				    "MX25_PAD_KPP_ROW1", pin_cfgs_47kup),
+#endif
 
 	/* leds */
 	PIN_MAP_MUX_GROUP_DEFAULT("leds-gpio", "imx25-pinctrl.0",
@@ -321,6 +340,11 @@ armadillo4x0_esdhc1_pdata __initconst = {
 
 static struct gpio_keys_button armadillo4x0_gpio_key_buttons[] = {
 	{KEY_ENTER, IMX_GPIO_NR(3, 30), 1, "SW1", EV_KEY, 0},
+#if defined(CONFIG_ARMADILLO4X0_GPIOKEYS_CON11)
+	{KEY_BACK,  IMX_GPIO_NR(2, 20), 1, "LCD_SW1", EV_KEY, 0},
+	{KEY_MENU,  IMX_GPIO_NR(2, 29), 1, "LCD_SW2", EV_KEY, 0},
+	{KEY_HOME,  IMX_GPIO_NR(2, 30), 1, "LCD_SW3", EV_KEY, 0},
+#endif
 };
 
 static struct gpio_keys_platform_data armadillo4x0_gpio_key_data = {
