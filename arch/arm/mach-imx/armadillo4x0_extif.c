@@ -471,7 +471,65 @@ static const struct pinctrl_map armadillo4x0_con9_con14_pinctrl_map[] = {
 	PIN_MAP_CONFIGS_PIN_HOG_DEFAULT("imx25-pinctrl.0",
 					"MX25_PAD_GPIO_D", pin_cfgs_100kup),
 #endif
+};
 
+static const struct pinctrl_map armadillo4x0_con11_pinctrl_map[] = {
+	/* CON11_42 */
+#if defined(CONFIG_ARMADILLO4X0_CON11_42_GPIO_2_31)
+	PIN_MAP_MUX_GROUP_HOG_DEFAULT("imx25-pinctrl.0",
+				      "kpp_row2__gpio_2_31", "gpio2"),
+	PIN_MAP_CONFIGS_PIN_HOG_DEFAULT("imx25-pinctrl.0",
+					"MX25_PAD_KPP_ROW2", pin_cfgs_100kup),
+#endif
+	/* CON11_43 */
+#if defined(CONFIG_ARMADILLO4X0_CON11_43_GPIO_3_0)
+	PIN_MAP_MUX_GROUP_HOG_DEFAULT("imx25-pinctrl.0",
+				      "kpp_row3__gpio_3_0", "gpio3"),
+	PIN_MAP_CONFIGS_PIN_HOG_DEFAULT("imx25-pinctrl.0",
+					"MX25_PAD_KPP_ROW3", pin_cfgs_100kup),
+#endif
+	/* CON11_44 */
+#if defined(CONFIG_ARMADILLO4X0_CON11_44_GPIO_3_1)
+	PIN_MAP_MUX_GROUP_HOG_DEFAULT("imx25-pinctrl.0",
+				      "kpp_col0__gpio_3_1", "gpio3"),
+	PIN_MAP_CONFIGS_PIN_HOG_DEFAULT("imx25-pinctrl.0",
+					"MX25_PAD_KPP_COL0", pin_cfgs_100kup),
+#endif
+	/* CON11_45 */
+#if defined(CONFIG_ARMADILLO4X0_CON11_45_GPIO_3_2)
+	PIN_MAP_MUX_GROUP_HOG_DEFAULT("imx25-pinctrl.0",
+				      "kpp_col1__gpio_3_2", "gpio3"),
+	PIN_MAP_CONFIGS_PIN_HOG_DEFAULT("imx25-pinctrl.0",
+					"MX25_PAD_KPP_COL1", pin_cfgs_100kup),
+#endif
+	/* CON11_46 */
+#if defined(CONFIG_ARMADILLO4X0_CON11_46_GPIO_3_3)
+	PIN_MAP_MUX_GROUP_HOG_DEFAULT("imx25-pinctrl.0",
+				      "kpp_col2__gpio_3_3", "gpio3"),
+	PIN_MAP_CONFIGS_PIN_HOG_DEFAULT("imx25-pinctrl.0",
+					"MX25_PAD_KPP_COL2", pin_cfgs_100kup),
+#endif
+	/* CON11_47 */
+#if defined(CONFIG_ARMADILLO4X0_CON11_47_GPIO_3_4)
+	PIN_MAP_MUX_GROUP_HOG_DEFAULT("imx25-pinctrl.0",
+				      "kpp_col3__gpio_3_4", "gpio3"),
+	PIN_MAP_CONFIGS_PIN_HOG_DEFAULT("imx25-pinctrl.0",
+					"MX25_PAD_KPP_COL3", pin_cfgs_100kup),
+#endif
+	/* CON11_48 */
+#if defined(CONFIG_ARMADILLO4X0_CON11_48_GPIO1_0)
+	PIN_MAP_MUX_GROUP_HOG_DEFAULT("imx25-pinctrl.0",
+				      "gpio_a__gpio_a", "gpio1"),
+	PIN_MAP_CONFIGS_PIN_HOG_DEFAULT("imx25-pinctrl.0",
+					"MX25_PAD_GPIO_A", pin_cfgs_100kup),
+#endif
+	/* CON11_49 */
+#if defined(CONFIG_ARMADILLO4X0_CON11_49_GPIO1_1)
+	PIN_MAP_MUX_GROUP_HOG_DEFAULT("imx25-pinctrl.0",
+				      "gpio_b__gpio_b", "gpio1"),
+	PIN_MAP_CONFIGS_PIN_HOG_DEFAULT("imx25-pinctrl.0",
+					"MX25_PAD_GPIO_B", pin_cfgs_100kup),
+#endif
 };
 
 static const struct imxi2c_platform_data mx25_i2c1_data __initconst = {
@@ -665,6 +723,41 @@ static const struct armadillo4x0_extif_gpio armadillo4x0_con9_con14_gpios[] = {
 #endif
 };
 
+static const struct armadillo4x0_extif_gpio armadillo4x0_con11_gpios[] = {
+	/* CON11_42 */
+#if defined(CONFIG_ARMADILLO4X0_CON11_42_GPIO_2_31)
+	{IMX_GPIO_NR(2, 31), "CON11_42",  EXTIF_GPIO_DIRECTION_INPUT},
+#endif
+	/* CON11_43 */
+#if defined(CONFIG_ARMADILLO4X0_CON11_43_GPIO_3_0)
+	{IMX_GPIO_NR(3, 0), "CON11_43",  EXTIF_GPIO_DIRECTION_INPUT},
+#endif
+	/* CON11_44 */
+#if defined(CONFIG_ARMADILLO4X0_CON11_44_GPIO_3_1)
+	{IMX_GPIO_NR(3, 1), "CON11_44",  EXTIF_GPIO_DIRECTION_INPUT},
+#endif
+	/* CON11_45 */
+#if defined(CONFIG_ARMADILLO4X0_CON11_45_GPIO_3_2)
+	{IMX_GPIO_NR(3, 2), "CON11_45",  EXTIF_GPIO_DIRECTION_INPUT},
+#endif
+	/* CON11_46 */
+#if defined(CONFIG_ARMADILLO4X0_CON11_46_GPIO_3_3)
+	{IMX_GPIO_NR(3, 3), "CON11_46",  EXTIF_GPIO_DIRECTION_INPUT},
+#endif
+	/* CON11_47 */
+#if defined(CONFIG_ARMADILLO4X0_CON11_47_GPIO_3_4)
+	{IMX_GPIO_NR(3, 4), "CON11_47",  EXTIF_GPIO_DIRECTION_INPUT},
+#endif
+	/* CON11_48 */
+#if defined(CONFIG_ARMADILLO4X0_CON11_48_GPIO1_0)
+	{IMX_GPIO_NR(1, 0), "CON11_48",  EXTIF_GPIO_DIRECTION_INPUT},
+#endif
+	/* CON11_49 */
+#if defined(CONFIG_ARMADILLO4X0_CON11_49_GPIO1_1)
+	{IMX_GPIO_NR(1, 1), "CON11_49",  EXTIF_GPIO_DIRECTION_INPUT},
+#endif
+};
+
 static void armadillo4x0_set_extif_gpio(const struct armadillo4x0_extif_gpio *gpios,
 					size_t size)
 {
@@ -791,8 +884,14 @@ void __init armadillo4x0_con9_con14_init(void)
 #if defined(CONFIG_MACH_ARMADILLO440) || defined(CONFIG_MACH_ARMADILLO410)
 void __init armadillo4x0_con11_init(void)
 {
+	pinctrl_register_mappings(armadillo4x0_con11_pinctrl_map,
+				  ARRAY_SIZE(armadillo4x0_con11_pinctrl_map));
+
 	armadillo4x0_lcd_init();
 	armadillo4x0_touchscreen_init();
 	armadillo4x0_audio_init();
+
+	armadillo4x0_set_extif_gpio(armadillo4x0_con11_gpios,
+				    ARRAY_SIZE(armadillo4x0_con11_gpios));
 }
 #endif
