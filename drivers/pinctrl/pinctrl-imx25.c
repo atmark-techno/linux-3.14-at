@@ -2311,6 +2311,10 @@ struct imx_pin pins_uart1_rxd__uart1_rxd[] = {
 	IMX25_PINCTRL_PIN(UART1_RXD, UART1_RXD),
 };
 
+struct imx_pin pins_uart1_rxd__uart2_dtr[] = {
+	IMX25_PINCTRL_PIN(UART1_RXD, UART2_DTR),
+};
+
 struct imx_pin pins_uart1_rxd__gpio_4_22[] = {
 	IMX25_PINCTRL_PIN(UART1_RXD, GPIO_4_22),
 };
@@ -2322,6 +2326,10 @@ unsigned int pin_ids_uart1_txd[] = {
 
 struct imx_pin pins_uart1_txd__uart1_txd[] = {
 	IMX25_PINCTRL_PIN(UART1_TXD, UART1_TXD),
+};
+
+struct imx_pin pins_uart1_txd__uart2_dsr[] = {
+	IMX25_PINCTRL_PIN(UART1_TXD, UART2_DSR),
 };
 
 struct imx_pin pins_uart1_txd__gpio_4_23[] = {
@@ -2341,6 +2349,10 @@ struct imx_pin pins_uart1_rts__csi_d0[] = {
 	IMX25_PINCTRL_PIN(UART1_RTS, CSI_D0),
 };
 
+struct imx_pin pins_uart1_rts__uart2_dcd[] = {
+	IMX25_PINCTRL_PIN(UART1_RTS, UART2_DCD),
+};
+
 struct imx_pin pins_uart1_rts__gpio_4_24[] = {
 	IMX25_PINCTRL_PIN(UART1_RTS, GPIO_4_24),
 };
@@ -2356,6 +2368,10 @@ struct imx_pin pins_uart1_cts__uart1_cts[] = {
 
 struct imx_pin pins_uart1_cts__csi_d1[] = {
 	IMX25_PINCTRL_PIN(UART1_CTS, CSI_D1),
+};
+
+struct imx_pin pins_uart1_cts__uart2_ri[] = {
+	IMX25_PINCTRL_PIN(UART1_CTS, UART2_RI),
 };
 
 struct imx_pin pins_uart1_cts__gpio_4_25[] = {
@@ -3341,14 +3357,18 @@ static struct imx_pin_group imx25_pinctrl_groups[] = {
 	IMX25_PINCTRL_PIN_GROUP(cspi1_rdy, cspi1_rdy),
 	IMX25_PINCTRL_PIN_GROUP(cspi1_rdy, gpio_2_22),
 	IMX25_PINCTRL_PIN_GROUP(uart1_rxd, uart1_rxd),
+	IMX25_PINCTRL_PIN_GROUP(uart1_rxd, uart2_dtr),
 	IMX25_PINCTRL_PIN_GROUP(uart1_rxd, gpio_4_22),
 	IMX25_PINCTRL_PIN_GROUP(uart1_txd, uart1_txd),
+	IMX25_PINCTRL_PIN_GROUP(uart1_txd, uart2_dsr),
 	IMX25_PINCTRL_PIN_GROUP(uart1_txd, gpio_4_23),
 	IMX25_PINCTRL_PIN_GROUP(uart1_rts, uart1_rts),
 	IMX25_PINCTRL_PIN_GROUP(uart1_rts, csi_d0),
+	IMX25_PINCTRL_PIN_GROUP(uart1_rts, uart2_dcd),
 	IMX25_PINCTRL_PIN_GROUP(uart1_rts, gpio_4_24),
 	IMX25_PINCTRL_PIN_GROUP(uart1_cts, uart1_cts),
 	IMX25_PINCTRL_PIN_GROUP(uart1_cts, csi_d1),
+	IMX25_PINCTRL_PIN_GROUP(uart1_cts, uart2_ri),
 	IMX25_PINCTRL_PIN_GROUP(uart1_cts, gpio_4_25),
 	IMX25_PINCTRL_PIN_GROUP(uart2_rxd, uart2_rxd),
 	IMX25_PINCTRL_PIN_GROUP(uart2_rxd, gpio_4_26),
@@ -3861,6 +3881,10 @@ static const char *uart2_groups[] = {
 	"uart2_txd__uart2_txd",
 	"uart2_rts__uart2_rts",
 	"uart2_cts__uart2_cts",
+	"uart1_rxd__uart2_dtr",
+	"uart1_txd__uart2_dsr",
+	"uart1_rts__uart2_dcd",
+	"uart1_cts__uart2_ri",
 };
 
 static const char *uart3_groups[] = {
