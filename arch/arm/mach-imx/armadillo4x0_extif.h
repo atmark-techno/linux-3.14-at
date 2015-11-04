@@ -19,6 +19,7 @@
 #ifndef __ASM_ARCH_MXC_ARMADILLO4X0_EXTIF_H__
 #define __ASM_ARCH_MXC_ARMADILLO4X0_EXTIF_H__
 
-extern void __init armadillo4x0_extif_init(void);
+extern void __init armadillo4x0_con9_con14_init(void);
+extern void __init armadillo4x0_con11_init(void);
 
 #endif /* __ASM_ARCH_MXC_ARMADILLO4X0_EXTIF_H__ */

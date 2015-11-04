@@ -342,7 +342,7 @@ static struct gpio_led_platform_data armadillo4x0_led_data = {
 /*
  * MTD NOR Flash
  */
-static struct mtd_partition armadillo4x0_nor_flash_partitions[] = {
+static struct mtd_partition armadillo4x0_nor_flash_partitions_16m[] = {
 	{
 		.name		= "nor.bootloader",
 		.offset		= 0x00000000,
@@ -366,11 +366,42 @@ static struct mtd_partition armadillo4x0_nor_flash_partitions[] = {
 	},
 };
 
+static struct mtd_partition armadillo4x0_nor_flash_partitions_32m[] = {
+	{
+		.name		= "nor.bootloader",
+		.offset		= 0x00000000,
+		.size		= 4 * SZ_32K,
+		.mask_flags	= MTD_WRITEABLE,
+	}, {
+		.name		= "nor.kernel",
+		.offset		= MTDPART_OFS_APPEND,
+		.size		= 32 * SZ_128K,
+		.mask_flags	= 0,
+	}, {
+		.name		= "nor.userland",
+		.offset		= MTDPART_OFS_APPEND,
+		.size		= 215 * SZ_128K,
+		.mask_flags	= 0,
+	}, {
+		.name		= "nor.config",
+		.offset		= MTDPART_OFS_APPEND,
+		.size		= 8 * SZ_128K,
+		.mask_flags	= 0,
+	},
+};
+
 static const struct physmap_flash_data
-		armadillo4x0_nor_flash_pdata __initconst = {
+		armadillo4x0_nor_flash_pdata_16m __initconst = {
 	.width		= 2,
-	.parts		= armadillo4x0_nor_flash_partitions,
-	.nr_parts	= ARRAY_SIZE(armadillo4x0_nor_flash_partitions),
+	.parts		= armadillo4x0_nor_flash_partitions_16m,
+	.nr_parts	= ARRAY_SIZE(armadillo4x0_nor_flash_partitions_16m),
+};
+
+static const struct physmap_flash_data
+		armadillo4x0_nor_flash_pdata_32m __initconst = {
+	.width		= 2,
+	.parts		= armadillo4x0_nor_flash_partitions_32m,
+	.nr_parts	= ARRAY_SIZE(armadillo4x0_nor_flash_partitions_32m),
 };
 
 static const struct resource
@@ -428,6 +459,26 @@ armadillo4x0_usb_regulator_config = {
 	.init_data		= &armadillo4x0_usb_regulator_data,
 };
 
+inline static void __init armadillo4x0_init_mtd(const struct physmap_flash_data data)
+{
+	platform_device_register_resndata(NULL, "physmap-flash", -1,
+					  &armadillo4x0_nor_flash_resource, 1,
+					  &data, sizeof(data));
+}
+#if defined(CONFIG_MACH_ARMADILLO420)
+static void __init armadillo420_init_mtd(void)
+{
+	armadillo4x0_init_mtd(armadillo4x0_nor_flash_pdata_16m);
+}
+#endif
+
+#if defined(CONFIG_MACH_ARMADILLO440) || defined(CONFIG_MACH_ARMADILLO410)
+static void __init armadillo440_init_mtd(void)
+{
+	armadillo4x0_init_mtd(armadillo4x0_nor_flash_pdata_32m);
+}
+#endif
+
 static void __init armadillo4x0_init(void)
 {
 	imx25_soc_init();
@@ -449,11 +500,6 @@ static void __init armadillo4x0_init(void)
 	imx25_add_imx_usb_otg(&otg_pdata);
 	imx25_add_imx2_wdt();
 
-	platform_device_register_resndata(NULL, "physmap-flash", -1,
-			&armadillo4x0_nor_flash_resource, 1,
-			&armadillo4x0_nor_flash_pdata,
-			sizeof(armadillo4x0_nor_flash_pdata));
-
 	imx25_named_gpio_init();
 
 	armadillo4x0_fec_reset();
@@ -473,8 +519,6 @@ static void __init armadillo4x0_init(void)
 	imx_add_gpio_keys(&armadillo4x0_gpio_key_data);
 
 	gpio_led_register_device(-1, &armadillo4x0_led_data);
-
-	armadillo4x0_extif_init();
 }
 
 static void __init armadillo4x0_timer_init(void)
@@ -482,6 +526,40 @@ static void __init armadillo4x0_timer_init(void)
 	mx25_clocks_init();
 }
 
+#if defined(CONFIG_MACH_ARMADILLO420)
+static void __init armadillo420_init(void)
+{
+	armadillo4x0_init();
+	armadillo420_init_mtd();
+	armadillo4x0_con9_con14_init();
+}
+#endif
+
+#if defined(CONFIG_MACH_ARMADILLO440) || defined(CONFIG_MACH_ARMADILLO410)
+static void __init armadillo440_init(void)
+{
+	armadillo4x0_init();
+	armadillo440_init_mtd();
+	armadillo4x0_con9_con14_init();
+	armadillo4x0_con11_init();
+}
+#endif
+
+#if defined(CONFIG_MACH_ARMADILLO410)
+MACHINE_START(ARMADILLO410, "Armadillo-410")
+	/* Maintainer: Atmark Techno, Inc.  */
+	.atag_offset	= 0x100,
+	.map_io		= mx25_map_io,
+	.init_early	= imx25_init_early,
+	.init_irq	= mx25_init_irq,
+	.handle_irq	= imx25_handle_irq,
+	.init_time	= armadillo4x0_timer_init,
+	.init_machine	= armadillo440_init,
+	.restart	= mxc_restart,
+MACHINE_END
+#endif
+
+#if defined(CONFIG_MACH_ARMADILLO420)
 MACHINE_START(ARMADILLO420, "Armadillo-420")
 	/* Maintainer: Atmark Techno, Inc.  */
 	.atag_offset	= 0x100,
@@ -490,6 +568,21 @@ MACHINE_START(ARMADILLO420, "Armadillo-420")
 	.init_irq	= mx25_init_irq,
 	.handle_irq	= imx25_handle_irq,
 	.init_time	= armadillo4x0_timer_init,
-	.init_machine	= armadillo4x0_init,
+	.init_machine	= armadillo420_init,
 	.restart	= mxc_restart,
 MACHINE_END
+#endif
+
+#if defined(CONFIG_MACH_ARMADILLO440)
+MACHINE_START(ARMADILLO440, "Armadillo-440")
+	/* Maintainer: Atmark Techno, Inc.  */
+	.atag_offset	= 0x100,
+	.map_io		= mx25_map_io,
+	.init_early	= imx25_init_early,
+	.init_irq	= mx25_init_irq,
+	.handle_irq	= imx25_handle_irq,
+	.init_time	= armadillo4x0_timer_init,
+	.init_machine	= armadillo440_init,
+	.restart	= mxc_restart,
+MACHINE_END
+#endif

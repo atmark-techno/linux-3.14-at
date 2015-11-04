@@ -707,13 +707,27 @@ armadillo4x0_esdhc2_regulator_config = {
 	.init_data		= &armadillo4x0_esdhc2_regulator_data,
 };
 
+#if defined(CONFIG_MACH_ARMADILLO440) || defined(CONFIG_MACH_ARMADILLO410)
+static void __init armadillo4x0_lcd_init(void)
+{
+}
+
+static void __init armadillo4x0_touchscreen_init(void)
+{
+}
+
+static void __init armadillo4x0_audio_init(void)
+{
+}
+#endif
+
 static struct regulator_consumer_supply flexcan1_dummy_supplies[] = {
 #if defined(CONFIG_ARMADILLO4X0_CAN2_CON14)
 	REGULATOR_SUPPLY("xceiver", "flexcan.1"),
 #endif
 };
 
-void __init armadillo4x0_extif_init(void)
+void __init armadillo4x0_con9_con14_init(void)
 {
 	pinctrl_register_mappings(armadillo4x0_extif_pinctrl_map,
 				  ARRAY_SIZE(armadillo4x0_extif_pinctrl_map));
@@ -773,3 +787,12 @@ void __init armadillo4x0_extif_init(void)
 
 	armadillo4x0_set_extif_gpio();
 }
+
+#if defined(CONFIG_MACH_ARMADILLO440) || defined(CONFIG_MACH_ARMADILLO410)
+void __init armadillo4x0_con11_init(void)
+{
+	armadillo4x0_lcd_init();
+	armadillo4x0_touchscreen_init();
+	armadillo4x0_audio_init();
+}
+#endif

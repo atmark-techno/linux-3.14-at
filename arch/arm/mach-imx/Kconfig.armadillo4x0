@@ -153,7 +153,7 @@ config W1_GPIO_SELECT1
 endmenu
 
 menu "Armadillo-400 Board options"
-	depends on MACH_ARMADILLO420
+	depends on MACH_ARMADILLO410 || MACH_ARMADILLO420 || MACH_ARMADILLO440
 
 config ARMADILLO4X0_UART3_CON9
 	bool "Enable UART3 at CON9"
