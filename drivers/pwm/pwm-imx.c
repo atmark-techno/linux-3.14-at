@@ -37,6 +37,7 @@
 #define MX3_PWMCR_WAITEN                (1 << 23)
 #define MX3_PWMCR_DBGEN			(1 << 22)
 #define MX3_PWMCR_POUTC_INVERT    (1 << 18)
+#define MX3_PWMCR_POUTC_MASK      (3 << 18)
 #define MX3_PWMCR_CLKSRC_IPG_HIGH (2 << 16)
 #define MX3_PWMCR_CLKSRC_IPG      (1 << 16)
 #define MX3_PWMCR_EN              (1 << 0)
@@ -146,7 +147,9 @@ static int imx_pwm_config_v2(struct pwm_chip *chip,
 	writel(duty_cycles, imx->mmio_base + MX3_PWMSAR);
 	writel(period_cycles, imx->mmio_base + MX3_PWMPR);
 
-	cr = MX3_PWMCR_PRESCALER(prescale) |
+	cr = readl(imx->mmio_base + MX3_PWMCR);
+	cr &= MX3_PWMCR_POUTC_MASK;
+	cr |= MX3_PWMCR_PRESCALER(prescale) |
 		MX3_PWMCR_DOZEEN | MX3_PWMCR_WAITEN |
 		MX3_PWMCR_DBGEN | MX3_PWMCR_CLKSRC_IPG_HIGH;
 
