@@ -91,6 +91,10 @@ static unsigned long __maybe_unused pin_cfgs_dse_low[] = {
 	PAD_CTL_DSE_LOW,
 };
 
+static unsigned long __maybe_unused pin_cfgs_pke[] = {
+	PAD_CTL_PKE,
+};
+
 static const struct pinctrl_map armadillo4x0_extif_pinctrl_map[] = {
 	/* uart3 */
 #if defined(CONFIG_ARMADILLO4X0_UART3_CON9)
@@ -318,6 +322,8 @@ static const struct pinctrl_map armadillo4x0_extif_pinctrl_map[] = {
 #if defined(CONFIG_ARMADILLO4X0_CON9_1_SDHC2_PWREN)
 	PIN_MAP_MUX_GROUP_DEFAULT("reg-fixed-voltage.3", "imx25-pinctrl.0",
 				  "vstby_req__gpio_3_17", "gpio3"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("reg-fixed-voltage.3", "imx25-pinctrl.0",
+				    "MX25_PAD_VSTBY_REQ", pin_cfgs_pke),
 #endif
 
 	/* CON9 GPIO */

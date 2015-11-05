@@ -102,7 +102,19 @@ static unsigned long pin_cfgs_dse_low[] = {
 	PAD_CTL_DSE_LOW,
 };
 
+static unsigned long __maybe_unused pin_cfgs_hys[] = {
+	PAD_CTL_HYS,
+};
+
+static unsigned long  __maybe_unused pin_cfgs_100kup_hys[] = {
+	PAD_CTL_PUS_100K_UP | PAD_CTL_HYS,
+};
+
 static const struct pinctrl_map armadillo4x0_pinctrl_map[] = {
+	/* uart all */
+	PIN_MAP_CONFIGS_PIN_HOG_DEFAULT("imx25-pinctrl.0",
+					"MX25_PAD_GRP_DSE_UART", pin_cfgs_dse_low),
+
 	/* uart2 */
 	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.1", "imx25-pinctrl.0",
 				  "uart2_rxd__uart2_rxd", "uart2"),
@@ -168,14 +180,23 @@ static const struct pinctrl_map armadillo4x0_pinctrl_map[] = {
 				  "upll_bypclk__gpio_3_16", "gpio3"),
 
 	PIN_MAP_CONFIGS_PIN_DEFAULT("imx25-fec.0", "imx25-pinctrl.0",
-				    "MX25_PAD_FEC_TDATA0",
-				    pin_cfgs_sre_fast),
+				    "MX25_PAD_FEC_MDC", pin_cfgs_none),
 	PIN_MAP_CONFIGS_PIN_DEFAULT("imx25-fec.0", "imx25-pinctrl.0",
-				    "MX25_PAD_FEC_TDATA1",
-				    pin_cfgs_sre_fast),
+				    "MX25_PAD_FEC_MDIO", pin_cfgs_hys),
 	PIN_MAP_CONFIGS_PIN_DEFAULT("imx25-fec.0", "imx25-pinctrl.0",
-				    "MX25_PAD_FEC_TX_EN",
-				    pin_cfgs_sre_fast),
+				    "MX25_PAD_FEC_TDATA0", pin_cfgs_sre_fast),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx25-fec.0", "imx25-pinctrl.0",
+				    "MX25_PAD_FEC_TDATA1", pin_cfgs_sre_fast),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx25-fec.0", "imx25-pinctrl.0",
+				    "MX25_PAD_FEC_TX_EN", pin_cfgs_sre_fast),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx25-fec.0", "imx25-pinctrl.0",
+				    "MX25_PAD_FEC_RDATA0", pin_cfgs_none),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx25-fec.0", "imx25-pinctrl.0",
+				    "MX25_PAD_FEC_RDATA1", pin_cfgs_none),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx25-fec.0", "imx25-pinctrl.0",
+				    "MX25_PAD_FEC_RX_DV", pin_cfgs_none),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx25-fec.0", "imx25-pinctrl.0",
+				    "MX25_PAD_FEC_TX_CLK", pin_cfgs_100kup_hys),
 
 	/* eSDHC1 */
 	PIN_MAP_MUX_GROUP_DEFAULT("sdhci-esdhc-imx25.0", "imx25-pinctrl.0",
@@ -244,6 +265,14 @@ static const struct pinctrl_map armadillo4x0_pinctrl_map[] = {
 	/* GPIO_KEY */
 	PIN_MAP_MUX_GROUP_DEFAULT("gpio-keys", "imx25-pinctrl.0",
 				  "nfwp_b__gpio_3_30", "gpio3"),
+
+	/* leds */
+	PIN_MAP_MUX_GROUP_DEFAULT("leds-gpio", "imx25-pinctrl.0",
+				  "nfale__gpio_3_28", "gpio3"),
+	PIN_MAP_MUX_GROUP_DEFAULT("leds-gpio", "imx25-pinctrl.0",
+				  "nfcle__gpio_3_29", "gpio3"),
+	PIN_MAP_MUX_GROUP_DEFAULT("leds-gpio", "imx25-pinctrl.0",
+				  "boot_mode0__gpio_4_30", "gpio4"),
 };
 
 static const struct fec_platform_data mx25_fec_pdata __initconst = {
