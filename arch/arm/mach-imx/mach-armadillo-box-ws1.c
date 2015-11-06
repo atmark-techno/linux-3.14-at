@@ -285,7 +285,31 @@ static struct gpio_led_platform_data armadillo_box_ws1_led_data = {
 /*
  * MTD NOR Flash
  */
-static struct mtd_partition armadillo_box_ws1_nor_flash_partitions[] = {
+static struct mtd_partition armadillo_box_ws1_nor_flash_partitions_16m[] = {
+	{
+		.name		= "nor.bootloader",
+		.offset		= 0x00000000,
+		.size		= 4 * SZ_32K,
+		.mask_flags	= MTD_WRITEABLE,
+	}, {
+		.name		= "nor.kernel",
+		.offset		= MTDPART_OFS_APPEND,
+		.size		= 32 * SZ_128K,
+		.mask_flags	= 0,
+	}, {
+		.name		= "nor.userland",
+		.offset		= MTDPART_OFS_APPEND,
+		.size		= 87 * SZ_128K,
+		.mask_flags	= 0,
+	}, {
+		.name		= "nor.config",
+		.offset		= MTDPART_OFS_APPEND,
+		.size		= 8 * SZ_128K,
+		.mask_flags	= 0,
+	},
+};
+
+static struct mtd_partition armadillo_box_ws1_nor_flash_partitions_32m[] = {
 	{
 		.name		= "nor.bootloader",
 		.offset		= 0x00000000,
@@ -310,10 +334,17 @@ static struct mtd_partition armadillo_box_ws1_nor_flash_partitions[] = {
 };
 
 static const struct physmap_flash_data
-		armadillo_box_ws1_nor_flash_pdata __initconst = {
+		armadillo_box_ws1_nor_flash_pdata_16m __initconst = {
 	.width		= 2,
-	.parts		= armadillo_box_ws1_nor_flash_partitions,
-	.nr_parts	= ARRAY_SIZE(armadillo_box_ws1_nor_flash_partitions),
+	.parts		= armadillo_box_ws1_nor_flash_partitions_16m,
+	.nr_parts	= ARRAY_SIZE(armadillo_box_ws1_nor_flash_partitions_16m),
+};
+
+static const struct physmap_flash_data
+		armadillo_box_ws1_nor_flash_pdata_32m __initconst = {
+	.width		= 2,
+	.parts		= armadillo_box_ws1_nor_flash_partitions_32m,
+	.nr_parts	= ARRAY_SIZE(armadillo_box_ws1_nor_flash_partitions_32m),
 };
 
 static const struct resource
@@ -394,6 +425,7 @@ static void __init armadillo_box_ws1_bp35a1_init(void)
 
 static void __init armadillo_box_ws1_init(void)
 {
+	const struct physmap_flash_data *data;
 	imx25_soc_init();
 
 	imx25_add_imx_pinctrl("imx25-pinctrl");
@@ -410,10 +442,14 @@ static void __init armadillo_box_ws1_init(void)
 	imx25_add_imx_usb_hs(&usbh2_pdata);
 	imx25_add_imx2_wdt();
 
+	if (machine_is_armadillo420())
+		data = &armadillo_box_ws1_nor_flash_pdata_16m;
+	else
+		data = &armadillo_box_ws1_nor_flash_pdata_32m;
+
 	platform_device_register_resndata(NULL, "physmap-flash", -1,
 			&armadillo_box_ws1_nor_flash_resource, 1,
-			&armadillo_box_ws1_nor_flash_pdata,
-			sizeof(armadillo_box_ws1_nor_flash_pdata));
+			data, sizeof(*data));
 
 	imx25_named_gpio_init();
 
@@ -446,6 +482,18 @@ static void __init armadillo_box_ws1_timer_init(void)
 {
 	mx25_clocks_init();
 }
+
+MACHINE_START(ARMADILLO420, "Armadillo-420")
+	/* Maintainer: Atmark Techno, Inc.  */
+	.atag_offset	= 0x100,
+	.map_io		= mx25_map_io,
+	.init_early	= imx25_init_early,
+	.init_irq	= mx25_init_irq,
+	.handle_irq	= imx25_handle_irq,
+	.init_time	= armadillo_box_ws1_timer_init,
+	.init_machine	= armadillo_box_ws1_init,
+	.restart	= mxc_restart,
+MACHINE_END
 
 MACHINE_START(ARMADILLO440, "Armadillo-440")
 	/* Maintainer: Atmark Techno, Inc.  */
