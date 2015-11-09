@@ -623,6 +623,12 @@ static const struct imxi2c_platform_data mx25_i2c2_data __initconst = {
 };
 
 static struct i2c_board_info armadillo4x0_i2c2[] = {
+#if defined(CONFIG_ARMADILLO4X0_I2C3_CON11_S35390A)
+	{
+		I2C_BOARD_INFO("s35390a", 0x30),
+		/* irq number is run-time assigned */
+	},
+#endif
 };
 
 static int spi0_cs[] = {
