@@ -86,7 +86,7 @@ static int imx_ssi_set_dai_tdm_slot(struct snd_soc_dai *cpu_dai,
 static int imx_ssi_set_dai_fmt(struct snd_soc_dai *cpu_dai, unsigned int fmt)
 {
 	struct imx_ssi *ssi = snd_soc_dai_get_drvdata(cpu_dai);
-	u32 strcr = 0, scr;
+	u32 stcr = 0, srcr = 0, scr;
 
 	scr = readl(ssi->base + SSI_SCR) & ~(SSI_SCR_SYN | SSI_SCR_NET);
 
@@ -94,7 +94,8 @@ static int imx_ssi_set_dai_fmt(struct snd_soc_dai *cpu_dai, unsigned int fmt)
 	switch (fmt & SND_SOC_DAIFMT_FORMAT_MASK) {
 	case SND_SOC_DAIFMT_I2S:
 		/* data on rising edge of bclk, frame low 1clk before data */
-		strcr |= SSI_STCR_TFSI | SSI_STCR_TEFS | SSI_STCR_TXBIT0;
+		stcr |= SSI_STCR_TFSI | SSI_STCR_TEFS | SSI_STCR_TXBIT0;
+		srcr |= SSI_SRCR_RFSI | SSI_SRCR_REFS | SSI_SRCR_RXBIT0;
 		scr |= SSI_SCR_NET;
 		if (ssi->flags & IMX_SSI_USE_I2S_SLAVE) {
 			scr &= ~SSI_I2S_MODE_MASK;
@@ -103,33 +104,42 @@ static int imx_ssi_set_dai_fmt(struct snd_soc_dai *cpu_dai, unsigned int fmt)
 		break;
 	case SND_SOC_DAIFMT_LEFT_J:
 		/* data on rising edge of bclk, frame high with data */
-		strcr |= SSI_STCR_TXBIT0;
+		stcr |= SSI_STCR_TXBIT0;
+		srcr |= SSI_SRCR_RXBIT0;
 		break;
 	case SND_SOC_DAIFMT_DSP_B:
 		/* data on rising edge of bclk, frame high with data */
-		strcr |= SSI_STCR_TFSL | SSI_STCR_TXBIT0;
+		stcr |= SSI_STCR_TFSL | SSI_STCR_TXBIT0;
+		srcr |= SSI_SRCR_RFSL | SSI_SRCR_RXBIT0;
 		break;
 	case SND_SOC_DAIFMT_DSP_A:
 		/* data on rising edge of bclk, frame high 1clk before data */
-		strcr |= SSI_STCR_TFSL | SSI_STCR_TXBIT0 | SSI_STCR_TEFS;
+		stcr |= SSI_STCR_TFSL | SSI_STCR_TXBIT0 | SSI_STCR_TEFS;
+		srcr |= SSI_SRCR_RFSL | SSI_SRCR_RXBIT0 | SSI_SRCR_REFS;
 		break;
 	}
 
 	/* DAI clock inversion */
 	switch (fmt & SND_SOC_DAIFMT_INV_MASK) {
 	case SND_SOC_DAIFMT_IB_IF:
-		strcr |= SSI_STCR_TFSI;
-		strcr &= ~SSI_STCR_TSCKP;
+		stcr |= SSI_STCR_TFSI;
+		stcr &= ~SSI_STCR_TSCKP;
+		srcr |= SSI_SRCR_RFSI;
+		srcr &= ~SSI_SRCR_RSCKP;
 		break;
 	case SND_SOC_DAIFMT_IB_NF:
-		strcr &= ~(SSI_STCR_TSCKP | SSI_STCR_TFSI);
+		stcr &= ~(SSI_STCR_TSCKP | SSI_STCR_TFSI);
+		srcr &= ~(SSI_SRCR_RSCKP | SSI_SRCR_RFSI);
 		break;
 	case SND_SOC_DAIFMT_NB_IF:
-		strcr |= SSI_STCR_TFSI | SSI_STCR_TSCKP;
+		stcr |= SSI_STCR_TFSI | SSI_STCR_TSCKP;
+		srcr |= SSI_SRCR_RFSI | SSI_SRCR_RSCKP;
 		break;
 	case SND_SOC_DAIFMT_NB_NF:
-		strcr &= ~SSI_STCR_TFSI;
-		strcr |= SSI_STCR_TSCKP;
+		stcr &= ~SSI_STCR_TFSI;
+		stcr |= SSI_STCR_TSCKP;
+		srcr &= ~SSI_SRCR_RFSI;
+		srcr |= SSI_SRCR_RSCKP;
 		break;
 	}
 
@@ -142,15 +152,16 @@ static int imx_ssi_set_dai_fmt(struct snd_soc_dai *cpu_dai, unsigned int fmt)
 		return -EINVAL;
 	}
 
-	strcr |= SSI_STCR_TFEN0;
+	stcr |= SSI_STCR_TFEN0;
+	srcr |= SSI_SRCR_RFEN0;
 
 	if (ssi->flags & IMX_SSI_NET)
 		scr |= SSI_SCR_NET;
 	if (ssi->flags & IMX_SSI_SYN)
 		scr |= SSI_SCR_SYN;
 
-	writel(strcr, ssi->base + SSI_STCR);
-	writel(strcr, ssi->base + SSI_SRCR);
+	writel(stcr, ssi->base + SSI_STCR);
+	writel(srcr, ssi->base + SSI_SRCR);
 	writel(scr, ssi->base + SSI_SCR);
 
 	return 0;
