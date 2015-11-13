@@ -97,10 +97,12 @@ static int imx_ssi_set_dai_fmt(struct snd_soc_dai *cpu_dai, unsigned int fmt)
 		stcr |= SSI_STCR_TFSI | SSI_STCR_TEFS | SSI_STCR_TXBIT0;
 		srcr |= SSI_SRCR_RFSI | SSI_SRCR_REFS | SSI_SRCR_RXBIT0;
 		scr |= SSI_SCR_NET;
-		if (ssi->flags & IMX_SSI_USE_I2S_SLAVE) {
-			scr &= ~SSI_I2S_MODE_MASK;
+		scr &= ~SSI_I2S_MODE_MASK;
+		if (ssi->flags & IMX_SSI_USE_I2S_SLAVE)
 			scr |= SSI_SCR_I2S_MODE_SLAVE;
-		}
+		else
+			scr |= SSI_SCR_I2S_MODE_MSTR;
+
 		break;
 	case SND_SOC_DAIFMT_LEFT_J:
 		/* data on rising edge of bclk, frame high with data */
@@ -145,10 +147,16 @@ static int imx_ssi_set_dai_fmt(struct snd_soc_dai *cpu_dai, unsigned int fmt)
 
 	/* DAI clock master masks */
 	switch (fmt & SND_SOC_DAIFMT_MASTER_MASK) {
+	case SND_SOC_DAIFMT_CBS_CFS:
+		stcr |= SSI_STCR_TFDIR | SSI_STCR_TXDIR;
+		srcr |= SSI_SRCR_RFDIR;
+		srcr &= ~SSI_SRCR_RXDIR;
+		break;
 	case SND_SOC_DAIFMT_CBM_CFM:
+		stcr &= ~(SSI_STCR_TFDIR | SSI_STCR_TXDIR);
+		srcr &= ~(SSI_SRCR_RFDIR | SSI_SRCR_RXDIR);
 		break;
 	default:
-		/* Master mode not implemented, needs handling of clocks. */
 		return -EINVAL;
 	}
 
@@ -550,6 +558,20 @@ static int imx_ssi_probe(struct platform_device *pdev)
 	if (ret)
 		goto failed_ipg_clk;
 
+	if (!(ssi->flags & IMX_SSI_USE_I2S_SLAVE)) {
+		ssi->per_clk = devm_clk_get(&pdev->dev, "per");
+		if (IS_ERR(ssi->per_clk)) {
+			ret = PTR_ERR(ssi->per_clk);
+			dev_err(&pdev->dev, "Cannot get the clock: %d\n", ret);
+			goto failed_per_clk;
+		}
+		/* TODO: Need to separate clk_prepare() and clk_enable() for
+		 * more precise clk control to minimize the power consumption. */
+		ret = clk_prepare_enable(ssi->per_clk);
+		if (ret)
+			goto failed_per_clk;
+	}
+
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 	ssi->base = devm_ioremap_resource(&pdev->dev, res);
 	if (IS_ERR(ssi->base)) {
@@ -625,6 +647,9 @@ static int imx_ssi_probe(struct platform_device *pdev)
 failed_pcm:
 	snd_soc_unregister_component(&pdev->dev);
 failed_register:
+	if (!(ssi->flags & IMX_SSI_USE_I2S_SLAVE))
+		clk_disable_unprepare(ssi->per_clk);
+failed_per_clk:
 	clk_disable_unprepare(ssi->ipg_clk);
 failed_ipg_clk:
 	snd_soc_set_ac97_ops(NULL);
@@ -643,6 +668,9 @@ static int imx_ssi_remove(struct platform_device *pdev)
 
 	if (ssi->flags & IMX_SSI_USE_AC97)
 		ac97_ssi = NULL;
+
+	if (!(ssi->flags & IMX_SSI_USE_I2S_SLAVE))
+		clk_disable_unprepare(ssi->per_clk);
 
 	clk_disable_unprepare(ssi->ipg_clk);
 	snd_soc_set_ac97_ops(NULL);
