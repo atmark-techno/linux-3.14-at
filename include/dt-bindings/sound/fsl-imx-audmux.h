@@ -55,6 +55,8 @@
 #define IMX_AUDMUX_V2_PTCR_RCLKDIR	(1 << 16)
 #define IMX_AUDMUX_V2_PTCR_RCSEL(x)	(((x) & 0xf) << 12)
 #define IMX_AUDMUX_V2_PTCR_SYN		(1 << 11)
+#define RXFS_SEL			(1 << 3) /* Select RxFS */
+#define RXC_SEL				(1 << 3) /* Select RxClk */
 
 #define IMX_AUDMUX_V2_PDCR_RXDSEL(x)	(((x) & 0x7) << 13)
 #define IMX_AUDMUX_V2_PDCR_TXRXEN	(1 << 12)
