@@ -283,9 +283,9 @@ static void __init mx5_clocks_common_init(unsigned long rate_ckil,
 	clk_register_clkdev(clk[IMX5_CLK_USBOH3_GATE], "ipg", "imx-udc-mx51");
 	clk_register_clkdev(clk[IMX5_CLK_USBOH3_GATE], "ahb", "imx-udc-mx51");
 	clk_register_clkdev(clk[IMX5_CLK_NFC_GATE], NULL, "imx51-nand");
-	clk_register_clkdev(clk[IMX5_CLK_SSI1_IPG_GATE], NULL, "imx-ssi.0");
-	clk_register_clkdev(clk[IMX5_CLK_SSI2_IPG_GATE], NULL, "imx-ssi.1");
-	clk_register_clkdev(clk[IMX5_CLK_SSI3_IPG_GATE], NULL, "imx-ssi.2");
+	clk_register_clkdev(clk[IMX5_CLK_SSI1_IPG_GATE], "ipg", "imx-ssi.0");
+	clk_register_clkdev(clk[IMX5_CLK_SSI2_IPG_GATE], "ipg", "imx-ssi.1");
+	clk_register_clkdev(clk[IMX5_CLK_SSI3_IPG_GATE], "ipg", "imx-ssi.2");
 	clk_register_clkdev(clk[IMX5_CLK_SDMA_GATE], NULL, "imx35-sdma");
 	clk_register_clkdev(clk[IMX5_CLK_CPU_PODF], NULL, "cpu0");
 	clk_register_clkdev(clk[IMX5_CLK_IIM_GATE], "iim", NULL);

@@ -539,16 +539,16 @@ static int imx_ssi_probe(struct platform_device *pdev)
 
 	ssi->irq = platform_get_irq(pdev, 0);
 
-	ssi->clk = devm_clk_get(&pdev->dev, NULL);
-	if (IS_ERR(ssi->clk)) {
-		ret = PTR_ERR(ssi->clk);
+	ssi->ipg_clk = devm_clk_get(&pdev->dev, "ipg");
+	if (IS_ERR(ssi->ipg_clk)) {
+		ret = PTR_ERR(ssi->ipg_clk);
 		dev_err(&pdev->dev, "Cannot get the clock: %d\n",
 			ret);
-		goto failed_clk;
+		goto failed_ipg_clk;
 	}
-	ret = clk_prepare_enable(ssi->clk);
+	ret = clk_prepare_enable(ssi->ipg_clk);
 	if (ret)
-		goto failed_clk;
+		goto failed_ipg_clk;
 
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 	ssi->base = devm_ioremap_resource(&pdev->dev, res);
@@ -625,8 +625,8 @@ static int imx_ssi_probe(struct platform_device *pdev)
 failed_pcm:
 	snd_soc_unregister_component(&pdev->dev);
 failed_register:
-	clk_disable_unprepare(ssi->clk);
-failed_clk:
+	clk_disable_unprepare(ssi->ipg_clk);
+failed_ipg_clk:
 	snd_soc_set_ac97_ops(NULL);
 
 	return ret;
@@ -644,7 +644,7 @@ static int imx_ssi_remove(struct platform_device *pdev)
 	if (ssi->flags & IMX_SSI_USE_AC97)
 		ac97_ssi = NULL;
 
-	clk_disable_unprepare(ssi->clk);
+	clk_disable_unprepare(ssi->ipg_clk);
 	snd_soc_set_ac97_ops(NULL);
 
 	return 0;

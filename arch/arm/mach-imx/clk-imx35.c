@@ -235,8 +235,8 @@ int __init mx35_clocks_init(void)
 	clk_register_clkdev(clk[kpp_gate], NULL, "imx-keypad");
 	clk_register_clkdev(clk[owire_gate], NULL, "mxc_w1");
 	clk_register_clkdev(clk[sdma_gate], NULL, "imx35-sdma");
-	clk_register_clkdev(clk[ssi1_gate], NULL, "imx-ssi.0");
-	clk_register_clkdev(clk[ssi2_gate], NULL, "imx-ssi.1");
+	clk_register_clkdev(clk[ssi1_gate], "ipg", "imx-ssi.0");
+	clk_register_clkdev(clk[ssi2_gate], "ipg", "imx-ssi.1");
 	/* i.mx35 has the i.mx21 type uart */
 	clk_register_clkdev(clk[uart1_gate], "per", "imx21-uart.0");
 	clk_register_clkdev(clk[ipg], "ipg", "imx21-uart.0");

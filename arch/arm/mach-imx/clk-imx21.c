@@ -174,8 +174,8 @@ int __init mx21_clocks_init(unsigned long lref, unsigned long href)
 	clk_register_clkdev(clk[gpio_gate], "gpio", NULL);
 	clk_register_clkdev(clk[rtc_gate], "rtc", NULL);
 	clk_register_clkdev(clk[csi_hclk_gate], "csi", NULL);
-	clk_register_clkdev(clk[ssi1_gate], "ssi1", NULL);
-	clk_register_clkdev(clk[ssi2_gate], "ssi2", NULL);
+	clk_register_clkdev(clk[ssi1_gate], "ipg", "imx-ssi.0");
+	clk_register_clkdev(clk[ssi2_gate], "ipg", "imx-ssi.1");
 	clk_register_clkdev(clk[sdhc1_ipg_gate], "sdhc1", NULL);
 	clk_register_clkdev(clk[sdhc2_ipg_gate], "sdhc2", NULL);
 
