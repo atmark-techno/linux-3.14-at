@@ -95,7 +95,7 @@ static unsigned long __maybe_unused pin_cfgs_pke[] = {
 	PAD_CTL_PKE,
 };
 
-static const struct pinctrl_map armadillo4x0_extif_pinctrl_map[] = {
+static const struct pinctrl_map armadillo4x0_con9_con14_pinctrl_map[] = {
 	/* uart3 */
 #if defined(CONFIG_ARMADILLO4X0_UART3_CON9)
 	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.2", "imx25-pinctrl.0",
@@ -566,7 +566,7 @@ struct armadillo4x0_extif_gpio {
 	int val;
 };
 
-static const struct armadillo4x0_extif_gpio armadillo4x0_extif_gpios[] = {
+static const struct armadillo4x0_extif_gpio armadillo4x0_con9_con14_gpios[] = {
 	/* CON9_1 */
 #if defined(CONFIG_ARMADILLO4X0_CON9_1_GPIO3_17)
 	{ IMX_GPIO_NR(3, 17), "CON9_1", EXTIF_GPIO_DIRECTION_INPUT },
@@ -665,19 +665,18 @@ static const struct armadillo4x0_extif_gpio armadillo4x0_extif_gpios[] = {
 #endif
 };
 
-static void armadillo4x0_set_extif_gpio(void)
+static void armadillo4x0_set_extif_gpio(const struct armadillo4x0_extif_gpio *gpios,
+					size_t size)
 {
 	int i;
 
-	for (i = 0; i < ARRAY_SIZE(armadillo4x0_extif_gpios); i++) {
-		imx25_named_gpio_request(armadillo4x0_extif_gpios[i].gpio,
-					 armadillo4x0_extif_gpios[i].name);
-		if (armadillo4x0_extif_gpios[i].dir == EXTIF_GPIO_DIRECTION_INPUT)
-			gpio_direction_input(armadillo4x0_extif_gpios[i].gpio);
+	for (i = 0; i < size; i++) {
+		imx25_named_gpio_request(gpios[i].gpio, gpios[i].name);
+		if (gpios[i].dir == EXTIF_GPIO_DIRECTION_INPUT)
+			gpio_direction_input(gpios[i].gpio);
 		else
-			gpio_direction_output(armadillo4x0_extif_gpios[i].gpio,
-					      armadillo4x0_extif_gpios[i].val);
-		gpio_export(armadillo4x0_extif_gpios[i].gpio, true);
+			gpio_direction_output(gpios[i].gpio, gpios[i].val);
+		gpio_export(gpios[i].gpio, true);
 	}
 }
 
@@ -729,8 +728,8 @@ static struct regulator_consumer_supply flexcan1_dummy_supplies[] = {
 
 void __init armadillo4x0_con9_con14_init(void)
 {
-	pinctrl_register_mappings(armadillo4x0_extif_pinctrl_map,
-				  ARRAY_SIZE(armadillo4x0_extif_pinctrl_map));
+	pinctrl_register_mappings(armadillo4x0_con9_con14_pinctrl_map,
+				  ARRAY_SIZE(armadillo4x0_con9_con14_pinctrl_map));
 
 	if (IS_ENABLED(CONFIG_SERIAL_MXC_SELECT3))
 		imx25_add_imx_uart2(&uart2_pdata);
@@ -785,7 +784,8 @@ void __init armadillo4x0_con9_con14_init(void)
 	if (IS_ENABLED(CONFIG_W1_GPIO_SELECT1))
 		imx_add_w1_gpio(-1, &gpio_w1_pdata);
 
-	armadillo4x0_set_extif_gpio();
+	armadillo4x0_set_extif_gpio(armadillo4x0_con9_con14_gpios,
+				    ARRAY_SIZE(armadillo4x0_con9_con14_gpios));
 }
 
 #if defined(CONFIG_MACH_ARMADILLO440) || defined(CONFIG_MACH_ARMADILLO410)
