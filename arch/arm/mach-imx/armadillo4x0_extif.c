@@ -481,6 +481,13 @@ static const struct pinctrl_map armadillo4x0_con9_con14_pinctrl_map[] = {
 };
 
 static const struct pinctrl_map armadillo4x0_con11_pinctrl_map[] = {
+
+	/* pwmo1 */
+	PIN_MAP_MUX_GROUP_DEFAULT("imx27-pwm.0", "imx25-pinctrl.0",
+				  "pwm__pwm", "pwm1"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx27-pwm.0", "imx25-pinctrl.0",
+				    "MX25_PAD_PWM", pin_cfgs_100kup),
+
 	/* uart3 */
 #if defined(CONFIG_ARMADILLO4X0_UART3_CON11)
 	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.2", "imx25-pinctrl.0",
@@ -878,6 +885,8 @@ armadillo4x0_esdhc2_regulator_config = {
 #if defined(CONFIG_MACH_ARMADILLO440) || defined(CONFIG_MACH_ARMADILLO410)
 static void __init armadillo4x0_lcd_init(void)
 {
+	if (IS_ENABLED(CONFIG_MXC_PWM_SELECT1))
+		imx25_add_mxc_pwm(0);
 }
 
 static void __init armadillo4x0_touchscreen_init(void)
