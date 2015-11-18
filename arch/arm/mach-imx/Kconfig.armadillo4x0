@@ -209,6 +209,12 @@ config W1_GPIO_SELECT1
 	help
 	  Enable GPIO 1-Wire module.
 
+config LCDC_MXC_SELECT
+	bool "Enable LCDC module"
+	default y
+	help
+	  Enable MX25 LCDC module.
+
 endmenu
 
 menu "Armadillo-400 Board options"
