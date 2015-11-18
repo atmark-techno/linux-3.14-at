@@ -27,6 +27,8 @@
 #include <linux/regulator/machine.h>
 #include <linux/regulator/fixed.h>
 #include <linux/spi/spi.h>
+#include <linux/pwm.h>
+#include <linux/pwm_backlight.h>
 
 #include <asm/mach-types.h>
 #include <asm/mach/arch.h>
@@ -1006,10 +1008,42 @@ static const struct imx_fb_platform_data armadillo4x0_fb_pdata __initconst = {
 	.dmacr		= DMACR_HM(0x2) | DMACR_TM(0x10),
 };
 
+static struct platform_pwm_backlight_data armadillo4x0_backlight_data = {
+	.pwm_id		= 0,
+	.max_brightness	= 255,
+	.dft_brightness = 255,
+	.pwm_period_ns	= 10*1000*1000, /* 100Hz: This setting overrides the
+					   parameter defined by pwm_lookup */
+	.enable_gpio	= -1,
+};
+
+/* Fixed 5.0V regulator used by LCD backlight */
+static struct regulator_consumer_supply fixed5v0_power_consumers[] = {
+	REGULATOR_SUPPLY("power", "pwm-backlight.0"),
+};
+
+static struct pwm_lookup armadillo4x0_pwm_lookup[] = {
+	PWM_LOOKUP("imx27-pwm.0", 0, "pwm-backlight.0", NULL,
+		   10*1000*1000, PWM_POLARITY_INVERSED),
+};
+
 static void __init armadillo4x0_lcd_init(void)
 {
-	if (IS_ENABLED(CONFIG_MXC_PWM_SELECT1))
+	if (IS_ENABLED(CONFIG_MXC_PWM_SELECT1)) {
 		imx25_add_mxc_pwm(0);
+
+		pwm_add_table(armadillo4x0_pwm_lookup,
+			      ARRAY_SIZE(armadillo4x0_pwm_lookup));
+
+		regulator_register_always_on(4, "fixed-5.0V",
+					     fixed5v0_power_consumers,
+					     ARRAY_SIZE(fixed5v0_power_consumers),
+					     5000000);
+
+		imx_add_platform_device("pwm-backlight", 0, NULL, 0,
+					&armadillo4x0_backlight_data,
+					sizeof(armadillo4x0_backlight_data));
+	}
 
 	if (IS_ENABLED(CONFIG_LCDC_MXC_SELECT))
 		imx25_add_imx_fb(&armadillo4x0_fb_pdata);
