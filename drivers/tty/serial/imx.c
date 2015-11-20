@@ -252,6 +252,9 @@ struct imx_port {
 	unsigned int rs485_duplex_gpio;
 	struct hrtimer rs485_before_send;
 	struct hrtimer rs485_after_send;
+
+	bool use_gpio_for_dsr;
+	int gpio_dsr;
 };
 
 struct imx_port_ucrs {
@@ -1018,6 +1021,11 @@ static unsigned int imx_get_mctrl(struct uart_port *port)
 
 	if (!(sr2 & USR2_RIIN))
 		tmp |= TIOCM_RI;
+
+	if (sport->use_gpio_for_dsr && gpio_is_valid(sport->gpio_dsr)) {
+		if (gpio_get_value(sport->gpio_dsr) == 1)
+			tmp &= ~TIOCM_DSR;
+	}
 
 	return tmp;
 }
@@ -2184,6 +2192,9 @@ static void serial_imx_probe_pdata(struct imx_port *sport,
 			sport->rs485_duplex_type = IMXUART_RS485_DUPLEX_NONE;
 		}
 	}
+
+	sport->use_gpio_for_dsr = pdata->use_gpio_for_dsr;
+	sport->gpio_dsr = pdata->gpio_dsr;
 }
 
 static int serial_imx_probe(struct platform_device *pdev)

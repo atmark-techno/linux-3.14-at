@@ -54,6 +54,9 @@ struct imxuart_platform_data {
 	unsigned int rs485_tx_gate_gpio;
 	enum imxuart_rs485_duplex_types rs485_duplex_type;
 	unsigned int rs485_duplex_gpio; /* 0: half, 1: full */
+
+	bool use_gpio_for_dsr;
+	int gpio_dsr;
 };
 
 #endif
