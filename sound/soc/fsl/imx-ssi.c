@@ -386,13 +386,15 @@ static struct snd_soc_dai_driver imx_ssi_dai = {
 		.channels_min = 2,
 		.channels_max = 2,
 		.rates = SNDRV_PCM_RATE_8000_96000,
-		.formats = SNDRV_PCM_FMTBIT_S16_LE,
+		.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S20_3LE |
+			   SNDRV_PCM_FMTBIT_S24_LE,
 	},
 	.capture = {
 		.channels_min = 2,
 		.channels_max = 2,
 		.rates = SNDRV_PCM_RATE_8000_96000,
-		.formats = SNDRV_PCM_FMTBIT_S16_LE,
+		.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S20_3LE |
+			   SNDRV_PCM_FMTBIT_S24_LE,
 	},
 	.ops = &imx_ssi_pcm_dai_ops,
 };
