@@ -1,0 +1,9 @@
+# drivers/imx/Kconfig
+
+if ARCH_MXC
+
+menu "IMX support drivers"
+source "drivers/imx/adc/Kconfig"
+endmenu
+
+endif
