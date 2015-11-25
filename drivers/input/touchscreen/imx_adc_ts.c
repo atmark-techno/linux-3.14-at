@@ -36,7 +36,6 @@
 #include <linux/delay.h>
 #include <linux/freezer.h>
 #include <linux/platform_device.h>
-#include <linux/regulator/regulator.h>
 #include <linux/platform_data/imx_adc.h>
 
 #define IMX_ADC_TS_NAME	"imx_adc_ts"
@@ -44,7 +43,6 @@
 struct imx_adc_ts_driver_data {
 	struct input_dev *inputdev;
 	struct task_struct *thread;
-	struct regulator *regu;
 };
 
 static int ts_thread(void *arg)
@@ -95,8 +93,6 @@ static int imx_adc_ts_probe(struct platform_device *pdev)
 {
 	int retval;
 	struct imx_adc_ts_driver_data *drvdata;
-	struct platform_imx_adc_ts_data *plat_data = pdev->dev.platform_data;
-	bool should_wakeup = 0;
 
 	if (!is_imx_adc_ready())
 		return -ENODEV;
@@ -106,24 +102,7 @@ static int imx_adc_ts_probe(struct platform_device *pdev)
 		return -ENOMEM;
 
 	platform_set_drvdata(pdev, drvdata);
-
-	if (plat_data)
-		should_wakeup = plat_data->is_wake_src;
-
-	device_init_wakeup(&pdev->dev, 1);
-	device_set_wakeup_enable(&pdev->dev, should_wakeup);
 	imx_adc_register_ts(&pdev->dev);
-
-	if (plat_data && plat_data->regu_name) {
-		drvdata->regu = regulator_get(NULL, plat_data->regu_name);
-		if (IS_ERR(drvdata->regu)) {
-			retval = PTR_ERR(drvdata->regu);
-			goto err_regulator_get;
-		}
-		retval = regulator_enable(drvdata->regu);
-		if (retval)
-			goto err_regulator_enable;
-	}
 
 	drvdata->inputdev = input_allocate_device();
 	if (!drvdata->inputdev) {
@@ -167,12 +146,6 @@ err_kthread_run:
 err_input_register_device:
 	input_free_device(drvdata->inputdev);
 err_input_allocate_device:
-	if (drvdata->regu)
-		regulator_disable(drvdata->regu);
-err_regulator_enable:
-	if (drvdata->regu)
-		regulator_put(drvdata->regu, NULL);
-err_regulator_get:
 	imx_adc_unregister_ts();
 	kfree(drvdata);
 	platform_set_drvdata(pdev, NULL);
@@ -187,10 +160,6 @@ static int imx_adc_ts_remove(struct platform_device *pdev)
 	kthread_stop(drvdata->thread);
 	input_unregister_device(drvdata->inputdev);
 	input_free_device(drvdata->inputdev);
-	if (drvdata->regu) {
-		regulator_disable(drvdata->regu);
-		regulator_put(drvdata->regu, NULL);
-	}
 	imx_adc_unregister_ts();
 	kfree(drvdata);
 	platform_set_drvdata(pdev, NULL);
@@ -198,41 +167,12 @@ static int imx_adc_ts_remove(struct platform_device *pdev)
 	return 0;
 }
 
-#if defined(CONFIG_PM)
-static int imx_adc_ts_suspend(struct platform_device *pdev, pm_message_t state)
-{
-	struct imx_adc_ts_driver_data *drvdata = platform_get_drvdata(pdev);
-
-	if (!device_may_wakeup(&pdev->dev))
-		if (drvdata->regu)
-			regulator_disable(drvdata->regu);
-
-	return 0;
-}
-
-static int imx_adc_ts_resume(struct platform_device *pdev)
-{
-	struct imx_adc_ts_driver_data *drvdata = platform_get_drvdata(pdev);
-
-	if (!device_may_wakeup(&pdev->dev))
-		if (drvdata->regu)
-			regulator_enable(drvdata->regu);
-
-	return 0;
-}
-#else
-#define imx_adc_ts_suspend NULL
-#define imx_adc_ts_resume NULL
-#endif /* defined(CONFIG_PM) */
-
 static struct platform_driver imx_adc_ts_driver = {
 	.driver = {
 		.name = "imx_adc_ts",
 	},
 	.probe = imx_adc_ts_probe,
 	.remove = imx_adc_ts_remove,
-	.suspend = imx_adc_ts_suspend,
-	.resume = imx_adc_ts_resume,
 };
 
 static int __init imx_adc_ts_init(void)

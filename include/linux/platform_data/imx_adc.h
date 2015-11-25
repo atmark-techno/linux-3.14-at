@@ -188,10 +188,6 @@ struct t_adc_convert_param {
 /* EXPORTED FUNCTIONS */
 
 #ifdef __KERNEL__
-struct platform_imx_adc_data {
-	int is_wake_src;
-};
-
 /*!
  * This function retrieves the current touch screen operation mode.
  *
