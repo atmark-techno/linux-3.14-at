@@ -2583,6 +2583,10 @@ struct imx_pin pins_kpp_row2__uart3_rts[] = {
 	IMX25_PINCTRL_PIN(KPP_ROW2, UART3_RTS),
 };
 
+struct imx_pin pins_kpp_row2__aud5_rxc[] = {
+	IMX25_PINCTRL_PIN(KPP_ROW2, AUD5_RXC),
+};
+
 struct imx_pin pins_kpp_row2__csi_d0[] = {
 	IMX25_PINCTRL_PIN(KPP_ROW2, CSI_D0),
 };
@@ -2602,6 +2606,10 @@ struct imx_pin pins_kpp_row3__kpp_row3[] = {
 
 struct imx_pin pins_kpp_row3__uart3_cts[] = {
 	IMX25_PINCTRL_PIN(KPP_ROW3, UART3_CTS),
+};
+
+struct imx_pin pins_kpp_row3__aud5_rxfs[] = {
+	IMX25_PINCTRL_PIN(KPP_ROW3, AUD5_RXFS),
 };
 
 struct imx_pin pins_kpp_row3__csi_ld1[] = {
@@ -3405,10 +3413,12 @@ static struct imx_pin_group imx25_pinctrl_groups[] = {
 	IMX25_PINCTRL_PIN_GROUP(kpp_row1, gpio_2_30),
 	IMX25_PINCTRL_PIN_GROUP(kpp_row2, kpp_row2),
 	IMX25_PINCTRL_PIN_GROUP(kpp_row2, uart3_rts),
+	IMX25_PINCTRL_PIN_GROUP(kpp_row2, aud5_rxc),
 	IMX25_PINCTRL_PIN_GROUP(kpp_row2, csi_d0),
 	IMX25_PINCTRL_PIN_GROUP(kpp_row2, gpio_2_31),
 	IMX25_PINCTRL_PIN_GROUP(kpp_row3, kpp_row3),
 	IMX25_PINCTRL_PIN_GROUP(kpp_row3, uart3_cts),
+	IMX25_PINCTRL_PIN_GROUP(kpp_row3, aud5_rxfs),
 	IMX25_PINCTRL_PIN_GROUP(kpp_row3, csi_ld1),
 	IMX25_PINCTRL_PIN_GROUP(kpp_row3, gpio_3_0),
 	IMX25_PINCTRL_PIN_GROUP(kpp_col0, kpp_col0),
@@ -3514,6 +3524,8 @@ static const char *aud5_groups[] = {
 	"kpp_col1__aud5_rxd",
 	"kpp_col2__aud5_txc",
 	"kpp_col3__aud5_txfs",
+	"kpp_row2__aud5_rxc",
+	"kpp_row3__aud5_rxfs",
 };
 
 static const char *aud7_groups[] = {
