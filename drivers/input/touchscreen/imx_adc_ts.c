@@ -35,6 +35,7 @@
 #include <linux/init.h>
 #include <linux/delay.h>
 #include <linux/freezer.h>
+#include <linux/slab.h>
 #include <linux/platform_device.h>
 #include <linux/platform_data/imx_adc.h>
 
@@ -51,8 +52,6 @@ static int ts_thread(void *arg)
 	struct imx_adc_ts_driver_data *drvdata = platform_get_drvdata(pdev);
 	struct t_touch_screen ts_sample;
 	int wait = 1;
-
-	daemonize("imx_adc_ts");
 
 	do {
 		try_to_freeze();

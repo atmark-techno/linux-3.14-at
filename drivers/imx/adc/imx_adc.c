@@ -32,6 +32,9 @@
 #include <linux/sched.h>
 #include <linux/time.h>
 #include <linux/wait.h>
+#include <linux/semaphore.h>
+#include <linux/slab.h>
+#include <linux/module.h>
 #include <linux/platform_data/imx_adc.h>
 #include "imx_adc_reg.h"
 
@@ -64,12 +67,12 @@ static bool imx_adc_ready;
 static struct class *imx_adc_class;
 static struct imx_adc_data *adc_data;
 
-static DECLARE_MUTEX(general_convert_mutex);
-static DECLARE_MUTEX(ts_convert_mutex);
+static DEFINE_SEMAPHORE(general_convert_mutex);
+static DEFINE_SEMAPHORE(ts_convert_mutex);
 
 static struct completion irq_wait;
 
-unsigned long tsc_base;
+void __iomem *tsc_base;
 
 static struct device *ts_dev;
 
@@ -726,8 +729,7 @@ static enum IMX_ADC_STATUS imx_adc_convert_multichnnel(enum t_channel channels,
  * @param        arg         the parameter
  * @return       This function returns 0 if successful.
  */
-static int imx_adc_ioctl(struct inode *inode, struct file *file,
-			 unsigned int cmd, unsigned long arg)
+static long imx_adc_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
 {
 	struct t_adc_convert_param *convert_param;
 
@@ -809,7 +811,7 @@ static int imx_adc_ioctl(struct inode *inode, struct file *file,
 
 static struct file_operations imx_adc_fops = {
 	.owner = THIS_MODULE,
-	.ioctl = imx_adc_ioctl,
+	.unlocked_ioctl = imx_adc_ioctl,
 	.open = imx_adc_open,
 	.release = imx_adc_free,
 };
@@ -834,7 +836,7 @@ static int imx_adc_module_probe(struct platform_device *pdev)
 		dev_err(&pdev->dev, "failed to rebase TSC base address\n");
 		goto err_out0;
 	}
-	tsc_base = (unsigned long)base;
+	tsc_base = base;
 
 	/* create the chrdev */
 	imx_adc_major = register_chrdev(0, "imx_adc", &imx_adc_fops);
@@ -855,7 +857,7 @@ static int imx_adc_module_probe(struct platform_device *pdev)
 	}
 
 	temp_class = device_create(imx_adc_class, NULL,
-				   MKDEV(imx_adc_major, 0), "imx_adc");
+				   MKDEV(imx_adc_major, 0), NULL,  "imx_adc");
 	if (IS_ERR(temp_class)) {
 		dev_err(&pdev->dev, "Error creating imx_adc class device.\n");
 		ret = PTR_ERR(temp_class);
@@ -870,7 +872,7 @@ static int imx_adc_module_probe(struct platform_device *pdev)
 			     0, MOD_NAME, MOD_NAME);
 	if (retval) {
 		dev_dbg(&pdev->dev, "ADC: request_irq(%d) returned error %d\n",
-			MXC_INT_TSC, retval);
+			adc_data->irq, retval);
 		return retval;
 	}
 
