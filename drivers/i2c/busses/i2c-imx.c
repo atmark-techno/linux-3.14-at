@@ -48,6 +48,7 @@
 #include <linux/of.h>
 #include <linux/of_device.h>
 #include <linux/platform_data/i2c-imx.h>
+#include <linux/gpio.h>
 
 /** Defines ********************************************************************
 *******************************************************************************/
@@ -586,6 +587,58 @@ static struct i2c_algorithm i2c_imx_algo = {
 	.functionality	= i2c_imx_func,
 };
 
+#define GPIO_I2C_DUMMY_CLOCK_NUM 64
+static int i2c_imx_bus_clear(struct device *dev,
+			     struct imxi2c_platform_data *pdata)
+{
+	int i;
+	int retval = 0;
+	struct pinctrl *p;
+
+	p = pinctrl_get_select(dev, "imxi2c_gpio_mode");
+	if (IS_ERR(p))
+		return PTR_ERR(p);
+
+	if (gpio_request(pdata->scl_pin, "i2c_scl_gpio")) {
+		retval = -EINVAL;
+		goto out_pinctrl_default;
+	}
+	if (gpio_request(pdata->sda_pin, "i2c_sda_gpio")) {
+		retval = -EINVAL;
+		goto out_scl_gpio_free;
+	}
+
+	gpio_direction_output(pdata->scl_pin, 0);
+	gpio_direction_input(pdata->sda_pin);
+
+	/* dummy clock */
+	for (i = 0;i < GPIO_I2C_DUMMY_CLOCK_NUM; i++) {
+		if (gpio_get_value(pdata->sda_pin) == 1)
+			break;
+		gpio_set_value(pdata->scl_pin, 1);
+		udelay(1000*1000/pdata->bitrate/2);
+		gpio_set_value(pdata->scl_pin, 0);
+		udelay(1000*1000/pdata->bitrate/2);
+	}
+
+	/* stop condition */
+	gpio_direction_output(pdata->sda_pin, 0);
+	udelay(1000*1000/pdata->bitrate/2);
+	gpio_set_value(pdata->scl_pin, 1);
+	udelay(1000*1000/pdata->bitrate/2);
+	gpio_set_value(pdata->sda_pin, 1);
+
+	gpio_free(pdata->sda_pin);
+out_scl_gpio_free:
+	gpio_free(pdata->scl_pin);
+out_pinctrl_default:
+	p = pinctrl_get_select_default(dev);
+	if (IS_ERR(p))
+		retval = PTR_ERR(p);
+
+	return retval;
+}
+
 static int i2c_imx_probe(struct platform_device *pdev)
 {
 	const struct of_device_id *of_id = of_match_device(i2c_imx_dt_ids,
@@ -598,6 +651,9 @@ static int i2c_imx_probe(struct platform_device *pdev)
 	u32 bitrate;
 
 	dev_dbg(&pdev->dev, "<%s>\n", __func__);
+
+	if (pdata && pdata->use_bus_clear)
+		i2c_imx_bus_clear(&pdev->dev, pdata);
 
 	irq = platform_get_irq(pdev, 0);
 	if (irq < 0) {

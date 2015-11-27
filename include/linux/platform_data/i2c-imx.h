@@ -16,6 +16,10 @@
  **/
 struct imxi2c_platform_data {
 	u32 bitrate;
+
+	bool		use_bus_clear;
+	unsigned int	scl_pin;
+	unsigned int	sda_pin;
 };
 
 #endif /* __ASM_ARCH_I2C_H_ */
