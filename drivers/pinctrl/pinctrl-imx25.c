@@ -2089,6 +2089,10 @@ struct imx_pin pins_csi_d8__csi_d8[] = {
 	IMX25_PINCTRL_PIN(CSI_D8, CSI_D8),
 };
 
+struct imx_pin pins_csi_d8__aud6_rxc[] = {
+	IMX25_PINCTRL_PIN(CSI_D8, AUD6_RXC),
+};
+
 struct imx_pin pins_csi_d8__gpio_1_7[] = {
 	IMX25_PINCTRL_PIN(CSI_D8, GPIO_1_7),
 };
@@ -2102,6 +2106,10 @@ struct imx_pin pins_csi_d9__csi_d9[] = {
 	IMX25_PINCTRL_PIN(CSI_D9, CSI_D9),
 };
 
+struct imx_pin pins_csi_d9__aud6_rxfs[] = {
+	IMX25_PINCTRL_PIN(CSI_D9, AUD6_RXFS),
+};
+
 struct imx_pin pins_csi_d9__gpio_4_21[] = {
 	IMX25_PINCTRL_PIN(CSI_D9, GPIO_4_21),
 };
@@ -2113,6 +2121,10 @@ unsigned int pin_ids_csi_mclk[] = {
 
 struct imx_pin pins_csi_mclk__csi_mclk[] = {
 	IMX25_PINCTRL_PIN(CSI_MCLK, CSI_MCLK),
+};
+
+struct imx_pin pins_csi_mclk__aud6_txd[] = {
+	IMX25_PINCTRL_PIN(CSI_MCLK, AUD6_TXD),
 };
 
 struct imx_pin pins_csi_mclk__sd2_data0[] = {
@@ -2132,6 +2144,10 @@ struct imx_pin pins_csi_vsync__csi_vsync[] = {
 	IMX25_PINCTRL_PIN(CSI_VSYNC, CSI_VSYNC),
 };
 
+struct imx_pin pins_csi_vsync__aud6_rxd[] = {
+	IMX25_PINCTRL_PIN(CSI_VSYNC, AUD6_RXD),
+};
+
 struct imx_pin pins_csi_vsync__sd2_data1[] = {
 	IMX25_PINCTRL_PIN(CSI_VSYNC, SD2_DATA1),
 };
@@ -2149,6 +2165,10 @@ struct imx_pin pins_csi_hsync__csi_hsync[] = {
 	IMX25_PINCTRL_PIN(CSI_HSYNC, CSI_HSYNC),
 };
 
+struct imx_pin pins_csi_hsync__aud6_txc[] = {
+	IMX25_PINCTRL_PIN(CSI_HSYNC, AUD6_TXC),
+};
+
 struct imx_pin pins_csi_hsync__sd2_data2[] = {
 	IMX25_PINCTRL_PIN(CSI_HSYNC, SD2_DATA2),
 };
@@ -2164,6 +2184,10 @@ unsigned int pin_ids_csi_pixclk[] = {
 
 struct imx_pin pins_csi_pixclk__csi_pixclk[] = {
 	IMX25_PINCTRL_PIN(CSI_PIXCLK, CSI_PIXCLK),
+};
+
+struct imx_pin pins_csi_pixclk__aud6_txfs[] = {
+	IMX25_PINCTRL_PIN(CSI_PIXCLK, AUD6_TXFS),
 };
 
 struct imx_pin pins_csi_pixclk__sd2_data3[] = {
@@ -3327,19 +3351,25 @@ static struct imx_pin_group imx25_pinctrl_groups[] = {
 	IMX25_PINCTRL_PIN_GROUP(csi_d7, sd2_clk),
 	IMX25_PINCTRL_PIN_GROUP(csi_d7, gpio_1_6),
 	IMX25_PINCTRL_PIN_GROUP(csi_d8, csi_d8),
+	IMX25_PINCTRL_PIN_GROUP(csi_d8, aud6_rxc),
 	IMX25_PINCTRL_PIN_GROUP(csi_d8, gpio_1_7),
 	IMX25_PINCTRL_PIN_GROUP(csi_d9, csi_d9),
+	IMX25_PINCTRL_PIN_GROUP(csi_d9, aud6_rxfs),
 	IMX25_PINCTRL_PIN_GROUP(csi_d9, gpio_4_21),
 	IMX25_PINCTRL_PIN_GROUP(csi_mclk, csi_mclk),
+	IMX25_PINCTRL_PIN_GROUP(csi_mclk, aud6_txd),
 	IMX25_PINCTRL_PIN_GROUP(csi_mclk, sd2_data0),
 	IMX25_PINCTRL_PIN_GROUP(csi_mclk, gpio_1_8),
 	IMX25_PINCTRL_PIN_GROUP(csi_vsync, csi_vsync),
+	IMX25_PINCTRL_PIN_GROUP(csi_vsync, aud6_rxd),
 	IMX25_PINCTRL_PIN_GROUP(csi_vsync, sd2_data1),
 	IMX25_PINCTRL_PIN_GROUP(csi_vsync, gpio_1_9),
 	IMX25_PINCTRL_PIN_GROUP(csi_hsync, csi_hsync),
+	IMX25_PINCTRL_PIN_GROUP(csi_hsync, aud6_txc),
 	IMX25_PINCTRL_PIN_GROUP(csi_hsync, sd2_data2),
 	IMX25_PINCTRL_PIN_GROUP(csi_hsync, gpio_1_10),
 	IMX25_PINCTRL_PIN_GROUP(csi_pixclk, csi_pixclk),
+	IMX25_PINCTRL_PIN_GROUP(csi_pixclk, aud6_txfs),
 	IMX25_PINCTRL_PIN_GROUP(csi_pixclk, sd2_data3),
 	IMX25_PINCTRL_PIN_GROUP(csi_pixclk, gpio_1_11),
 	IMX25_PINCTRL_PIN_GROUP(i2c1_clk, i2c1_clk),
@@ -3526,6 +3556,15 @@ static const char *aud5_groups[] = {
 	"kpp_col3__aud5_txfs",
 	"kpp_row2__aud5_rxc",
 	"kpp_row3__aud5_rxfs",
+};
+
+static const char *aud6_groups[] = {
+	"csi_d8__aud6_rxc",
+	"csi_d9__aud6_rxfs",
+	"csi_mclk__aud6_txd",
+	"csi_vsync__aud6_rxd",
+	"csi_hsync__aud6_txc",
+	"csi_pixclk__aud6_txfs",
 };
 
 static const char *aud7_groups[] = {
@@ -4009,6 +4048,7 @@ static const char *ccm_groups[] = {
 static struct imx_pmx_func imx25_pinctrl_functions[] = {
 	IMX25_PINCTRL_PMX_FUNC(aud4),
 	IMX25_PINCTRL_PMX_FUNC(aud5),
+	IMX25_PINCTRL_PMX_FUNC(aud6),
 	IMX25_PINCTRL_PMX_FUNC(aud7),
 	IMX25_PINCTRL_PMX_FUNC(can1),
 	IMX25_PINCTRL_PMX_FUNC(can2),
