@@ -189,22 +189,6 @@ config FLEXCAN_SELECT2
 	help
 	  Enable MX25 FlexCAN2 module.
 
-config MXC_AUDMUX_SELECT5
-	bool
-	default y
-	select SSI_MXC_SELECT1
-	depends on !MXC_AUDMUX_SELECT
-	help
-	  Enable MX25 AUDMUX module. Currently only supports routing to SSI1.
-
-config MXC_AUDMUX_SELECT6
-	bool
-	default n
-	depends on !MXC_AUDMUX_SELECT5
-	select SSI_MXC_SELECT1
-	help
-	  Enable MX25 AUDMUX module. Currently only supports routing to SSI1.
-
 config W1_MXC_SELECT1
 	bool "Enable MX25 1-Wire module"
 	default n
@@ -563,7 +547,6 @@ config ARMADILLO4X0_AUD5_CON11
 	select ARMADILLO4X0_CON11_45_AUD5_RXD
 	select ARMADILLO4X0_CON11_46_AUD5_TXC
 	select ARMADILLO4X0_CON11_47_AUD5_TXFS
-	select MXC_AUDMUX_SELECT5
 
 config ARMADILLO4X0_AUD6_CON9
 	bool "Enable AUD6 at CON9"
@@ -584,7 +567,6 @@ config ARMADILLO4X0_AUD6_CON9
 	select ARMADILLO4X0_CON9_22_AUD6_RXD
 	select ARMADILLO4X0_CON9_23_AUD6_TXC
 	select ARMADILLO4X0_CON9_24_AUD6_TXFS
-	select MXC_AUDMUX_SELECT6
 
 config ARMADILLO4X0_GPIOKEYS_CON11
 	bool "Enable GPIO keys at CON11"
