@@ -1153,7 +1153,7 @@ static void __init armadillo4x0_touchscreen_init(void)
 }
 
 static struct imx_ssi_platform_data armadillo4x0_ssi0_pdata = {
-	.flags = IMX_SSI_SYN | IMX_SSI_NET,
+	.flags = IMX_SSI_DMA | IMX_SSI_SYN | IMX_SSI_NET,
 };
 
 static void __init armadillo4x0_audio_init(void)
