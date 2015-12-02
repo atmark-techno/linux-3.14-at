@@ -37,8 +37,15 @@
  * */
 #define ARMADILLO440_WM8978_MCLOCK 24576000
 
+#if defined(CONFIG_ARMADILLO4X0_AUD5_CON11)
 #define AUDMUX_INNER_PORT MX25_AUDMUX_PORT1_SSI0
 #define AUDMUX_OUTER_PORT MX25_AUDMUX_PORT5
+#elif defined(CONFIG_ARMADILLO4X0_AUD6_CON9)
+#define AUDMUX_INNER_PORT MX25_AUDMUX_PORT1_SSI0
+#define AUDMUX_OUTER_PORT MX25_AUDMUX_PORT6
+#else
+#error "audmux port is not selected."
+#endif
 
 static int armadillo4x0_wm8978_hw_params(struct snd_pcm_substream *substream,
 	struct snd_pcm_hw_params *params)

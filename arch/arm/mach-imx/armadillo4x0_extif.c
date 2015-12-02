@@ -624,6 +624,34 @@ static const struct pinctrl_map armadillo4x0_con11_pinctrl_map[] = {
 				    "MX25_PAD_KPP_ROW3", pin_cfgs_100kup),
 #endif
 
+	/* aud6 */
+#if defined(CONFIG_ARMADILLO4X0_AUD6_CON9)
+	PIN_MAP_MUX_GROUP_DEFAULT("imx31-audmux.0", "imx25-pinctrl.0",
+				  "csi_d8__aud6_rxc", "aud6"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx31-audmux.0", "imx25-pinctrl.0",
+				  "csi_d9__aud6_rxfs", "aud6"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx31-audmux.0", "imx25-pinctrl.0",
+				  "csi_mclk__aud6_txd", "aud6"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx31-audmux.0", "imx25-pinctrl.0",
+				  "csi_vsync__aud6_rxd", "aud6"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx31-audmux.0", "imx25-pinctrl.0",
+				  "csi_hsync__aud6_txc", "aud6"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx31-audmux.0", "imx25-pinctrl.0",
+				  "csi_pixclk__aud6_txfs", "aud6"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx31-audmux.0", "imx25-pinctrl.0",
+				    "MX25_PAD_CSI_D8", pin_cfgs_100kup_sre_fast),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx31-audmux.0", "imx25-pinctrl.0",
+				    "MX25_PAD_CSI_D9", pin_cfgs_100kup),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx31-audmux.0", "imx25-pinctrl.0",
+				    "MX25_PAD_CSI_MCLK", pin_cfgs_100kup),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx31-audmux.0", "imx25-pinctrl.0",
+				    "MX25_PAD_CSI_VSYNC", pin_cfgs_100kup),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx31-audmux.0", "imx25-pinctrl.0",
+				    "MX25_PAD_CSI_HSYNC", pin_cfgs_100kup),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx31-audmux.0", "imx25-pinctrl.0",
+				    "MX25_PAD_CSI_PIXCLK", pin_cfgs_100kup),
+#endif
+
 	/* uart3 */
 #if defined(CONFIG_ARMADILLO4X0_UART3_CON11)
 	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.2", "imx25-pinctrl.0",
