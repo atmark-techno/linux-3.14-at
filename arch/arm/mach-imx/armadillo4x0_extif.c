@@ -1019,11 +1019,11 @@ static struct platform_pwm_backlight_data armadillo4x0_backlight_data = {
 
 /* Fixed 5.0V regulator used by LCD backlight */
 static struct regulator_consumer_supply fixed5v0_power_consumers[] = {
-	REGULATOR_SUPPLY("power", "pwm-backlight.0"),
+	REGULATOR_SUPPLY("power", "pwm-backlight"),
 };
 
 static struct pwm_lookup armadillo4x0_pwm_lookup[] = {
-	PWM_LOOKUP("imx27-pwm.0", 0, "pwm-backlight.0", NULL,
+	PWM_LOOKUP("imx27-pwm.0", 0, "pwm-backlight", NULL,
 		   10*1000*1000, PWM_POLARITY_INVERSED),
 };
 
@@ -1040,7 +1040,7 @@ static void __init armadillo4x0_lcd_init(void)
 					     ARRAY_SIZE(fixed5v0_power_consumers),
 					     5000000);
 
-		imx_add_platform_device("pwm-backlight", 0, NULL, 0,
+		imx_add_platform_device("pwm-backlight", -1, NULL, 0,
 					&armadillo4x0_backlight_data,
 					sizeof(armadillo4x0_backlight_data));
 	}
