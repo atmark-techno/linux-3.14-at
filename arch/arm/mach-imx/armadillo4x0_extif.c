@@ -701,6 +701,12 @@ armadillo4x0_esdhc2_regulator_config = {
 	.init_data		= &armadillo4x0_esdhc2_regulator_data,
 };
 
+static struct regulator_consumer_supply flexcan1_dummy_supplies[] = {
+#if defined(CONFIG_ARMADILLO4X0_CAN2_CON14)
+	REGULATOR_SUPPLY("xceiver", "flexcan.1"),
+#endif
+};
+
 void __init armadillo4x0_extif_init(void)
 {
 	pinctrl_register_mappings(armadillo4x0_extif_pinctrl_map,
@@ -747,9 +753,12 @@ void __init armadillo4x0_extif_init(void)
 	if (IS_ENABLED(CONFIG_MXC_PWM_SELECT4))
 		imx25_add_mxc_pwm(3);
 
-	if (IS_ENABLED(CONFIG_FLEXCAN_SELECT2))
+	if (IS_ENABLED(CONFIG_FLEXCAN_SELECT2)) {
+		regulator_register_fixed(PLATFORM_DEVID_AUTO,
+					 flexcan1_dummy_supplies,
+					 ARRAY_SIZE(flexcan1_dummy_supplies));
 		imx25_add_flexcan1();
-
+	}
 	if (IS_ENABLED(CONFIG_W1_MXC_SELECT1))
 		imx25_add_mxc_w1();
 
