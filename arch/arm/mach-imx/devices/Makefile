@@ -37,3 +37,4 @@ obj-$(CONFIG_IMX_HAVE_PLATFORM_MX2_EMMA) += platform-mx2-emma.o
 obj-$(CONFIG_IMX_HAVE_PLATFORM_IMX_PINCTRL) += platform-imx-pinctrl.o
 obj-$(CONFIG_IMX_HAVE_PLATFORM_I2C_GPIO) += platform-i2c-gpio.o
 obj-$(CONFIG_IMX_HAVE_PLATFORM_W1_GPIO) += platform-w1-gpio.o
+obj-$(CONFIG_IMX_HAVE_PLATFORM_ADC) += platform-imx_adc.o

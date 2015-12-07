@@ -385,3 +385,12 @@ struct imx_imx_pinctrl_data {
 };
 struct platform_device *imx_add_imx_pinctrl(char *name,
 		const struct imx_imx_pinctrl_data *data);
+
+#include <linux/platform_data/imx_adc.h>
+struct imx_adc_data {
+	resource_size_t iobase;
+	resource_size_t iosize;
+	int irq;
+};
+struct platform_device *__init imx_add_adc(
+		const struct imx_adc_data *data);

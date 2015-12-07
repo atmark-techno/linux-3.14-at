@@ -39,7 +39,7 @@
 #include "imx_adc_reg.h"
 
 /* Driver data */
-struct imx_adc_data {
+struct imx_adc_prv_data {
 	u32 irq;
 	struct clk *adc_clk;
 };
@@ -65,7 +65,7 @@ static wait_queue_head_t tsq;
 static bool imx_adc_ready;
 
 static struct class *imx_adc_class;
-static struct imx_adc_data *adc_data;
+static struct imx_adc_prv_data *adc_data;
 
 static DEFINE_SEMAPHORE(general_convert_mutex);
 static DEFINE_SEMAPHORE(ts_convert_mutex);
@@ -103,6 +103,7 @@ void tsc_clk_enable(void)
 {
 	unsigned long reg;
 
+	clk_prepare(adc_data->adc_clk);
 	clk_enable(adc_data->adc_clk);
 
 	reg = __raw_readl(tsc_base + TGCR);
@@ -823,7 +824,6 @@ static int imx_adc_module_probe(struct platform_device *pdev)
 	struct device *temp_class;
 	struct resource *res;
 	void __iomem *base;
-	struct platform_imx_adc_data *plat_data = pdev->dev.platform_data;
 
 	/* ioremap the base address */
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
@@ -864,7 +864,7 @@ static int imx_adc_module_probe(struct platform_device *pdev)
 		goto err_out2;
 	}
 
-	adc_data = kmalloc(sizeof(struct imx_adc_data), GFP_KERNEL);
+	adc_data = kmalloc(sizeof(struct imx_adc_prv_data), GFP_KERNEL);
 	if (adc_data == NULL)
 		return -ENOMEM;
 	adc_data->irq = platform_get_irq(pdev, 0);
@@ -876,12 +876,7 @@ static int imx_adc_module_probe(struct platform_device *pdev)
 		return retval;
 	}
 
-	device_init_wakeup(&pdev->dev, 1);
-	if (plat_data && !plat_data->is_wake_src)
-		device_set_wakeup_enable(&pdev->dev, 0);
-
-	adc_data->adc_clk = clk_get(&pdev->dev, "tchscrn_clk");
-
+	adc_data->adc_clk = clk_get(&pdev->dev, NULL);
 	ret = imx_adc_init();
 
 	if (ret != IMX_ADC_SUCCESS) {
