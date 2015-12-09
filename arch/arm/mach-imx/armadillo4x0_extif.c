@@ -979,6 +979,7 @@ armadillo4x0_esdhc2_regulator_config = {
 
 #if defined(CONFIG_MACH_ARMADILLO440) || defined(CONFIG_MACH_ARMADILLO410)
 static struct imx_fb_videomode armadillo4x0_fb_modes[] = {
+#if defined(CONFIG_FB_MODE_FG040360DSSWBG03)
 	{
 		.mode	= {
 			.name		= "FG040360DSSWBG03",
@@ -998,6 +999,26 @@ static struct imx_fb_videomode armadillo4x0_fb_modes[] = {
 			  PCR_LPPOL | PCR_ACD_SEL | PCR_ACD(0x0B) |
 			  PCR_SCLK_SEL,
 	},
+#elif defined(CONFIG_FB_MODE_DI_7W)
+	{
+		.mode	= {
+			.name		= "FG0700K5DSSWAGT1",
+			.refresh	= 60,
+			.xres		= 800,
+			.yres		= 480,
+			.pixclock	= 30600,
+			.left_margin	= 45,
+			.right_margin	= 39,
+			.upper_margin	= 10,
+			.lower_margin	= 12,
+			.hsync_len	= 64,
+			.vsync_len	= 2,
+		},
+		.bpp	= 16,
+		.pcr	= PCR_TFT | PCR_COLOR | PCR_PBSIZ_8 | PCR_CLKPOL |
+			  PCR_ACD_SEL | PCR_ACD(0x0B) | PCR_SCLK_SEL,
+	},
+#endif
 };
 
 static const struct imx_fb_platform_data armadillo4x0_fb_pdata __initconst = {
@@ -1012,8 +1033,13 @@ static struct platform_pwm_backlight_data armadillo4x0_backlight_data = {
 	.pwm_id		= 0,
 	.max_brightness	= 255,
 	.dft_brightness = 255,
-	.pwm_period_ns	= 10*1000*1000, /* 100Hz: This setting overrides the
+#if defined(CONFIG_FB_MODE_FG040360DSSWBG03)
+	.pwm_period_ns	= 10*1000*1000,	/* 100Hz: This setting overrides the
 					   parameter defined by pwm_lookup */
+#elif defined(CONFIG_FB_MODE_DI_7W)
+	.pwm_period_ns	= 50*1000,	/* 20kHz: This setting overrides the
+					   parameter defined by pwm_lookup */
+#endif
 	.enable_gpio	= -1,
 };
 
@@ -1023,8 +1049,13 @@ static struct regulator_consumer_supply fixed5v0_power_consumers[] = {
 };
 
 static struct pwm_lookup armadillo4x0_pwm_lookup[] = {
+#if defined(CONFIG_FB_MODE_FG040360DSSWBG03)
 	PWM_LOOKUP("imx27-pwm.0", 0, "pwm-backlight", NULL,
 		   10*1000*1000, PWM_POLARITY_INVERSED),
+#elif defined(CONFIG_FB_MODE_DI_7W)
+	PWM_LOOKUP("imx27-pwm.0", 0, "pwm-backlight", NULL,
+		   50*1000, PWM_POLARITY_NORMAL),
+#endif
 };
 
 static void __init armadillo4x0_lcd_init(void)
