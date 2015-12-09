@@ -994,9 +994,9 @@ static struct imx_fb_videomode armadillo4x0_fb_modes[] = {
 			.vsync_len	= 2,
 		},
 		.bpp	= 16,
-		.pcr	= PCR_TFT | PCR_COLOR | PCR_PBSIZ_8 | PCR_BPIX_16 |
-			  PCR_FLMPOL | PCR_LPPOL | PCR_ACD_SEL | PCR_ACD(0x0B) |
-			  PCR_SCLK_SEL | PCR_PCD(0x0C),
+		.pcr	= PCR_TFT | PCR_COLOR | PCR_PBSIZ_8 | PCR_FLMPOL |
+			  PCR_LPPOL | PCR_ACD_SEL | PCR_ACD(0x0B) |
+			  PCR_SCLK_SEL,
 	},
 };
 
