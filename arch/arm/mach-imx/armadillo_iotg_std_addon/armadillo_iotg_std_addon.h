@@ -33,6 +33,7 @@ struct addon_device_descriptor {
 /* EEPROM vendor ID */
 #define ADDON_VENDOR_ID_ATMARK_TECHNO	(0x0001)
 #define ADDON_VENDOR_ID_SATORI		(0x0005)
+#define ADDON_VENDOR_ID_ADVALY_SYSTEM	(0x0007)
 
 /* EEPROM Atmark Techno product ID */
 #define ADDON_PRODUCT_ID_ATMARK_TECHNO_WI_SUN	(0x0001)
@@ -49,6 +50,9 @@ struct addon_device_descriptor {
 #define ADDON_PRODUCT_ID_SATORI_B_ROUTE		(0x0001)
 #define ADDON_PRODUCT_ID_SATORI_920M		(0x0002)
 #define ADDON_PRODUCT_ID_SATORI_LOW_POWER	(0x0003)
+
+/* EEPROM ADVALY SYSTEM product ID */
+#define ADDON_PRODUCT_ID_ADVALY_SYSTEM_CAN	(0x0001)
 
 enum addon_interface {
 	ADDON_INTERFACE1 = 0,
@@ -92,5 +96,7 @@ int __init addon_setup_atmark_techno_rs485(struct addon_device_descriptor *desc,
 					   enum addon_interface intf);
 int __init addon_setup_satori_wireless(struct addon_device_descriptor *desc,
 				       enum addon_interface intf);
+int __init addon_setup_advaly_system_can(struct addon_device_descriptor *desc,
+					 enum addon_interface intf);
 
 #endif

@@ -36,6 +36,7 @@ struct addon_vendor_name
 static struct addon_vendor_name vendor_names[] = {
 	VENDOR_NAME(ATMARK_TECHNO, "Atmark Techno"),
 	VENDOR_NAME(SATORI, "Satori"),
+	VENDOR_NAME(ADVALY_SYSTEM, "ADVALY SYSTEM"),
 };
 
 static const char *unknownvendorname = "Unknown Vendor";
@@ -62,6 +63,7 @@ static struct addon_product_name product_names[] = {
 	PRODUCT_NAME(SATORI, B_ROUTE, "B_ROUTE"),
 	PRODUCT_NAME(SATORI, 920M, "920M"),
 	PRODUCT_NAME(SATORI, LOW_POWER, "LOW_POWER"),
+	PRODUCT_NAME(ADVALY_SYSTEM, CAN, "Can"),
 };
 
 static const char *unknownproductname = "Unknown Product";
@@ -247,6 +249,16 @@ static void __init addon_setup(struct addon_device_descriptor *desc,
 		case ADDON_PRODUCT_ID_SATORI_920M:
 		case ADDON_PRODUCT_ID_SATORI_LOW_POWER:
 			ret = addon_setup_satori_wireless(desc, intf);
+			break;
+		default:
+			break;
+		}
+		break;
+
+	case ADDON_VENDOR_ID_ADVALY_SYSTEM:
+		switch (product_id) {
+		case ADDON_PRODUCT_ID_ADVALY_SYSTEM_CAN:
+			ret = addon_setup_advaly_system_can(desc, intf);
 			break;
 		default:
 			break;
