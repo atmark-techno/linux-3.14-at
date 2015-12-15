@@ -24,6 +24,8 @@
 #include <linux/pinctrl/machine.h>
 #include <linux/platform_device.h>
 #include <linux/spi/spi.h>
+#include <linux/regulator/machine.h>
+#include <linux/regulator/fixed.h>
 
 #include <asm/mach-types.h>
 #include <asm/mach/arch.h>
@@ -324,6 +326,17 @@ static const struct pinctrl_map armadillo_iotg_std_extif_can_map[] = {
 				    "MX25_PAD_GPIO_C", pin_cfgs_none),
 	PIN_MAP_CONFIGS_PIN_DEFAULT("flexcan.1", "imx25-pinctrl.0",
 				    "MX25_PAD_GPIO_D", pin_cfgs_100kup),
+};
+
+static struct regulator_consumer_supply flexcan0_dummy_supplies[] = {
+#if defined(CONFIG_AIOTG_STD_CAN1)
+	REGULATOR_SUPPLY("xceiver", "flexcan.0"),
+#endif
+};
+static struct regulator_consumer_supply flexcan1_dummy_supplies[] = {
+#if defined(CONFIG_AIOTG_STD_CAN2)
+	REGULATOR_SUPPLY("xceiver", "flexcan.1"),
+#endif
 };
 
 static int spi1_cs[] = {
@@ -946,11 +959,19 @@ void __init armadillo_iotg_std_extif_init(void)
 	if (IS_ENABLED(CONFIG_AIOTG_STD_PWM4))
 		imx25_add_mxc_pwm(3);
 
-	if (IS_ENABLED(CONFIG_AIOTG_STD_CAN1))
+	if (IS_ENABLED(CONFIG_AIOTG_STD_CAN1)) {
+		regulator_register_fixed(PLATFORM_DEVID_AUTO,
+					 flexcan0_dummy_supplies,
+					 ARRAY_SIZE(flexcan0_dummy_supplies));
 		imx25_add_flexcan0();
+	}
 
-	if (IS_ENABLED(CONFIG_AIOTG_STD_CAN2))
+	if (IS_ENABLED(CONFIG_AIOTG_STD_CAN2)) {
+		regulator_register_fixed(PLATFORM_DEVID_AUTO,
+					 flexcan1_dummy_supplies,
+					 ARRAY_SIZE(flexcan1_dummy_supplies));
 		imx25_add_flexcan1();
+	}
 
 	if (IS_ENABLED(CONFIG_AIOTG_STD_W1))
 		imx25_add_mxc_w1();
