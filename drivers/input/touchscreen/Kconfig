@@ -943,4 +943,16 @@ config TOUCHSCREEN_ZFORCE
 	  To compile this driver as a module, choose M here: the
 	  module will be called zforce_ts.
 
+config TOUCHSCREEN_IMX
+	tristate "Freescale i.MX ADC touchscreens"
+	depends on IMX_ADC
+	help
+	  Say Y here if you have a touchscreen using the Freescale
+	  i.MX ADC.
+
+	  If unsure, say N.
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called imx_adc_ts.
+
 endif

@@ -1110,6 +1110,9 @@ static void __init armadillo4x0_lcd_init(void)
 
 static void __init armadillo4x0_touchscreen_init(void)
 {
+	imx25_add_adc();
+	imx_add_platform_device("imx_adc_ts", 0,
+				NULL, 0, NULL, 0);
 }
 
 static void __init armadillo4x0_audio_init(void)

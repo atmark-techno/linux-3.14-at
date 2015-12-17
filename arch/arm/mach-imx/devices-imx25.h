@@ -113,3 +113,7 @@ extern const struct imx_mxc_w1_data imx25_mxc_w1_data;
 extern const struct imx_imx_pinctrl_data imx25_imx_pinctrl_data;
 #define imx25_add_imx_pinctrl(name)	\
 	imx_add_imx_pinctrl(name, &imx25_imx_pinctrl_data)
+
+extern const struct imx_adc_data imx25_adc_data;
+#define imx25_add_adc()	\
+	imx_add_adc(&imx25_adc_data)
