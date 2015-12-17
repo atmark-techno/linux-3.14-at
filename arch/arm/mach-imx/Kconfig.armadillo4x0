@@ -209,6 +209,12 @@ config W1_GPIO_SELECT1
 	help
 	  Enable GPIO 1-Wire module.
 
+config LCDC_MXC_SELECT
+	bool "Enable LCDC module"
+	default y
+	help
+	  Enable MX25 LCDC module.
+
 endmenu
 
 menu "Armadillo-400 Board options"
@@ -565,6 +571,18 @@ config ARMADILLO4X0_GPIOKEYS_CON11
 	bool "Enable GPIO keys at CON11"
 	default y
 	depends on !ARMADILLO4X0_UART3_CON11
+
+choice
+	prompt "LCD panel"
+	depends on MACH_ARMADILLO410 || MACH_ARMADILLO440
+	default FB_MODE_FG040360DSSWBG03
+
+config FB_MODE_FG040360DSSWBG03
+	bool "FG040360DSSWBG03"
+config FB_MODE_DI_7W
+	bool "DI-7W"
+
+endchoice
 
 config ARMADILLO4X0_CON9_1_GPIO3_17
 	bool

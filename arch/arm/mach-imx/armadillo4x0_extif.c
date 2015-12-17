@@ -27,6 +27,8 @@
 #include <linux/regulator/machine.h>
 #include <linux/regulator/fixed.h>
 #include <linux/spi/spi.h>
+#include <linux/pwm.h>
+#include <linux/pwm_backlight.h>
 
 #include <asm/mach-types.h>
 #include <asm/mach/arch.h>
@@ -490,6 +492,106 @@ static const struct pinctrl_map armadillo4x0_con9_con14_pinctrl_map[] = {
 };
 
 static const struct pinctrl_map armadillo4x0_con11_pinctrl_map[] = {
+
+	/* pwmo1 */
+	PIN_MAP_MUX_GROUP_DEFAULT("imx27-pwm.0", "imx25-pinctrl.0",
+				  "pwm__pwm", "pwm1"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx27-pwm.0", "imx25-pinctrl.0",
+				    "MX25_PAD_PWM", pin_cfgs_100kup),
+
+	/* LCDC */
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				  "ld0__ld0", "lcd"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				  "ld1__ld1", "lcd"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				  "ld2__ld2", "lcd"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				  "ld3__ld3", "lcd"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				  "ld4__ld4", "lcd"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				  "ld5__ld5", "lcd"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				  "ld6__ld6", "lcd"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				  "ld7__ld7", "lcd"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				  "ld8__ld8", "lcd"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				  "ld9__ld9", "lcd"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				  "ld10__ld10", "lcd"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				  "ld11__ld11", "lcd"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				  "ld12__ld12", "lcd"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				  "ld13__ld13", "lcd"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				  "ld14__ld14", "lcd"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				  "ld15__ld15", "lcd"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				  "gpio_e__ld16", "lcd"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				  "gpio_f__ld17", "lcd"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				  "hsync__hsync", "lcd"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				  "vsync__vsync", "lcd"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				  "lsclk__lsclk", "lcd"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				  "oe_acd__oe_acd", "lcd"),
+
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				    "MX25_PAD_LD0", pin_cfgs_none),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				    "MX25_PAD_LD1", pin_cfgs_none),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				    "MX25_PAD_LD2", pin_cfgs_none),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				    "MX25_PAD_LD3", pin_cfgs_none),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				    "MX25_PAD_LD4", pin_cfgs_none),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				    "MX25_PAD_LD5", pin_cfgs_none),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				    "MX25_PAD_LD6", pin_cfgs_none),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				    "MX25_PAD_LD7", pin_cfgs_none),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				    "MX25_PAD_LD8", pin_cfgs_none),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				    "MX25_PAD_LD9", pin_cfgs_none),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				    "MX25_PAD_LD10", pin_cfgs_none),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				    "MX25_PAD_LD11", pin_cfgs_none),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				    "MX25_PAD_LD12", pin_cfgs_none),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				    "MX25_PAD_LD13", pin_cfgs_none),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				    "MX25_PAD_LD14", pin_cfgs_none),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				    "MX25_PAD_LD15", pin_cfgs_none),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				    "MX25_PAD_GPIO_E", pin_cfgs_none),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				    "MX25_PAD_GPIO_F", pin_cfgs_none),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				    "MX25_PAD_HSYNC", pin_cfgs_none),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				    "MX25_PAD_VSYNC", pin_cfgs_none),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				    "MX25_PAD_LSCLK", pin_cfgs_sre_fast),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				    "MX25_PAD_OE_ACD", pin_cfgs_none),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
+				    "MX25_PAD_GRP_DSE_LCD", pin_cfgs_dse_low),
+
 	/* uart3 */
 #if defined(CONFIG_ARMADILLO4X0_UART3_CON11)
 	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.2", "imx25-pinctrl.0",
@@ -904,8 +1006,106 @@ armadillo4x0_esdhc2_regulator_config = {
 };
 
 #if defined(CONFIG_MACH_ARMADILLO440) || defined(CONFIG_MACH_ARMADILLO410)
+static struct imx_fb_videomode armadillo4x0_fb_modes[] = {
+#if defined(CONFIG_FB_MODE_FG040360DSSWBG03)
+	{
+		.mode	= {
+			.name		= "FG040360DSSWBG03",
+			.refresh	= 60,
+			.xres		= 480,
+			.yres		= 272,
+			.pixclock	= 110229,
+			.left_margin	= 35,
+			.right_margin	= 5,
+			.upper_margin	= 6,
+			.lower_margin	= 8,
+			.hsync_len	= 5,
+			.vsync_len	= 2,
+		},
+		.bpp	= 16,
+		.pcr	= PCR_TFT | PCR_COLOR | PCR_PBSIZ_8 | PCR_FLMPOL |
+			  PCR_LPPOL | PCR_ACD_SEL | PCR_ACD(0x0B) |
+			  PCR_SCLK_SEL,
+	},
+#elif defined(CONFIG_FB_MODE_DI_7W)
+	{
+		.mode	= {
+			.name		= "FG0700K5DSSWAGT1",
+			.refresh	= 60,
+			.xres		= 800,
+			.yres		= 480,
+			.pixclock	= 30600,
+			.left_margin	= 45,
+			.right_margin	= 39,
+			.upper_margin	= 10,
+			.lower_margin	= 12,
+			.hsync_len	= 64,
+			.vsync_len	= 2,
+		},
+		.bpp	= 16,
+		.pcr	= PCR_TFT | PCR_COLOR | PCR_PBSIZ_8 | PCR_CLKPOL |
+			  PCR_ACD_SEL | PCR_ACD(0x0B) | PCR_SCLK_SEL,
+	},
+#endif
+};
+
+static const struct imx_fb_platform_data armadillo4x0_fb_pdata __initconst = {
+	.mode		= armadillo4x0_fb_modes,
+	.num_modes	= ARRAY_SIZE(armadillo4x0_fb_modes),
+	.pwmr		= 0x00000000,
+	.lscr1		= 0x00000000,
+	.dmacr		= DMACR_HM(0x2) | DMACR_TM(0x10),
+};
+
+static struct platform_pwm_backlight_data armadillo4x0_backlight_data = {
+	.pwm_id		= 0,
+	.max_brightness	= 255,
+	.dft_brightness = 255,
+#if defined(CONFIG_FB_MODE_FG040360DSSWBG03)
+	.pwm_period_ns	= 10*1000*1000,	/* 100Hz: This setting overrides the
+					   parameter defined by pwm_lookup */
+#elif defined(CONFIG_FB_MODE_DI_7W)
+	.pwm_period_ns	= 50*1000,	/* 20kHz: This setting overrides the
+					   parameter defined by pwm_lookup */
+#endif
+	.enable_gpio	= -1,
+};
+
+/* Fixed 5.0V regulator used by LCD backlight */
+static struct regulator_consumer_supply fixed5v0_power_consumers[] = {
+	REGULATOR_SUPPLY("power", "pwm-backlight"),
+};
+
+static struct pwm_lookup armadillo4x0_pwm_lookup[] = {
+#if defined(CONFIG_FB_MODE_FG040360DSSWBG03)
+	PWM_LOOKUP("imx27-pwm.0", 0, "pwm-backlight", NULL,
+		   10*1000*1000, PWM_POLARITY_INVERSED),
+#elif defined(CONFIG_FB_MODE_DI_7W)
+	PWM_LOOKUP("imx27-pwm.0", 0, "pwm-backlight", NULL,
+		   50*1000, PWM_POLARITY_NORMAL),
+#endif
+};
+
 static void __init armadillo4x0_lcd_init(void)
 {
+	if (IS_ENABLED(CONFIG_MXC_PWM_SELECT1)) {
+		imx25_add_mxc_pwm(0);
+
+		pwm_add_table(armadillo4x0_pwm_lookup,
+			      ARRAY_SIZE(armadillo4x0_pwm_lookup));
+
+		regulator_register_always_on(4, "fixed-5.0V",
+					     fixed5v0_power_consumers,
+					     ARRAY_SIZE(fixed5v0_power_consumers),
+					     5000000);
+
+		imx_add_platform_device("pwm-backlight", -1, NULL, 0,
+					&armadillo4x0_backlight_data,
+					sizeof(armadillo4x0_backlight_data));
+	}
+
+	if (IS_ENABLED(CONFIG_LCDC_MXC_SELECT))
+		imx25_add_imx_fb(&armadillo4x0_fb_pdata);
 }
 
 static void __init armadillo4x0_touchscreen_init(void)
