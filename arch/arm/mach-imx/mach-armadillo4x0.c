@@ -71,11 +71,14 @@ static int armadillo4x0_uart1_activate(struct platform_device *pdev)
 	return ret;
 }
 
+#define UART2_DSR_GPIO		IMX_GPIO_NR(4, 23)
 static const struct imxuart_platform_data uart1_pdata __initconst = {
 	.init = armadillo4x0_uart1_activate,
 #if defined(CONFIG_SERIAL_MXC_HW_FLOW_ENABLED2)
 	.flags = IMXUART_HAVE_RTSCTS,
 #endif
+	.use_gpio_for_dsr = 1,
+	.gpio_dsr = UART2_DSR_GPIO,
 };
 
 static unsigned long __maybe_unused pin_cfgs_100kup[] = {
@@ -143,7 +146,7 @@ static const struct pinctrl_map armadillo4x0_pinctrl_map[] = {
 	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.1", "imx25-pinctrl.0",
 				  "uart1_rxd__uart2_dtr", "uart2"),
 	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.1", "imx25-pinctrl.0",
-				  "uart1_txd__uart2_dsr", "uart2"),
+				  "uart1_txd__gpio_4_23", "gpio4"),
 	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.1", "imx25-pinctrl.0",
 				  "uart1_rts__uart2_dcd", "uart2"),
 	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.1", "imx25-pinctrl.0",
