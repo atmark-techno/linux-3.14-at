@@ -156,6 +156,15 @@ static const struct pinctrl_map armadillo4x0_con9_con14_pinctrl_map[] = {
 				    "MX25_PAD_GPIO_C", pin_cfgs_22kup_ode),
 	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-i2c.1", "imx25-pinctrl.0",
 				    "MX25_PAD_GPIO_D", pin_cfgs_22kup_ode),
+
+	PIN_MAP_MUX_GROUP("imx21-i2c.1", "imxi2c_gpio_mode", "imx25-pinctrl.0",
+				  "gpio_c__gpio_c", "gpio1"),
+	PIN_MAP_MUX_GROUP("imx21-i2c.1", "imxi2c_gpio_mode", "imx25-pinctrl.0",
+				  "gpio_d__gpio_d", "gpio1"),
+	PIN_MAP_CONFIGS_PIN("imx21-i2c.1", "imxi2c_gpio_mode", "imx25-pinctrl.0",
+				    "MX25_PAD_GPIO_C", pin_cfgs_22kup_ode),
+	PIN_MAP_CONFIGS_PIN("imx21-i2c.1", "imxi2c_gpio_mode", "imx25-pinctrl.0",
+				    "MX25_PAD_GPIO_D", pin_cfgs_22kup_ode),
 #endif
 
 	/* pwmo2 */
@@ -535,6 +544,15 @@ static const struct pinctrl_map armadillo4x0_con11_pinctrl_map[] = {
 				    "MX25_PAD_GPIO_A", pin_cfgs_22kup_ode),
 	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-i2c.2", "imx25-pinctrl.0",
 				    "MX25_PAD_GPIO_B", pin_cfgs_22kup_ode),
+
+	PIN_MAP_MUX_GROUP("imx21-i2c.2", "imxi2c_gpio_mode", "imx25-pinctrl.0",
+				  "gpio_a__gpio_a", "gpio1"),
+	PIN_MAP_MUX_GROUP("imx21-i2c.2", "imxi2c_gpio_mode", "imx25-pinctrl.0",
+				  "gpio_b__gpio_b", "gpio1"),
+	PIN_MAP_CONFIGS_PIN("imx21-i2c.2", "imxi2c_gpio_mode", "imx25-pinctrl.0",
+				    "MX25_PAD_GPIO_A", pin_cfgs_22kup_ode),
+	PIN_MAP_CONFIGS_PIN("imx21-i2c.2", "imxi2c_gpio_mode", "imx25-pinctrl.0",
+				    "MX25_PAD_GPIO_B", pin_cfgs_22kup_ode),
 #endif
 
 	/* CON11_42 */
@@ -597,6 +615,11 @@ static const struct pinctrl_map armadillo4x0_con11_pinctrl_map[] = {
 
 static const struct imxi2c_platform_data mx25_i2c1_data __initconst = {
 	.bitrate = 40000,
+#if defined(CONFIG_ARMADILLO4X0_I2C2_CON14_S35390A)
+	.use_bus_clear = 1,
+	.scl_pin = IMX_GPIO_NR(1, 2),
+	.sda_pin = IMX_GPIO_NR(1, 3),
+#endif
 };
 
 static struct i2c_board_info armadillo4x0_i2c1[] = {
@@ -620,6 +643,11 @@ static void __init armadillo4x0_rtc_init(void)
 
 static const struct imxi2c_platform_data mx25_i2c2_data __initconst = {
 	.bitrate = 40000,
+#if defined(CONFIG_ARMADILLO4X0_I2C3_CON11_S35390A)
+	.use_bus_clear = 1,
+	.scl_pin = IMX_GPIO_NR(1, 0),
+	.sda_pin = IMX_GPIO_NR(1, 1),
+#endif
 };
 
 static struct i2c_board_info armadillo4x0_i2c2[] = {
