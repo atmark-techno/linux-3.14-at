@@ -49,6 +49,12 @@ static const struct imxuart_platform_data uart2_pdata __initconst = {
 #endif
 };
 
+static const struct imxuart_platform_data uart3_pdata __initconst = {
+#if defined(CONFIG_SERIAL_MXC_HW_FLOW_ENABLED4)
+	.flags = IMXUART_HAVE_RTSCTS,
+#endif
+};
+
 static const struct imxuart_platform_data uart4_pdata __initconst = {
 #if defined(CONFIG_SERIAL_MXC_HW_FLOW_ENABLED5)
 	.flags = IMXUART_HAVE_RTSCTS,
@@ -95,7 +101,7 @@ static unsigned long __maybe_unused pin_cfgs_pke[] = {
 	PAD_CTL_PKE,
 };
 
-static const struct pinctrl_map armadillo4x0_extif_pinctrl_map[] = {
+static const struct pinctrl_map armadillo4x0_con9_con14_pinctrl_map[] = {
 	/* uart3 */
 #if defined(CONFIG_ARMADILLO4X0_UART3_CON9)
 	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.2", "imx25-pinctrl.0",
@@ -151,6 +157,7 @@ static const struct pinctrl_map armadillo4x0_extif_pinctrl_map[] = {
 	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-i2c.1", "imx25-pinctrl.0",
 				    "MX25_PAD_GPIO_D", pin_cfgs_22kup_ode),
 #endif
+
 	/* pwmo2 */
 #if defined(CONFIG_ARMADILLO4X0_PWM2_CON9_25)
 	PIN_MAP_MUX_GROUP_DEFAULT("imx27-pwm.1", "imx25-pinctrl.0",
@@ -471,7 +478,121 @@ static const struct pinctrl_map armadillo4x0_extif_pinctrl_map[] = {
 	PIN_MAP_CONFIGS_PIN_HOG_DEFAULT("imx25-pinctrl.0",
 					"MX25_PAD_GPIO_D", pin_cfgs_100kup),
 #endif
+};
 
+static const struct pinctrl_map armadillo4x0_con11_pinctrl_map[] = {
+	/* uart3 */
+#if defined(CONFIG_ARMADILLO4X0_UART3_CON11)
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.2", "imx25-pinctrl.0",
+				  "kpp_row0__uart3_rxd", "uart3"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.2", "imx25-pinctrl.0",
+				  "kpp_row1__uart3_txd", "uart3"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-uart.2", "imx25-pinctrl.0",
+				    "MX25_PAD_KPP_ROW0", pin_cfgs_100kup),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-uart.2", "imx25-pinctrl.0",
+				    "MX25_PAD_KPP_ROW1", pin_cfgs_none),
+#endif
+#if defined(CONFIG_ARMADILLO4X0_UART3_HW_FLOW_CON11)
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.2", "imx25-pinctrl.0",
+				  "kpp_row2__uart3_rts", "uart3"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.2", "imx25-pinctrl.0",
+				  "kpp_row3__uart3_cts", "uart3"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-uart.2", "imx25-pinctrl.0",
+				    "MX25_PAD_KPP_ROW2", pin_cfgs_100kup),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-uart.2", "imx25-pinctrl.0",
+				    "MX25_PAD_KPP_ROW3", pin_cfgs_none),
+#endif
+
+	/* uart4 */
+#if defined(CONFIG_ARMADILLO4X0_UART4_CON11)
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.3", "imx25-pinctrl.0",
+				  "kpp_col0__uart4_rxd_mux", "uart4"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.3", "imx25-pinctrl.0",
+				  "kpp_col1__uart4_txd_mux", "uart4"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-uart.3", "imx25-pinctrl.0",
+				    "MX25_PAD_KPP_COL0", pin_cfgs_100kup),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-uart.3", "imx25-pinctrl.0",
+				    "MX25_PAD_KPP_COL1", pin_cfgs_none),
+#endif
+#if defined(CONFIG_ARMADILLO4X0_UART4_HW_FLOW_CON11)
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.3", "imx25-pinctrl.0",
+				  "kpp_col2__uart4_rts", "uart4"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.3", "imx25-pinctrl.0",
+				  "kpp_col3__uart4_cts", "uart4"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-uart.3", "imx25-pinctrl.0",
+				    "MX25_PAD_KPP_COL2", pin_cfgs_100kup),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-uart.3", "imx25-pinctrl.0",
+				    "MX25_PAD_KPP_COL3", pin_cfgs_none),
+#endif
+
+	/* i2c3 */
+#if defined(CONFIG_ARMADILLO4X0_I2C3_CON11)
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-i2c.2", "imx25-pinctrl.0",
+				  "gpio_a__i2c3_clk", "i2c3"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx21-i2c.2", "imx25-pinctrl.0",
+				  "gpio_b__i2c3_dat", "i2c3"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-i2c.2", "imx25-pinctrl.0",
+				    "MX25_PAD_GPIO_A", pin_cfgs_22kup_ode),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-i2c.2", "imx25-pinctrl.0",
+				    "MX25_PAD_GPIO_B", pin_cfgs_22kup_ode),
+#endif
+
+	/* CON11_42 */
+#if defined(CONFIG_ARMADILLO4X0_CON11_42_GPIO_2_31)
+	PIN_MAP_MUX_GROUP_HOG_DEFAULT("imx25-pinctrl.0",
+				      "kpp_row2__gpio_2_31", "gpio2"),
+	PIN_MAP_CONFIGS_PIN_HOG_DEFAULT("imx25-pinctrl.0",
+					"MX25_PAD_KPP_ROW2", pin_cfgs_100kup),
+#endif
+	/* CON11_43 */
+#if defined(CONFIG_ARMADILLO4X0_CON11_43_GPIO_3_0)
+	PIN_MAP_MUX_GROUP_HOG_DEFAULT("imx25-pinctrl.0",
+				      "kpp_row3__gpio_3_0", "gpio3"),
+	PIN_MAP_CONFIGS_PIN_HOG_DEFAULT("imx25-pinctrl.0",
+					"MX25_PAD_KPP_ROW3", pin_cfgs_100kup),
+#endif
+	/* CON11_44 */
+#if defined(CONFIG_ARMADILLO4X0_CON11_44_GPIO_3_1)
+	PIN_MAP_MUX_GROUP_HOG_DEFAULT("imx25-pinctrl.0",
+				      "kpp_col0__gpio_3_1", "gpio3"),
+	PIN_MAP_CONFIGS_PIN_HOG_DEFAULT("imx25-pinctrl.0",
+					"MX25_PAD_KPP_COL0", pin_cfgs_100kup),
+#endif
+	/* CON11_45 */
+#if defined(CONFIG_ARMADILLO4X0_CON11_45_GPIO_3_2)
+	PIN_MAP_MUX_GROUP_HOG_DEFAULT("imx25-pinctrl.0",
+				      "kpp_col1__gpio_3_2", "gpio3"),
+	PIN_MAP_CONFIGS_PIN_HOG_DEFAULT("imx25-pinctrl.0",
+					"MX25_PAD_KPP_COL1", pin_cfgs_100kup),
+#endif
+	/* CON11_46 */
+#if defined(CONFIG_ARMADILLO4X0_CON11_46_GPIO_3_3)
+	PIN_MAP_MUX_GROUP_HOG_DEFAULT("imx25-pinctrl.0",
+				      "kpp_col2__gpio_3_3", "gpio3"),
+	PIN_MAP_CONFIGS_PIN_HOG_DEFAULT("imx25-pinctrl.0",
+					"MX25_PAD_KPP_COL2", pin_cfgs_100kup),
+#endif
+	/* CON11_47 */
+#if defined(CONFIG_ARMADILLO4X0_CON11_47_GPIO_3_4)
+	PIN_MAP_MUX_GROUP_HOG_DEFAULT("imx25-pinctrl.0",
+				      "kpp_col3__gpio_3_4", "gpio3"),
+	PIN_MAP_CONFIGS_PIN_HOG_DEFAULT("imx25-pinctrl.0",
+					"MX25_PAD_KPP_COL3", pin_cfgs_100kup),
+#endif
+	/* CON11_48 */
+#if defined(CONFIG_ARMADILLO4X0_CON11_48_GPIO1_0)
+	PIN_MAP_MUX_GROUP_HOG_DEFAULT("imx25-pinctrl.0",
+				      "gpio_a__gpio_a", "gpio1"),
+	PIN_MAP_CONFIGS_PIN_HOG_DEFAULT("imx25-pinctrl.0",
+					"MX25_PAD_GPIO_A", pin_cfgs_100kup),
+#endif
+	/* CON11_49 */
+#if defined(CONFIG_ARMADILLO4X0_CON11_49_GPIO1_1)
+	PIN_MAP_MUX_GROUP_HOG_DEFAULT("imx25-pinctrl.0",
+				      "gpio_b__gpio_b", "gpio1"),
+	PIN_MAP_CONFIGS_PIN_HOG_DEFAULT("imx25-pinctrl.0",
+					"MX25_PAD_GPIO_B", pin_cfgs_100kup),
+#endif
 };
 
 static const struct imxi2c_platform_data mx25_i2c1_data __initconst = {
@@ -496,6 +617,19 @@ static void __init armadillo4x0_rtc_init(void)
 	gpio_direction_input(RTC_ALM_INT);
 	armadillo4x0_i2c1[0].irq = gpio_to_irq(RTC_ALM_INT);
 }
+
+static const struct imxi2c_platform_data mx25_i2c2_data __initconst = {
+	.bitrate = 40000,
+};
+
+static struct i2c_board_info armadillo4x0_i2c2[] = {
+#if defined(CONFIG_ARMADILLO4X0_I2C3_CON11_S35390A)
+	{
+		I2C_BOARD_INFO("s35390a", 0x30),
+		/* irq number is run-time assigned */
+	},
+#endif
+};
 
 static int spi0_cs[] = {
 #if defined(CONFIG_ARMADILLO4X0_SPI1_SS0_CON9_25)
@@ -566,7 +700,7 @@ struct armadillo4x0_extif_gpio {
 	int val;
 };
 
-static const struct armadillo4x0_extif_gpio armadillo4x0_extif_gpios[] = {
+static const struct armadillo4x0_extif_gpio armadillo4x0_con9_con14_gpios[] = {
 	/* CON9_1 */
 #if defined(CONFIG_ARMADILLO4X0_CON9_1_GPIO3_17)
 	{ IMX_GPIO_NR(3, 17), "CON9_1", EXTIF_GPIO_DIRECTION_INPUT },
@@ -665,19 +799,53 @@ static const struct armadillo4x0_extif_gpio armadillo4x0_extif_gpios[] = {
 #endif
 };
 
-static void armadillo4x0_set_extif_gpio(void)
+static const struct armadillo4x0_extif_gpio armadillo4x0_con11_gpios[] = {
+	/* CON11_42 */
+#if defined(CONFIG_ARMADILLO4X0_CON11_42_GPIO_2_31)
+	{IMX_GPIO_NR(2, 31), "CON11_42",  EXTIF_GPIO_DIRECTION_INPUT},
+#endif
+	/* CON11_43 */
+#if defined(CONFIG_ARMADILLO4X0_CON11_43_GPIO_3_0)
+	{IMX_GPIO_NR(3, 0), "CON11_43",  EXTIF_GPIO_DIRECTION_INPUT},
+#endif
+	/* CON11_44 */
+#if defined(CONFIG_ARMADILLO4X0_CON11_44_GPIO_3_1)
+	{IMX_GPIO_NR(3, 1), "CON11_44",  EXTIF_GPIO_DIRECTION_INPUT},
+#endif
+	/* CON11_45 */
+#if defined(CONFIG_ARMADILLO4X0_CON11_45_GPIO_3_2)
+	{IMX_GPIO_NR(3, 2), "CON11_45",  EXTIF_GPIO_DIRECTION_INPUT},
+#endif
+	/* CON11_46 */
+#if defined(CONFIG_ARMADILLO4X0_CON11_46_GPIO_3_3)
+	{IMX_GPIO_NR(3, 3), "CON11_46",  EXTIF_GPIO_DIRECTION_INPUT},
+#endif
+	/* CON11_47 */
+#if defined(CONFIG_ARMADILLO4X0_CON11_47_GPIO_3_4)
+	{IMX_GPIO_NR(3, 4), "CON11_47",  EXTIF_GPIO_DIRECTION_INPUT},
+#endif
+	/* CON11_48 */
+#if defined(CONFIG_ARMADILLO4X0_CON11_48_GPIO1_0)
+	{IMX_GPIO_NR(1, 0), "CON11_48",  EXTIF_GPIO_DIRECTION_INPUT},
+#endif
+	/* CON11_49 */
+#if defined(CONFIG_ARMADILLO4X0_CON11_49_GPIO1_1)
+	{IMX_GPIO_NR(1, 1), "CON11_49",  EXTIF_GPIO_DIRECTION_INPUT},
+#endif
+};
+
+static void armadillo4x0_set_extif_gpio(const struct armadillo4x0_extif_gpio *gpios,
+					size_t size)
 {
 	int i;
 
-	for (i = 0; i < ARRAY_SIZE(armadillo4x0_extif_gpios); i++) {
-		imx25_named_gpio_request(armadillo4x0_extif_gpios[i].gpio,
-					 armadillo4x0_extif_gpios[i].name);
-		if (armadillo4x0_extif_gpios[i].dir == EXTIF_GPIO_DIRECTION_INPUT)
-			gpio_direction_input(armadillo4x0_extif_gpios[i].gpio);
+	for (i = 0; i < size; i++) {
+		imx25_named_gpio_request(gpios[i].gpio, gpios[i].name);
+		if (gpios[i].dir == EXTIF_GPIO_DIRECTION_INPUT)
+			gpio_direction_input(gpios[i].gpio);
 		else
-			gpio_direction_output(armadillo4x0_extif_gpios[i].gpio,
-					      armadillo4x0_extif_gpios[i].val);
-		gpio_export(armadillo4x0_extif_gpios[i].gpio, true);
+			gpio_direction_output(gpios[i].gpio, gpios[i].val);
+		gpio_export(gpios[i].gpio, true);
 	}
 }
 
@@ -707,18 +875,33 @@ armadillo4x0_esdhc2_regulator_config = {
 	.init_data		= &armadillo4x0_esdhc2_regulator_data,
 };
 
+#if defined(CONFIG_MACH_ARMADILLO440) || defined(CONFIG_MACH_ARMADILLO410)
+static void __init armadillo4x0_lcd_init(void)
+{
+}
+
+static void __init armadillo4x0_touchscreen_init(void)
+{
+}
+
+static void __init armadillo4x0_audio_init(void)
+{
+}
+#endif
+
 static struct regulator_consumer_supply flexcan1_dummy_supplies[] = {
 #if defined(CONFIG_ARMADILLO4X0_CAN2_CON14)
 	REGULATOR_SUPPLY("xceiver", "flexcan.1"),
 #endif
 };
 
-void __init armadillo4x0_extif_init(void)
+void __init armadillo4x0_con9_con14_init(void)
 {
-	pinctrl_register_mappings(armadillo4x0_extif_pinctrl_map,
-				  ARRAY_SIZE(armadillo4x0_extif_pinctrl_map));
+	pinctrl_register_mappings(armadillo4x0_con9_con14_pinctrl_map,
+				  ARRAY_SIZE(armadillo4x0_con9_con14_pinctrl_map));
 
-	if (IS_ENABLED(CONFIG_SERIAL_MXC_SELECT3))
+	if (IS_ENABLED(CONFIG_SERIAL_MXC_SELECT3)
+	    && IS_ENABLED(CONFIG_ARMADILLO4X0_UART3_CON9))
 		imx25_add_imx_uart2(&uart2_pdata);
 
 	if (IS_ENABLED(CONFIG_SERIAL_MXC_SELECT5))
@@ -771,5 +954,34 @@ void __init armadillo4x0_extif_init(void)
 	if (IS_ENABLED(CONFIG_W1_GPIO_SELECT1))
 		imx_add_w1_gpio(-1, &gpio_w1_pdata);
 
-	armadillo4x0_set_extif_gpio();
+	armadillo4x0_set_extif_gpio(armadillo4x0_con9_con14_gpios,
+				    ARRAY_SIZE(armadillo4x0_con9_con14_gpios));
 }
+
+#if defined(CONFIG_MACH_ARMADILLO440) || defined(CONFIG_MACH_ARMADILLO410)
+void __init armadillo4x0_con11_init(void)
+{
+	pinctrl_register_mappings(armadillo4x0_con11_pinctrl_map,
+				  ARRAY_SIZE(armadillo4x0_con11_pinctrl_map));
+
+	if (IS_ENABLED(CONFIG_SERIAL_MXC_SELECT3)
+	    && IS_ENABLED(CONFIG_ARMADILLO4X0_UART3_CON11))
+		imx25_add_imx_uart2(&uart2_pdata);
+
+	if (IS_ENABLED(CONFIG_SERIAL_MXC_SELECT4))
+		imx25_add_imx_uart3(&uart3_pdata);
+
+	if (IS_ENABLED(CONFIG_I2C_MXC_SELECT3)) {
+		imx25_add_imx_i2c2(&mx25_i2c2_data);
+		i2c_register_board_info(2, armadillo4x0_i2c2,
+					ARRAY_SIZE(armadillo4x0_i2c2));
+	}
+
+	armadillo4x0_lcd_init();
+	armadillo4x0_touchscreen_init();
+	armadillo4x0_audio_init();
+
+	armadillo4x0_set_extif_gpio(armadillo4x0_con11_gpios,
+				    ARRAY_SIZE(armadillo4x0_con11_gpios));
+}
+#endif

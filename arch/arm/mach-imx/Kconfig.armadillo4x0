@@ -63,6 +63,27 @@ config SERIAL_MXC_HW_FLOW_ENABLED3
 	default 0 if !SERIAL_MXC_HW_FLOW3
 	default 1 if SERIAL_MXC_HW_FLOW3
 
+config SERIAL_MXC_SELECT4
+	bool "Enable UART4 module"
+	default y
+	help
+	  Enable MX25 UART4 module.
+
+config SERIAL_MXC_ENABLED4
+	int
+	default 0 if !SERIAL_MXC_SELECT4
+	default 1 if SERIAL_MXC_SELECT4
+
+config SERIAL_MXC_HW_FLOW4
+	bool "Enable UART4 HW Flow Control"
+	default n
+	depends on SERIAL_MXC_SELECT4
+
+config SERIAL_MXC_HW_FLOW_ENABLED4
+	int
+	default 0 if !SERIAL_MXC_HW_FLOW4
+	default 1 if SERIAL_MXC_HW_FLOW4
+
 config SERIAL_MXC_SELECT5
 	bool "Enable UART5 module"
 	default y
@@ -96,6 +117,12 @@ config I2C_MXC_SELECT2
 	help
 	  Enable MX25 I2C2 module.
 
+config I2C_MXC_SELECT3
+	bool "Enable I2C3 module"
+	default n
+	help
+	  Enable MX25 I2C3 module.
+
 config MMC_MXC_SELECT1
 	bool "Enable eSDHC1"
 	default y
@@ -108,11 +135,23 @@ config MMC_MXC_SELECT2
 	help
 	  Enable MX25 eSDHC2 module.
 
+config MXC_PWM_SELECT1
+       bool "Enable PWM1"
+       default n
+       help
+         Enable MX25 PWM1 module.
+
 config MXC_PWM_SELECT2
        bool "Enable PWM2"
        default n
        help
          Enable MX25 PWM2 module.
+
+config MXC_PWM_SELECT3
+       bool "Enable PWM3"
+       default n
+       help
+         Enable MX25 PWM3 module.
 
 config MXC_PWM_SELECT4
        bool "Enable PWM4"
@@ -126,17 +165,37 @@ config SPI_MXC_SELECT1
 	help
 	  Enable MX25 SPI1 module.
 
+config SPI_MXC_SELECT2
+	bool "Enable SPI2 module"
+	default n
+	help
+	  Enable MX25 SPI2 module.
+
 config SPI_MXC_SELECT3
 	bool "Enable SPI3 module"
 	default n
 	help
 	  Enable MX25 SPI3 module.
 
+config FLEXCAN_SELECT1
+	bool "Enable FlexCAN1 module"
+	default n
+	help
+	  Enable MX25 FlexCAN1 module.
+
 config FLEXCAN_SELECT2
 	bool "Enable FlexCAN2 module"
 	default n
 	help
 	  Enable MX25 FlexCAN2 module.
+
+config MXC_AUDMUX_SELECT5
+	bool
+	default y
+
+config MXC_AUDMUX_SELECT6
+	bool
+	default n
 
 config W1_MXC_SELECT1
 	bool "Enable MX25 1-Wire module"
@@ -153,7 +212,7 @@ config W1_GPIO_SELECT1
 endmenu
 
 menu "Armadillo-400 Board options"
-	depends on MACH_ARMADILLO420
+	depends on MACH_ARMADILLO410 || MACH_ARMADILLO420 || MACH_ARMADILLO440
 
 config ARMADILLO4X0_UART3_CON9
 	bool "Enable UART3 at CON9"
@@ -179,6 +238,58 @@ config ARMADILLO4X0_UART3_HW_FLOW_CON9
 	select ARMADILLO4X0_CON9_11_UART3_RTS
 	select ARMADILLO4X0_CON9_13_UART3_CTS
 	select SERIAL_MXC_HW_FLOW3
+
+config ARMADILLO4X0_UART3_CON11
+	bool "Enable UART3 at CON11"
+	default n
+	depends on !ARMADILLO4X0_UART3_CON9
+	help
+	  Enable UART3 at CON11
+
+	  CON11_40: UART3_RXD
+	  CON11_41: UART3_TXD
+	select ARMADILLO4X0_CON11_40_UART3_RXD
+	select ARMADILLO4X0_CON11_41_UART3_TXD
+	select SERIAL_MXC_SELECT3
+
+config ARMADILLO4X0_UART3_HW_FLOW_CON11
+	bool "Enable UART3 HW flow control at CON11"
+	default n
+	depends on ARMADILLO4X0_UART3_CON11
+	help
+	  Enable Enable UART3 HW flow control at CON11
+
+	  CON11_42: UART3_RTS
+	  CON11_43: UART3_CTS
+	select ARMADILLO4X0_CON11_42_UART3_RTS
+	select ARMADILLO4X0_CON11_43_UART3_CTS
+	select SERIAL_MXC_HW_FLOW3
+
+config ARMADILLO4X0_UART4_CON11
+	bool "Enable UART4 at CON11"
+	default n
+
+	help
+	  Enable UART4 at CON11
+
+	  CON11_44: UART4_RXD
+	  CON11_45: UART4_TXD
+	select ARMADILLO4X0_CON11_44_UART4_RXD
+	select ARMADILLO4X0_CON11_45_UART4_TXD
+	select SERIAL_MXC_SELECT4
+
+config ARMADILLO4X0_UART4_HW_FLOW_CON11
+	bool "Enable UART4 HW flow control at CON11"
+	default n
+	depends on ARMADILLO4X0_UART4_CON11
+	help
+	  Enable UART4 HW flow control at CON11
+
+	  CON11_46: UART4_RTS
+	  CON11_47: UART4_CTS
+	select ARMADILLO4X0_CON11_46_UART4_RTS
+	select ARMADILLO4X0_CON11_47_UART4_CTS
+	select SERIAL_MXC_HW_FLOW4
 
 config ARMADILLO4X0_UART5_CON9
 	bool "Enable UART5 at CON9"
@@ -221,6 +332,23 @@ config ARMADILLO4X0_I2C2_CON14_S35390A
 	bool "Enable RTC S35390A on I2C2"
 	default y
 	depends on ARMADILLO4X0_I2C2_CON14
+
+config ARMADILLO4X0_I2C3_CON11
+	bool "Enable I2C3 at CON11"
+	default y
+	help
+	  Enable I2C3 at CON11
+
+	  CON11_48: I2C3_SCL
+	  CON11_49: I2C3_SDA
+	select ARMADILLO4X0_CON11_48_I2C3_SCL
+	select ARMADILLO4X0_CON11_49_I2C3_SDA
+	select I2C_MXC_SELECT3
+
+config ARMADILLO4X0_I2C3_CON11_S35390A
+	bool "Enable RTC S35390A on I2C3"
+	default y
+	depends on ARMADILLO4X0_I2C3_CON11
 
 config ARMADILLO4X0_SPI1_CON9
 	bool "Enable SPI1 at CON9"
@@ -390,6 +518,53 @@ config ARMADILLO4X0_SDHC2_PWREN_CON9_1
 	help
 	  Enable SDHC2_PWREN at CON9_1
 	select ARMADILLO4X0_CON9_1_SDHC2_PWREN
+
+config ARMADILLO4X0_AUD5_CON11
+	bool "Enable AUD5 at CON11"
+	default y
+	depends on !ARMADILLO4X0_UART3_HW_FLOW_CON11 && !ARMADILLO4X0_UART4_CON11 && !ARMADILLO4X0_UART4_HW_FLOW_CON11
+	help
+	  Enable AUDMUX5 at CON11
+
+	  CON11_42: AUD5_RXC
+	  CON11_43: AUD5_RXFS
+	  CON11_44: AUD5_TXD
+	  CON11_45: AUD5_RXD
+	  CON11_46: AUD5_TXC
+	  CON11_47: AUD5_TXFS
+	select ARMADILLO4X0_CON11_42_AUD5_RXC
+	select ARMADILLO4X0_CON11_43_AUD5_RXFS
+	select ARMADILLO4X0_CON11_44_AUD5_TXD
+	select ARMADILLO4X0_CON11_45_AUD5_RXD
+	select ARMADILLO4X0_CON11_46_AUD5_TXC
+	select ARMADILLO4X0_CON11_47_AUD5_TXFS
+	select MXC_AUDMUX_SELECT5
+
+config ARMADILLO4X0_AUD6_CON9
+	bool "Enable AUD6 at CON9"
+	default n
+	depends on !ARMADILLO4X0_SPI3_SS2_CON9_15 && !ARMADILLO4X0_SPI3_SS3_CON9_17 && !ARMADILLO4X0_SDHC2_CON9 && !ARMADILLO4X0_AUD5_CON11
+	help
+	  Enable AUDMUX6 at CON9
+
+	  CON9_15: AUD6_RXC
+	  CON9_17: AUD6_RXFS
+	  CON9_21: AUD6_TXD
+	  CON9_22: AUD6_RXD
+	  CON9_23: AUD6_TXC
+	  CON9_24: AUD6_TXFS
+	select ARMADILLO4X0_CON9_15_AUD6_RXC
+	select ARMADILLO4X0_CON9_17_AUD6_RXFS
+	select ARMADILLO4X0_CON9_21_AUD6_TXD
+	select ARMADILLO4X0_CON9_22_AUD6_RXD
+	select ARMADILLO4X0_CON9_23_AUD6_TXC
+	select ARMADILLO4X0_CON9_24_AUD6_TXFS
+	select MXC_AUDMUX_SELECT6
+
+config ARMADILLO4X0_GPIOKEYS_CON11
+	bool "Enable GPIO keys at CON11"
+	default y
+	depends on !ARMADILLO4X0_UART3_CON11
 
 config ARMADILLO4X0_CON9_1_GPIO3_17
 	bool
@@ -642,6 +817,150 @@ config ARMADILLO4X0_CON9_27_GPIO2_21
 config ARMADILLO4X0_CON9_28_GPIO3_15
 	bool
 	default y
+
+config ARMADILLO4X0_CON11_40_GPIO_2_29
+	bool
+	default y if !ARMADILLO4X0_CON11_40_UART3_RXD && !ARMADILLO4X0_CON11_40_KPP_ROW0
+
+config ARMADILLO4X0_CON11_40_UART3_RXD
+	bool
+	default n
+
+config ARMADILLO4X0_CON11_40_KPP_ROW0
+	bool
+	default n
+
+config ARMADILLO4X0_CON11_41_GPIO_2_30
+	bool
+	default y if !ARMADILLO4X0_CON11_41_UART3_TXD && !ARMADILLO4X0_CON11_41_KPP_ROW1
+
+config ARMADILLO4X0_CON11_41_UART3_TXD
+	bool
+	default n
+
+config ARMADILLO4X0_CON11_41_KPP_ROW1
+	bool
+	default n
+
+config ARMADILLO4X0_CON11_42_GPIO_2_31
+	bool
+	default y if !ARMADILLO4X0_CON11_42_AUD5_RXC && !ARMADILLO4X0_CON11_42_UART3_RTS && !ARMADILLO4X0_CON11_42_KPP_ROW2
+
+config ARMADILLO4X0_CON11_42_AUD5_RXC
+	bool
+	default n
+
+config ARMADILLO4X0_CON11_42_UART3_RTS
+	bool
+	default n
+
+config ARMADILLO4X0_CON11_42_KPP_ROW2
+	bool
+	default n
+
+config ARMADILLO4X0_CON11_43_GPIO_3_0
+	bool
+	default y if !ARMADILLO4X0_CON11_43_AUD5_RXFS && !ARMADILLO4X0_CON11_43_UART3_CTS && !ARMADILLO4X0_CON11_43_KPP_ROW3
+
+config ARMADILLO4X0_CON11_43_AUD5_RXFS
+	bool
+	default n
+
+config ARMADILLO4X0_CON11_43_UART3_CTS
+	bool
+	default n
+
+config ARMADILLO4X0_CON11_43_KPP_ROW3
+	bool
+	default n
+
+config ARMADILLO4X0_CON11_44_GPIO_3_1
+	bool
+	default y if !ARMADILLO4X0_CON11_44_AUD5_TXD && !ARMADILLO4X0_CON11_44_UART4_RXD && !ARMADILLO4X0_CON11_44_KPP_COL0
+
+config ARMADILLO4X0_CON11_44_AUD5_TXD
+	bool
+	default n
+
+config ARMADILLO4X0_CON11_44_UART4_RXD
+	bool
+	default n
+
+config ARMADILLO4X0_CON11_44_KPP_COL0
+	bool
+	default n
+
+config ARMADILLO4X0_CON11_45_GPIO_3_2
+	bool
+	default y if !ARMADILLO4X0_CON11_45_AUD5_RXD && !ARMADILLO4X0_CON11_45_UART4_TXD && !ARMADILLO4X0_CON11_45_KPP_COL1
+
+config ARMADILLO4X0_CON11_45_AUD5_RXD
+	bool
+	default n
+
+config ARMADILLO4X0_CON11_45_UART4_TXD
+	bool
+	default n
+
+config ARMADILLO4X0_CON11_45_KPP_COL1
+	bool
+	default n
+
+config ARMADILLO4X0_CON11_46_GPIO_3_3
+	bool
+	default y if !ARMADILLO4X0_CON11_46_AUD5_TXC && !ARMADILLO4X0_CON11_46_UART4_RTS && !ARMADILLO4X0_CON11_46_KPP_COL2
+
+config ARMADILLO4X0_CON11_46_AUD5_TXC
+	bool
+	default n
+
+config ARMADILLO4X0_CON11_46_UART4_RTS
+	bool
+	default n
+
+config ARMADILLO4X0_CON11_46_KPP_COL2
+	bool
+	default n
+
+config ARMADILLO4X0_CON11_47_GPIO_3_4
+	bool
+	default y if !ARMADILLO4X0_CON11_47_AUD5_TXFS && !ARMADILLO4X0_CON11_47_UART4_CTS && !ARMADILLO4X0_CON11_47_KPP_COL3
+
+config ARMADILLO4X0_CON11_47_AUD5_TXFS
+	bool
+	default n
+
+config ARMADILLO4X0_CON11_47_UART4_CTS
+	bool
+	default n
+
+config ARMADILLO4X0_CON11_47_KPP_COL3
+	bool
+	default n
+
+config ARMADILLO4X0_CON11_48_GPIO1_0
+	bool
+	default y if !ARMADILLO4X0_CON11_48_I2C3_SCL && !ARMADILLO4X0_CON11_48_KPP_ROW4
+
+config ARMADILLO4X0_CON11_48_I2C3_SCL
+	bool
+	default n
+
+config ARMADILLO4X0_CON11_48_KPP_ROW4
+	bool
+	default n
+
+config ARMADILLO4X0_CON11_49_GPIO1_1
+	bool
+	default y if !ARMADILLO4X0_CON11_49_I2C3_SDA && !ARMADILLO4X0_CON11_49_KPP_ROW5
+
+config ARMADILLO4X0_CON11_49_I2C3_SDA
+	bool
+	default n
+
+config ARMADILLO4X0_CON11_49_KPP_ROW5
+	bool
+	default n
 
 config ARMADILLO4X0_CON14_3_GPIO1_2
 	bool
