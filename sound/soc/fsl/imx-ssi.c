@@ -297,6 +297,7 @@ static int imx_ssi_trigger(struct snd_pcm_substream *substream, int cmd,
 	struct imx_ssi *ssi = snd_soc_dai_get_drvdata(dai);
 	unsigned int sier_bits, sier;
 	unsigned int scr;
+	int i;
 
 	scr = readl(ssi->base + SSI_SCR);
 	sier = readl(ssi->base + SSI_SIER);
@@ -347,6 +348,19 @@ static int imx_ssi_trigger(struct snd_pcm_substream *substream, int cmd,
 	if (!(ssi->flags & IMX_SSI_USE_AC97))
 		/* rx/tx are always enabled to access ac97 registers */
 		writel(scr, ssi->base + SSI_SCR);
+
+	/* Workaround for startup TX FIFO underrun issue.
+	 *
+	 * Fill the TXFIFO with silence data. SSI FIFO depth is 15, so we push
+	 * the max even number of data to hunldle stereo data correctly.
+	 * This should be done
+	 * - after SSI enable bit is set since SSI does not allow to push the
+	 *   data to the FIFO until the enable bit is set.
+	 * - before enabling interrupt/DMA request to prevent mixing the data
+	 *   from interrupt hundler/DMA.
+	 * */
+	for (i = 0; i < 14 ; i++)
+		writel(0x00000000, ssi->base + SSI_STX0);
 
 	writel(sier, ssi->base + SSI_SIER);
 
