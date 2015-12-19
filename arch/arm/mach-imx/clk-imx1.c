@@ -105,7 +105,7 @@ int __init mx1_clocks_init(unsigned long fref)
 	clk_register_clkdev(clk[dummy], "ipg", "imx1-fb.0");
 	clk_register_clkdev(clk[dummy], "ahb", "imx1-fb.0");
 	clk_register_clkdev(clk[hclk], "mshc", NULL);
-	clk_register_clkdev(clk[per3], "ssi", NULL);
+	clk_register_clkdev(clk[per3], "ipg", "imx-ssi.0");
 	clk_register_clkdev(clk[clk32], NULL, "imx1-rtc.0");
 	clk_register_clkdev(clk[clko], "clko", NULL);
 

@@ -86,7 +86,7 @@ static int imx_ssi_set_dai_tdm_slot(struct snd_soc_dai *cpu_dai,
 static int imx_ssi_set_dai_fmt(struct snd_soc_dai *cpu_dai, unsigned int fmt)
 {
 	struct imx_ssi *ssi = snd_soc_dai_get_drvdata(cpu_dai);
-	u32 strcr = 0, scr;
+	u32 stcr = 0, srcr = 0, scr;
 
 	scr = readl(ssi->base + SSI_SCR) & ~(SSI_SCR_SYN | SSI_SCR_NET);
 
@@ -94,63 +94,82 @@ static int imx_ssi_set_dai_fmt(struct snd_soc_dai *cpu_dai, unsigned int fmt)
 	switch (fmt & SND_SOC_DAIFMT_FORMAT_MASK) {
 	case SND_SOC_DAIFMT_I2S:
 		/* data on rising edge of bclk, frame low 1clk before data */
-		strcr |= SSI_STCR_TFSI | SSI_STCR_TEFS | SSI_STCR_TXBIT0;
+		stcr |= SSI_STCR_TFSI | SSI_STCR_TEFS | SSI_STCR_TXBIT0;
+		srcr |= SSI_SRCR_RFSI | SSI_SRCR_REFS | SSI_SRCR_RXBIT0;
 		scr |= SSI_SCR_NET;
-		if (ssi->flags & IMX_SSI_USE_I2S_SLAVE) {
-			scr &= ~SSI_I2S_MODE_MASK;
+		scr &= ~SSI_I2S_MODE_MASK;
+		if (ssi->flags & IMX_SSI_USE_I2S_SLAVE)
 			scr |= SSI_SCR_I2S_MODE_SLAVE;
-		}
+		else
+			scr |= SSI_SCR_I2S_MODE_MSTR;
+
 		break;
 	case SND_SOC_DAIFMT_LEFT_J:
 		/* data on rising edge of bclk, frame high with data */
-		strcr |= SSI_STCR_TXBIT0;
+		stcr |= SSI_STCR_TXBIT0;
+		srcr |= SSI_SRCR_RXBIT0;
 		break;
 	case SND_SOC_DAIFMT_DSP_B:
 		/* data on rising edge of bclk, frame high with data */
-		strcr |= SSI_STCR_TFSL | SSI_STCR_TXBIT0;
+		stcr |= SSI_STCR_TFSL | SSI_STCR_TXBIT0;
+		srcr |= SSI_SRCR_RFSL | SSI_SRCR_RXBIT0;
 		break;
 	case SND_SOC_DAIFMT_DSP_A:
 		/* data on rising edge of bclk, frame high 1clk before data */
-		strcr |= SSI_STCR_TFSL | SSI_STCR_TXBIT0 | SSI_STCR_TEFS;
+		stcr |= SSI_STCR_TFSL | SSI_STCR_TXBIT0 | SSI_STCR_TEFS;
+		srcr |= SSI_SRCR_RFSL | SSI_SRCR_RXBIT0 | SSI_SRCR_REFS;
 		break;
 	}
 
 	/* DAI clock inversion */
 	switch (fmt & SND_SOC_DAIFMT_INV_MASK) {
 	case SND_SOC_DAIFMT_IB_IF:
-		strcr |= SSI_STCR_TFSI;
-		strcr &= ~SSI_STCR_TSCKP;
+		stcr &= ~(SSI_STCR_TSCKP | SSI_STCR_TFSI);
+		srcr &= ~(SSI_SRCR_RSCKP | SSI_SRCR_RFSI);
 		break;
 	case SND_SOC_DAIFMT_IB_NF:
-		strcr &= ~(SSI_STCR_TSCKP | SSI_STCR_TFSI);
+		stcr |= SSI_STCR_TFSI;
+		stcr &= ~SSI_STCR_TSCKP;
+		srcr |= SSI_SRCR_RFSI;
+		srcr &= ~SSI_SRCR_RSCKP;
 		break;
 	case SND_SOC_DAIFMT_NB_IF:
-		strcr |= SSI_STCR_TFSI | SSI_STCR_TSCKP;
+		stcr &= ~SSI_STCR_TFSI;
+		stcr |= SSI_STCR_TSCKP;
+		srcr &= ~SSI_SRCR_RFSI;
+		srcr |= SSI_SRCR_RSCKP;
 		break;
 	case SND_SOC_DAIFMT_NB_NF:
-		strcr &= ~SSI_STCR_TFSI;
-		strcr |= SSI_STCR_TSCKP;
+		stcr |= SSI_STCR_TFSI | SSI_STCR_TSCKP;
+		srcr |= SSI_SRCR_RFSI | SSI_SRCR_RSCKP;
 		break;
 	}
 
 	/* DAI clock master masks */
 	switch (fmt & SND_SOC_DAIFMT_MASTER_MASK) {
+	case SND_SOC_DAIFMT_CBS_CFS:
+		stcr |= SSI_STCR_TFDIR | SSI_STCR_TXDIR;
+		srcr |= SSI_SRCR_RFDIR;
+		srcr &= ~SSI_SRCR_RXDIR;
+		break;
 	case SND_SOC_DAIFMT_CBM_CFM:
+		stcr &= ~(SSI_STCR_TFDIR | SSI_STCR_TXDIR);
+		srcr &= ~(SSI_SRCR_RFDIR | SSI_SRCR_RXDIR);
 		break;
 	default:
-		/* Master mode not implemented, needs handling of clocks. */
 		return -EINVAL;
 	}
 
-	strcr |= SSI_STCR_TFEN0;
+	stcr |= SSI_STCR_TFEN0;
+	srcr |= SSI_SRCR_RFEN0;
 
 	if (ssi->flags & IMX_SSI_NET)
 		scr |= SSI_SCR_NET;
 	if (ssi->flags & IMX_SSI_SYN)
 		scr |= SSI_SCR_SYN;
 
-	writel(strcr, ssi->base + SSI_STCR);
-	writel(strcr, ssi->base + SSI_SRCR);
+	writel(stcr, ssi->base + SSI_STCR);
+	writel(srcr, ssi->base + SSI_SRCR);
 	writel(scr, ssi->base + SSI_SCR);
 
 	return 0;
@@ -278,6 +297,7 @@ static int imx_ssi_trigger(struct snd_pcm_substream *substream, int cmd,
 	struct imx_ssi *ssi = snd_soc_dai_get_drvdata(dai);
 	unsigned int sier_bits, sier;
 	unsigned int scr;
+	int i;
 
 	scr = readl(ssi->base + SSI_SCR);
 	sier = readl(ssi->base + SSI_SIER);
@@ -329,6 +349,19 @@ static int imx_ssi_trigger(struct snd_pcm_substream *substream, int cmd,
 		/* rx/tx are always enabled to access ac97 registers */
 		writel(scr, ssi->base + SSI_SCR);
 
+	/* Workaround for startup TX FIFO underrun issue.
+	 *
+	 * Fill the TXFIFO with silence data. SSI FIFO depth is 15, so we push
+	 * the max even number of data to hunldle stereo data correctly.
+	 * This should be done
+	 * - after SSI enable bit is set since SSI does not allow to push the
+	 *   data to the FIFO until the enable bit is set.
+	 * - before enabling interrupt/DMA request to prevent mixing the data
+	 *   from interrupt hundler/DMA.
+	 * */
+	for (i = 0; i < 14 ; i++)
+		writel(0x00000000, ssi->base + SSI_STX0);
+
 	writel(sier, ssi->base + SSI_SIER);
 
 	return 0;
@@ -364,16 +397,18 @@ static int imx_ssi_dai_probe(struct snd_soc_dai *dai)
 static struct snd_soc_dai_driver imx_ssi_dai = {
 	.probe = imx_ssi_dai_probe,
 	.playback = {
-		.channels_min = 1,
+		.channels_min = 2,
 		.channels_max = 2,
 		.rates = SNDRV_PCM_RATE_8000_96000,
-		.formats = SNDRV_PCM_FMTBIT_S16_LE,
+		.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S20_3LE |
+			   SNDRV_PCM_FMTBIT_S24_LE,
 	},
 	.capture = {
-		.channels_min = 1,
+		.channels_min = 2,
 		.channels_max = 2,
 		.rates = SNDRV_PCM_RATE_8000_96000,
-		.formats = SNDRV_PCM_FMTBIT_S16_LE,
+		.formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S20_3LE |
+			   SNDRV_PCM_FMTBIT_S24_LE,
 	},
 	.ops = &imx_ssi_pcm_dai_ops,
 };
@@ -528,16 +563,30 @@ static int imx_ssi_probe(struct platform_device *pdev)
 
 	ssi->irq = platform_get_irq(pdev, 0);
 
-	ssi->clk = devm_clk_get(&pdev->dev, NULL);
-	if (IS_ERR(ssi->clk)) {
-		ret = PTR_ERR(ssi->clk);
+	ssi->ipg_clk = devm_clk_get(&pdev->dev, "ipg");
+	if (IS_ERR(ssi->ipg_clk)) {
+		ret = PTR_ERR(ssi->ipg_clk);
 		dev_err(&pdev->dev, "Cannot get the clock: %d\n",
 			ret);
-		goto failed_clk;
+		goto failed_ipg_clk;
 	}
-	ret = clk_prepare_enable(ssi->clk);
+	ret = clk_prepare_enable(ssi->ipg_clk);
 	if (ret)
-		goto failed_clk;
+		goto failed_ipg_clk;
+
+	if (!(ssi->flags & IMX_SSI_USE_I2S_SLAVE)) {
+		ssi->per_clk = devm_clk_get(&pdev->dev, "per");
+		if (IS_ERR(ssi->per_clk)) {
+			ret = PTR_ERR(ssi->per_clk);
+			dev_err(&pdev->dev, "Cannot get the clock: %d\n", ret);
+			goto failed_per_clk;
+		}
+		/* TODO: Need to separate clk_prepare() and clk_enable() for
+		 * more precise clk control to minimize the power consumption. */
+		ret = clk_prepare_enable(ssi->per_clk);
+		if (ret)
+			goto failed_per_clk;
+	}
 
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 	ssi->base = devm_ioremap_resource(&pdev->dev, res);
@@ -614,8 +663,11 @@ static int imx_ssi_probe(struct platform_device *pdev)
 failed_pcm:
 	snd_soc_unregister_component(&pdev->dev);
 failed_register:
-	clk_disable_unprepare(ssi->clk);
-failed_clk:
+	if (!(ssi->flags & IMX_SSI_USE_I2S_SLAVE))
+		clk_disable_unprepare(ssi->per_clk);
+failed_per_clk:
+	clk_disable_unprepare(ssi->ipg_clk);
+failed_ipg_clk:
 	snd_soc_set_ac97_ops(NULL);
 
 	return ret;
@@ -633,7 +685,10 @@ static int imx_ssi_remove(struct platform_device *pdev)
 	if (ssi->flags & IMX_SSI_USE_AC97)
 		ac97_ssi = NULL;
 
-	clk_disable_unprepare(ssi->clk);
+	if (!(ssi->flags & IMX_SSI_USE_I2S_SLAVE))
+		clk_disable_unprepare(ssi->per_clk);
+
+	clk_disable_unprepare(ssi->ipg_clk);
 	snd_soc_set_ac97_ops(NULL);
 
 	return 0;

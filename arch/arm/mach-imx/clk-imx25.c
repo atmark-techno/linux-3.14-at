@@ -62,6 +62,8 @@ static struct clk_onecell_data clk_data;
 
 static const char *cpu_sel_clks[] = { "mpll", "mpll_cpu_3_4", };
 static const char *per_sel_clks[] = { "ahb", "upll", };
+static const char *ssi1_sel_clks[] = { "per13", "upll_24610k", };
+static const char *ssi2_sel_clks[] = { "per14", "upll_24610k", };
 
 enum mx25_clks {
 	dummy, osc, mpll, upll, mpll_cpu_3_4, cpu_sel, cpu, ahb, usb_div, ipg,
@@ -71,7 +73,8 @@ enum mx25_clks {
 	per6, per7, per8, per9, per10, per11, per12, per13, per14, per15,
 	csi_ipg_per, epit_ipg_per, esai_ipg_per, esdhc1_ipg_per, esdhc2_ipg_per,
 	gpt_ipg_per, i2c_ipg_per, lcdc_ipg_per, nfc_ipg_per, owire_ipg_per,
-	pwm_ipg_per, sim1_ipg_per, sim2_ipg_per, ssi1_ipg_per, ssi2_ipg_per,
+	pwm_ipg_per, sim1_ipg_per, sim2_ipg_per, upll_24610k, ssi1_mux_out,
+	ssi1_ipg_per, ssi2_mux_out, ssi2_ipg_per,
 	uart_ipg_per, ata_ahb, reserved1, csi_ahb, emi_ahb, esai_ahb, esdhc1_ahb,
 	esdhc2_ahb, fec_ahb, lcdc_ahb, rtic_ahb, sdma_ahb, slcdc_ahb, usbotg_ahb,
 	reserved2, reserved3, reserved4, reserved5, can1_ipg, can2_ipg,	csi_ipg,
@@ -146,8 +149,11 @@ static int __init __mx25_clocks_init(unsigned long osc_rate)
 	clk[pwm_ipg_per] = imx_clk_gate("pwm_ipg_per", "per10", ccm(CCM_CGCR0),  10);
 	clk[sim1_ipg_per] = imx_clk_gate("sim1_ipg_per", "per11", ccm(CCM_CGCR0),  11);
 	clk[sim2_ipg_per] = imx_clk_gate("sim2_ipg_per", "per12", ccm(CCM_CGCR0),  12);
-	clk[ssi1_ipg_per] = imx_clk_gate("ssi1_ipg_per", "per13", ccm(CCM_CGCR0), 13);
-	clk[ssi2_ipg_per] = imx_clk_gate("ssi2_ipg_per", "per14", ccm(CCM_CGCR0), 14);
+	clk[upll_24610k] = imx_clk_fixed_factor("upll_24610k", "upll", 2461, 24000);
+	clk[ssi1_mux_out] = imx_clk_mux("ssi1_mux_out", ccm(CCM_MCR), 17, 1, ssi1_sel_clks, ARRAY_SIZE(ssi1_sel_clks));
+	clk[ssi1_ipg_per] = imx_clk_gate("ssi1_ipg_per", "ssi1_mux_out", ccm(CCM_CGCR0), 13);
+	clk[ssi2_mux_out] = imx_clk_mux("ssi2_mux_out", ccm(CCM_MCR), 18, 1, ssi2_sel_clks, ARRAY_SIZE(ssi2_sel_clks));
+	clk[ssi2_ipg_per] = imx_clk_gate("ssi2_ipg_per", "ssi2_mux_out", ccm(CCM_CGCR0), 14);
 	clk[uart_ipg_per] = imx_clk_gate("uart_ipg_per", "per15", ccm(CCM_CGCR0), 15);
 	clk[ata_ahb] = imx_clk_gate("ata_ahb", "ahb", ccm(CCM_CGCR0), 16);
 	/* CCM_CGCR0(17): reserved */
@@ -295,8 +301,13 @@ int __init mx25_clocks_init(void)
 	clk_register_clkdev(clk[lcdc_ipg], "ipg", "imx21-fb.0");
 	clk_register_clkdev(clk[lcdc_ahb], "ahb", "imx21-fb.0");
 	clk_register_clkdev(clk[wdt_ipg], NULL, "imx2-wdt.0");
-	clk_register_clkdev(clk[ssi1_ipg], NULL, "imx-ssi.0");
-	clk_register_clkdev(clk[ssi2_ipg], NULL, "imx-ssi.1");
+	clk_register_clkdev(clk[upll_24610k], "upll_24610k", NULL);
+	clk_register_clkdev(clk[ssi1_mux_out], "ssi1_mux_out", NULL);
+	clk_register_clkdev(clk[ssi1_ipg_per], "per", "imx-ssi.0");
+	clk_register_clkdev(clk[ssi1_ipg], "ipg", "imx-ssi.0");
+	clk_register_clkdev(clk[ssi2_mux_out], "ssi2_mux_out", NULL);
+	clk_register_clkdev(clk[ssi2_ipg_per], "per", "imx-ssi.1");
+	clk_register_clkdev(clk[ssi2_ipg], "ipg", "imx-ssi.1");
 	clk_register_clkdev(clk[esdhc1_ipg_per], "per", "sdhci-esdhc-imx25.0");
 	clk_register_clkdev(clk[esdhc1_ipg], "ipg", "sdhci-esdhc-imx25.0");
 	clk_register_clkdev(clk[esdhc1_ahb], "ahb", "sdhci-esdhc-imx25.0");

@@ -261,8 +261,8 @@ int __init mx27_clocks_init(unsigned long fref)
 	clk_register_clkdev(clk[usb_div], "per", "mxc-ehci.2");
 	clk_register_clkdev(clk[usb_ipg_gate], "ipg", "mxc-ehci.2");
 	clk_register_clkdev(clk[usb_ahb_gate], "ahb", "mxc-ehci.2");
-	clk_register_clkdev(clk[ssi1_ipg_gate], NULL, "imx-ssi.0");
-	clk_register_clkdev(clk[ssi2_ipg_gate], NULL, "imx-ssi.1");
+	clk_register_clkdev(clk[ssi1_ipg_gate], "ipg", "imx-ssi.0");
+	clk_register_clkdev(clk[ssi2_ipg_gate], "ipg", "imx-ssi.1");
 	clk_register_clkdev(clk[nfc_baud_gate], NULL, "imx27-nand.0");
 	clk_register_clkdev(clk[vpu_baud_gate], "per", "coda-imx27.0");
 	clk_register_clkdev(clk[vpu_ahb_gate], "ahb", "coda-imx27.0");

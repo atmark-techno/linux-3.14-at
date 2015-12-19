@@ -194,7 +194,8 @@ struct imx_ssi {
 	struct platform_device *ac97_dev;
 
 	struct snd_soc_dai *imx_ac97;
-	struct clk *clk;
+	struct clk *ipg_clk;
+	struct clk *per_clk;
 	void __iomem *base;
 	int irq;
 	int fiq_enable;

@@ -87,6 +87,10 @@ static unsigned long  __maybe_unused pin_cfgs_100kup_hys[] = {
 	PAD_CTL_PUS_100K_UP | PAD_CTL_HYS,
 };
 
+static unsigned long  __maybe_unused pin_cfgs_100kup_sre_fast[] = {
+	PAD_CTL_PUS_100K_UP | PAD_CTL_SRE_FAST,
+};
+
 static unsigned long __maybe_unused pin_cfgs_sre_fast[] = {
 	PAD_CTL_SRE_FAST,
 };
@@ -592,6 +596,62 @@ static const struct pinctrl_map armadillo4x0_con11_pinctrl_map[] = {
 	PIN_MAP_CONFIGS_PIN_DEFAULT("imx21-fb.0", "imx25-pinctrl.0",
 				    "MX25_PAD_GRP_DSE_LCD", pin_cfgs_dse_low),
 
+	/* aud5 */
+#if defined(CONFIG_ARMADILLO4X0_AUD5_CON11)
+	PIN_MAP_MUX_GROUP_DEFAULT("imx31-audmux.0", "imx25-pinctrl.0",
+				  "kpp_col0__aud5_txd", "aud5"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx31-audmux.0", "imx25-pinctrl.0",
+				  "kpp_col1__aud5_rxd", "aud5"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx31-audmux.0", "imx25-pinctrl.0",
+				  "kpp_col2__aud5_txc", "aud5"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx31-audmux.0", "imx25-pinctrl.0",
+				  "kpp_col3__aud5_txfs", "aud5"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx31-audmux.0", "imx25-pinctrl.0",
+				  "kpp_row2__aud5_rxc", "aud5"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx31-audmux.0", "imx25-pinctrl.0",
+				  "kpp_row3__aud5_rxfs", "aud5"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx31-audmux.0", "imx25-pinctrl.0",
+				    "MX25_PAD_KPP_COL0", pin_cfgs_100kup),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx31-audmux.0", "imx25-pinctrl.0",
+				    "MX25_PAD_KPP_COL1", pin_cfgs_100kup),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx31-audmux.0", "imx25-pinctrl.0",
+				    "MX25_PAD_KPP_COL2", pin_cfgs_100kup),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx31-audmux.0", "imx25-pinctrl.0",
+				    "MX25_PAD_KPP_COL3", pin_cfgs_100kup),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx31-audmux.0", "imx25-pinctrl.0",
+				    "MX25_PAD_KPP_ROW2", pin_cfgs_100kup_sre_fast),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx31-audmux.0", "imx25-pinctrl.0",
+				    "MX25_PAD_KPP_ROW3", pin_cfgs_100kup),
+#endif
+
+	/* aud6 */
+#if defined(CONFIG_ARMADILLO4X0_AUD6_CON9)
+	PIN_MAP_MUX_GROUP_DEFAULT("imx31-audmux.0", "imx25-pinctrl.0",
+				  "csi_d8__aud6_rxc", "aud6"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx31-audmux.0", "imx25-pinctrl.0",
+				  "csi_d9__aud6_rxfs", "aud6"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx31-audmux.0", "imx25-pinctrl.0",
+				  "csi_mclk__aud6_txd", "aud6"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx31-audmux.0", "imx25-pinctrl.0",
+				  "csi_vsync__aud6_rxd", "aud6"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx31-audmux.0", "imx25-pinctrl.0",
+				  "csi_hsync__aud6_txc", "aud6"),
+	PIN_MAP_MUX_GROUP_DEFAULT("imx31-audmux.0", "imx25-pinctrl.0",
+				  "csi_pixclk__aud6_txfs", "aud6"),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx31-audmux.0", "imx25-pinctrl.0",
+				    "MX25_PAD_CSI_D8", pin_cfgs_100kup_sre_fast),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx31-audmux.0", "imx25-pinctrl.0",
+				    "MX25_PAD_CSI_D9", pin_cfgs_100kup),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx31-audmux.0", "imx25-pinctrl.0",
+				    "MX25_PAD_CSI_MCLK", pin_cfgs_100kup),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx31-audmux.0", "imx25-pinctrl.0",
+				    "MX25_PAD_CSI_VSYNC", pin_cfgs_100kup),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx31-audmux.0", "imx25-pinctrl.0",
+				    "MX25_PAD_CSI_HSYNC", pin_cfgs_100kup),
+	PIN_MAP_CONFIGS_PIN_DEFAULT("imx31-audmux.0", "imx25-pinctrl.0",
+				    "MX25_PAD_CSI_PIXCLK", pin_cfgs_100kup),
+#endif
+
 	/* uart3 */
 #if defined(CONFIG_ARMADILLO4X0_UART3_CON11)
 	PIN_MAP_MUX_GROUP_DEFAULT("imx21-uart.2", "imx25-pinctrl.0",
@@ -757,6 +817,11 @@ static struct i2c_board_info armadillo4x0_i2c2[] = {
 	{
 		I2C_BOARD_INFO("s35390a", 0x30),
 		/* irq number is run-time assigned */
+	},
+#endif
+#if defined(CONFIG_ARMADILLO4X0_I2C3_CON11_WM8978)
+	{
+		I2C_BOARD_INFO("wm8978", 0x1a),
 	},
 #endif
 };
@@ -1115,8 +1180,16 @@ static void __init armadillo4x0_touchscreen_init(void)
 				NULL, 0, NULL, 0);
 }
 
+static struct imx_ssi_platform_data armadillo4x0_ssi0_pdata = {
+	.flags = IMX_SSI_DMA | IMX_SSI_SYN | IMX_SSI_NET,
+};
+
 static void __init armadillo4x0_audio_init(void)
 {
+	if (IS_ENABLED(CONFIG_SSI_MXC_SELECT1)) {
+		imx25_add_imx_ssi(0, &armadillo4x0_ssi0_pdata);
+		imx_add_platform_device("armadillo4x0_wm8978", 0, NULL, 0, NULL, 0);
+	}
 }
 #endif
 

@@ -189,6 +189,17 @@ config SND_SOC_IMX_WM8962
 	  Say Y if you want to add support for SoC audio on an i.MX board with
 	  a wm8962 codec.
 
+config SND_SOC_ARMADILLO4X0_WM8978
+	tristate "SoC Audio support for Armadillo4x0 boards with wm8978"
+	depends on ARMADILLO4X0_AUD5_CON11 || ARMADILLO4X0_AUD6_CON9
+	select SND_SOC_WM8978
+	select SND_SOC_IMX_PCM_DMA
+	select SND_SOC_IMX_AUDMUX
+	select SND_SOC_IMX_SSI
+	help
+	  Say Y if you want to add support for SoC audio on an Armadillo4x0
+	  board with a wm8978 codec.
+
 config SND_SOC_IMX_SGTL5000
 	tristate "SoC Audio support for i.MX boards with sgtl5000"
 	depends on OF && I2C
