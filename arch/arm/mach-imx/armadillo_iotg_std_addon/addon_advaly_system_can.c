@@ -51,6 +51,35 @@ static unsigned long pin_cfgs_none[] = {
 	0,
 };
 
+
+
+static iomux_v3_cfg_t addon_pinctrl_pads_con1[] = {
+	MX25_PAD_GPIO_F__GPIO_F,
+};
+
+static iomux_v3_cfg_t addon_pinctrl_pads_con2[] = {
+	MX25_PAD_RTCK__GPIO_3_14,
+};
+
+
+static struct {
+	iomux_v3_cfg_t *pads;
+	size_t nr_pads;
+	struct addon_gpio power;
+} addon_data[NR_ADDON_INTERFACES] = {
+	[ADDON_INTERFACE1] = {
+		.pads		= addon_pinctrl_pads_con1,
+		.nr_pads	= ARRAY_SIZE(addon_pinctrl_pads_con1),
+		.power		= ADDON_GPIO(IMX_GPIO_NR(1, 5), "CAN_POWER_CON1"),
+	},
+	[ADDON_INTERFACE2] = {
+		.pads		= addon_pinctrl_pads_con2,
+		.nr_pads	= ARRAY_SIZE(addon_pinctrl_pads_con2),
+		.power		= ADDON_GPIO(IMX_GPIO_NR(3, 14), "CAN_POWER_CON2"),
+	},
+};
+
+
 static struct regulator_consumer_supply flexcan0_dummy_supplies[] = {
 	REGULATOR_SUPPLY("xceiver", "flexcan.0"),
 };
@@ -84,6 +113,11 @@ static const struct pinctrl_map advaly_system_can_map[] = {
 int __init addon_setup_advaly_system_can(struct addon_device_descriptor *desc,
 					 enum addon_interface intf)
 {
+	mxc_iomux_v3_setup_multiple_pads(addon_data[intf].pads,
+				 addon_data[intf].nr_pads);
+
+	addon_gpio_request(addon_data[intf].power);
+
 	pinctrl_register_mappings(advaly_system_can_map,
 				  ARRAY_SIZE(advaly_system_can_map));
 
@@ -100,6 +134,9 @@ int __init addon_setup_advaly_system_can(struct addon_device_descriptor *desc,
 					 ARRAY_SIZE(flexcan1_dummy_supplies));
 		imx25_add_flexcan1();
 	}
+
+	/* refered: reference circuit */
+	addon_gpio_direction_output(addon_data[intf].power, 1); /* always high */
 
 	return 0;
 }
