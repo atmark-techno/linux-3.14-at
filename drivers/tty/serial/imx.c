@@ -1500,7 +1500,7 @@ imx_set_termios(struct uart_port *port, struct ktermios *termios,
 {
 	struct imx_port *sport = (struct imx_port *)port;
 	unsigned long flags;
-	unsigned int ucr2, old_ucr1, old_txrxen, baud, quot;
+	unsigned int ucr2, old_ucr1, old_ucr2, baud, quot;
 	unsigned int old_csize = old ? old->c_cflag & CSIZE : CS8;
 	unsigned int div, ufcr;
 	unsigned long num, denom;
@@ -1557,8 +1557,6 @@ imx_set_termios(struct uart_port *port, struct ktermios *termios,
 			ucr2 |= UCR2_PROE;
 	}
 
-	ucr2 |= UCR2_ATEN;
-
 	del_timer_sync(&sport->timer);
 
 	/*
@@ -1610,15 +1608,15 @@ imx_set_termios(struct uart_port *port, struct ktermios *termios,
 		barrier();
 
 	/* then, disable everything */
-	old_txrxen = readl(sport->port.membase + UCR2);
+	old_ucr2 = readl(sport->port.membase + UCR2);
 	if (port->rs485.flags & SER_RS485_ENABLED) {
-		writel(old_txrxen & ~UCR2_TXEN,
+		writel(old_ucr2 & ~UCR2_TXEN,
 		       sport->port.membase + UCR2);
 	} else {
-		writel(old_txrxen & ~(UCR2_TXEN | UCR2_RXEN),
+		writel(old_ucr2 & ~(UCR2_TXEN | UCR2_RXEN),
 		       sport->port.membase + UCR2);
 	}
-	old_txrxen &= (UCR2_TXEN | UCR2_RXEN);
+	old_ucr2 &= (UCR2_TXEN | UCR2_RXEN | UCR2_ATEN);
 
 	/* custom-baudrate handling */
 	div = sport->port.uartclk / (baud * 16);
@@ -1659,7 +1657,7 @@ imx_set_termios(struct uart_port *port, struct ktermios *termios,
 	writel(old_ucr1, sport->port.membase + UCR1);
 
 	/* set the parity, stop bits and data size */
-	writel(ucr2 | old_txrxen, sport->port.membase + UCR2);
+	writel(ucr2 | old_ucr2, sport->port.membase + UCR2);
 
 	if (UART_ENABLE_MS(&sport->port, termios->c_cflag))
 		imx_enable_ms(&sport->port);
