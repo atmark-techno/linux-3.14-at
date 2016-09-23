@@ -550,7 +550,7 @@ static void __init armadillo_iotg_std_set_pca9538_addr(void)
 #define AIOTG_STD_W_DISABLE_3G_GPIO	IMX_GPIO_NR(1, 16)
 #define AIOTG_STD_PPS_3G_GPIO		IMX_GPIO_NR(1, 16)
 #define AIOTG_STD_PWR_ON_3G_GPIO	EXT_GPIO_NR(6)
-#define AIOTG_STD_GPIO12_3G_GPIO	EXT_GPIO_NR(7)
+#define AIOTG_STD_3_7V_CE_GPIO		EXT_GPIO_NR(7)
 static void __init armadillo_iotg_std_3g_init(void)
 {
 	u8 base_board_gen;
@@ -584,7 +584,7 @@ static void __init armadillo_iotg_std_3g_init(void)
 					 "RESET_N_3G");
 		imx25_named_gpio_request(AIOTG_STD_PPS_3G_GPIO, "PPS_3G");
 		imx25_named_gpio_request(AIOTG_STD_PWR_ON_3G_GPIO, "PWR_ON_3G");
-		imx25_named_gpio_request(AIOTG_STD_GPIO12_3G_GPIO, "GPIO12_3G");
+		imx25_named_gpio_request(AIOTG_STD_3_7V_CE_GPIO, "3_7V_CE");
 
 		gpio_direction_output(AIOTG_STD_PWR_ON_3G_GPIO, 1);
 		gpio_direction_output(AIOTG_STD_RESET_N_3G_GPIO, 0);
@@ -594,12 +594,12 @@ static void __init armadillo_iotg_std_3g_init(void)
 		gpio_direction_output(AIOTG_STD_RESET_N_3G_GPIO, 0);
 
 		gpio_direction_input(AIOTG_STD_PPS_3G_GPIO);
-		gpio_direction_input(AIOTG_STD_GPIO12_3G_GPIO);
+		gpio_direction_input(AIOTG_STD_3_7V_CE_GPIO);
 
 		gpio_export(AIOTG_STD_RESET_N_3G_GPIO, false);
 		gpio_export(AIOTG_STD_PPS_3G_GPIO, false);
 		gpio_export(AIOTG_STD_PWR_ON_3G_GPIO, false);
-		gpio_export(AIOTG_STD_GPIO12_3G_GPIO, false);
+		gpio_export(AIOTG_STD_3_7V_CE_GPIO, true);
 		break;
 	default:
 		break;
