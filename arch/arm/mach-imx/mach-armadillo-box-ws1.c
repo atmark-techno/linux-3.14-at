@@ -332,6 +332,29 @@ static struct mtd_partition armadillo_box_ws1_nor_flash_partitions_32m[] = {
 		.mask_flags	= 0,
 	},
 };
+static struct mtd_partition armadillo_box_ws1_4x1_nor_flash_partitions_32m[] = {
+	{
+		.name		= "nor.bootloader",
+		.offset		= 0x00000000,
+		.size		= 2 * SZ_128K,
+		.mask_flags	= MTD_WRITEABLE,
+	}, {
+		.name		= "nor.kernel",
+		.offset		= MTDPART_OFS_APPEND,
+		.size		= 32 * SZ_128K,
+		.mask_flags	= 0,
+	}, {
+		.name		= "nor.userland",
+		.offset		= MTDPART_OFS_APPEND,
+		.size		= 214 * SZ_128K,
+		.mask_flags	= 0,
+	}, {
+		.name		= "nor.config",
+		.offset		= MTDPART_OFS_APPEND,
+		.size		= 8 * SZ_128K,
+		.mask_flags	= 0,
+	},
+};
 
 static const struct physmap_flash_data
 		armadillo_box_ws1_nor_flash_pdata_16m __initconst = {
@@ -345,6 +368,13 @@ static const struct physmap_flash_data
 	.width		= 2,
 	.parts		= armadillo_box_ws1_nor_flash_partitions_32m,
 	.nr_parts	= ARRAY_SIZE(armadillo_box_ws1_nor_flash_partitions_32m),
+};
+
+static const struct physmap_flash_data
+		armadillo_box_ws1_4x1_nor_flash_pdata_32m __initconst = {
+	.width		= 2,
+	.parts		= armadillo_box_ws1_4x1_nor_flash_partitions_32m,
+	.nr_parts	= ARRAY_SIZE(armadillo_box_ws1_4x1_nor_flash_partitions_32m),
 };
 
 static const struct resource
@@ -444,6 +474,8 @@ static void __init armadillo_box_ws1_init(void)
 
 	if (machine_is_armadillo420())
 		data = &armadillo_box_ws1_nor_flash_pdata_16m;
+	else if (machine_is_armadillo441() || machine_is_armadillo411())
+		data = &armadillo_box_ws1_4x1_nor_flash_pdata_32m;
 	else
 		data = &armadillo_box_ws1_nor_flash_pdata_32m;
 
@@ -496,6 +528,18 @@ MACHINE_START(ARMADILLO420, "Armadillo-420")
 MACHINE_END
 
 MACHINE_START(ARMADILLO440, "Armadillo-440")
+	/* Maintainer: Atmark Techno, Inc.  */
+	.atag_offset	= 0x100,
+	.map_io		= mx25_map_io,
+	.init_early	= imx25_init_early,
+	.init_irq	= mx25_init_irq,
+	.handle_irq	= imx25_handle_irq,
+	.init_time	= armadillo_box_ws1_timer_init,
+	.init_machine	= armadillo_box_ws1_init,
+	.restart	= mxc_restart,
+MACHINE_END
+
+MACHINE_START(ARMADILLO441, "Armadillo-440")
 	/* Maintainer: Atmark Techno, Inc.  */
 	.atag_offset	= 0x100,
 	.map_io		= mx25_map_io,

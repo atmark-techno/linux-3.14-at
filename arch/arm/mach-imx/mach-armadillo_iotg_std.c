@@ -434,11 +434,42 @@ static struct mtd_partition armadillo_iotg_std_nor_flash_partitions[] = {
 	},
 };
 
+static struct mtd_partition armadillo_iotg_std_4x1_nor_flash_partitions[] = {
+	{
+		.name		= "nor.bootloader",
+		.offset		= 0x00000000,
+		.size		= 2 * SZ_128K,
+		.mask_flags	= MTD_WRITEABLE,
+	}, {
+		.name		= "nor.kernel",
+		.offset		= MTDPART_OFS_APPEND,
+		.size		= 32 * SZ_128K,
+		.mask_flags	= 0,
+	}, {
+		.name		= "nor.userland",
+		.offset		= MTDPART_OFS_APPEND,
+		.size		= 214 * SZ_128K,
+		.mask_flags	= 0,
+	}, {
+		.name		= "nor.config",
+		.offset		= MTDPART_OFS_APPEND,
+		.size		= 8 * SZ_128K,
+		.mask_flags	= 0,
+	},
+};
+
 static const struct physmap_flash_data
 		armadillo_iotg_std_nor_flash_pdata __initconst = {
 	.width		= 2,
 	.parts		= armadillo_iotg_std_nor_flash_partitions,
 	.nr_parts	= ARRAY_SIZE(armadillo_iotg_std_nor_flash_partitions),
+};
+
+static const struct physmap_flash_data
+		armadillo_iotg_std_4x1_nor_flash_pdata __initconst = {
+	.width		= 2,
+	.parts		= armadillo_iotg_std_4x1_nor_flash_partitions,
+	.nr_parts	= ARRAY_SIZE(armadillo_iotg_std_4x1_nor_flash_partitions),
 };
 
 static const struct resource
@@ -663,10 +694,16 @@ static void __init armadillo_iotg_std_init(void)
 	imx25_add_imx_usb_hs(&usbh2_pdata);
 	imx25_add_imx2_wdt();
 
-	platform_device_register_resndata(NULL, "physmap-flash", -1,
-			&armadillo_iotg_std_nor_flash_resource, 1,
-			&armadillo_iotg_std_nor_flash_pdata,
-			sizeof(armadillo_iotg_std_nor_flash_pdata));
+	if (__machine_arch_type == MACH_TYPE_ARMADILLO411)
+		platform_device_register_resndata(NULL, "physmap-flash", -1,
+						  &armadillo_iotg_std_nor_flash_resource, 1,
+						  &armadillo_iotg_std_4x1_nor_flash_pdata,
+						  sizeof(armadillo_iotg_std_4x1_nor_flash_pdata));
+	else
+		platform_device_register_resndata(NULL, "physmap-flash", -1,
+						  &armadillo_iotg_std_nor_flash_resource, 1,
+						  &armadillo_iotg_std_nor_flash_pdata,
+						  sizeof(armadillo_iotg_std_nor_flash_pdata));
 
 	imx25_named_gpio_init();
 
@@ -723,6 +760,19 @@ static void __init armadillo_iotg_std_timer_init(void)
 }
 
 MACHINE_START(ARMADILLO410, "Armadillo-410")
+	/* Maintainer: Atmark Techno, Inc.  */
+	.atag_offset	= 0x100,
+	.map_io		= mx25_map_io,
+	.init_early	= imx25_init_early,
+	.init_irq	= mx25_init_irq,
+	.handle_irq	= imx25_handle_irq,
+	.init_time	= armadillo_iotg_std_timer_init,
+	.init_machine	= armadillo_iotg_std_init,
+	.init_late	= armadillo_iotg_std_init_late,
+	.restart	= mxc_restart,
+MACHINE_END
+
+MACHINE_START(ARMADILLO411, "Armadillo-410")
 	/* Maintainer: Atmark Techno, Inc.  */
 	.atag_offset	= 0x100,
 	.map_io		= mx25_map_io,
