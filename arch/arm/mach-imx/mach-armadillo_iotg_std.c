@@ -415,22 +415,22 @@ static struct mtd_partition armadillo_iotg_std_nor_flash_partitions[] = {
 		.name		= "nor.bootloader",
 		.offset		= 0x00000000,
 		.size		= 4 * SZ_32K,
-		.mask_flags	= MTD_WRITEABLE,
+		.mask_flags	= MTD_WRITEABLE | MTD_POWERUP_LOCK,
 	}, {
 		.name		= "nor.kernel",
 		.offset		= MTDPART_OFS_APPEND,
 		.size		= 32 * SZ_128K,
-		.mask_flags	= 0,
+		.mask_flags	= MTD_POWERUP_LOCK,
 	}, {
 		.name		= "nor.userland",
 		.offset		= MTDPART_OFS_APPEND,
 		.size		= 215 * SZ_128K,
-		.mask_flags	= 0,
+		.mask_flags	= MTD_POWERUP_LOCK,
 	}, {
 		.name		= "nor.config",
 		.offset		= MTDPART_OFS_APPEND,
 		.size		= 8 * SZ_128K,
-		.mask_flags	= 0,
+		.mask_flags	= MTD_POWERUP_LOCK,
 	},
 };
 
@@ -439,22 +439,22 @@ static struct mtd_partition armadillo_iotg_std_4x1_nor_flash_partitions[] = {
 		.name		= "nor.bootloader",
 		.offset		= 0x00000000,
 		.size		= 2 * SZ_128K,
-		.mask_flags	= MTD_WRITEABLE,
+		.mask_flags	= MTD_WRITEABLE | MTD_POWERUP_LOCK,
 	}, {
 		.name		= "nor.kernel",
 		.offset		= MTDPART_OFS_APPEND,
 		.size		= 32 * SZ_128K,
-		.mask_flags	= 0,
+		.mask_flags	= MTD_POWERUP_LOCK,
 	}, {
 		.name		= "nor.userland",
 		.offset		= MTDPART_OFS_APPEND,
 		.size		= 214 * SZ_128K,
-		.mask_flags	= 0,
+		.mask_flags	= MTD_POWERUP_LOCK,
 	}, {
 		.name		= "nor.config",
 		.offset		= MTDPART_OFS_APPEND,
 		.size		= 8 * SZ_128K,
-		.mask_flags	= 0,
+		.mask_flags	= MTD_POWERUP_LOCK,
 	},
 };
 
