@@ -137,7 +137,7 @@ do { \
 #define TS_X_MIN                80
 #define TS_Y_MIN                80
 
-#define TS_DETECT_WM		0x080
+#define TS_DETECT_WM		0x08f
 
 /*! @} */
 /*!
