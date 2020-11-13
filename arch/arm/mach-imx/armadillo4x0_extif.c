@@ -1092,6 +1092,26 @@ static struct imx_fb_videomode armadillo4x0_fb_modes[] = {
 			  PCR_LPPOL | PCR_ACD_SEL | PCR_ACD(0x0B) |
 			  PCR_SCLK_SEL,
 	},
+#elif defined(CONFIG_FB_MODE_FG040346DSSWBG04)
+	{
+		.mode	= {
+			.name		= "FG040346DSSWBG04",
+			.refresh	= 60,
+			.xres		= 480,
+			.yres		= 272,
+			.pixclock	= 110229,
+			.left_margin	= 35,
+			.right_margin	= 5,
+			.upper_margin	= 6,
+			.lower_margin	= 8,
+			.hsync_len	= 5,
+			.vsync_len	= 2,
+		},
+		.bpp	= 16,
+		.pcr	= PCR_TFT | PCR_COLOR | PCR_PBSIZ_8 | PCR_FLMPOL |
+			  PCR_LPPOL | PCR_CLKPOL | PCR_ACD_SEL | PCR_ACD(0x0B) |
+			  PCR_SCLK_SEL,
+	},
 #elif defined(CONFIG_FB_MODE_DI_7W)
 	{
 		.mode	= {
@@ -1126,7 +1146,7 @@ static struct platform_pwm_backlight_data armadillo4x0_backlight_data = {
 	.pwm_id		= 0,
 	.max_brightness	= 255,
 	.dft_brightness = 255,
-#if defined(CONFIG_FB_MODE_FG040360DSSWBG03)
+#if defined(CONFIG_FB_MODE_FG040360DSSWBG03) || defined(CONFIG_FB_MODE_FG040346DSSWBG04)
 	.pwm_period_ns	= 10*1000*1000,	/* 100Hz: This setting overrides the
 					   parameter defined by pwm_lookup */
 #elif defined(CONFIG_FB_MODE_DI_7W)
@@ -1142,7 +1162,7 @@ static struct regulator_consumer_supply fixed5v0_power_consumers[] = {
 };
 
 static struct pwm_lookup armadillo4x0_pwm_lookup[] = {
-#if defined(CONFIG_FB_MODE_FG040360DSSWBG03)
+#if defined(CONFIG_FB_MODE_FG040360DSSWBG03) || defined(CONFIG_FB_MODE_FG040346DSSWBG04)
 	PWM_LOOKUP("imx27-pwm.0", 0, "pwm-backlight", NULL,
 		   10*1000*1000, PWM_POLARITY_INVERSED),
 #elif defined(CONFIG_FB_MODE_DI_7W)
